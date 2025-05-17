@@ -1,0 +1,89 @@
+create table company(
+company_ID int Auto_Increment primary key,
+company_Name Varchar(20) not null unique,
+company_Login varchar(30) not null unique,
+company_psd varchar(15) not null
+);
+
+create table User(
+user_ID int primary key,
+userName Varchar(50) not null,
+userEmail Varchar(50) not null,
+userPswd varchar(15) not null,
+role Varchar(20) not null,
+city varchar(30) not null,
+state varchar(30) not null,
+county varchar(30) not null,
+local_Address varchar(50) not null,
+Mobile_No varchar(10) not null,
+company_ID int not null,
+foreign key(company_ID) references company(company_ID)
+);
+
+create table Product(
+product_ID int primary key,
+product_Name varchar(30) not null,
+product_Info varchar(50) not null,
+product_Price double not null,
+product_Quantity int not null,
+company_ID int not null,
+seller_ID int not null,
+foreign key(company_ID) references company(company_ID),
+foreign key (seller_ID) references Seller(seller_ID)
+);
+
+create table Category(
+category_ID int primary key,
+category_Name varchar(20) not null,
+company_ID int not null,
+foreign key(company_ID) references company(company_ID)
+);
+
+create table Sub_Category(
+sub_cat_ID int primary key,
+sub_cat_Name varchar (20),
+category_ID int not null,
+company_ID int not null,
+foreign key(company_ID) references company(company_ID),
+foreign key (catrgory_ID) references category(category_ID)
+);
+
+create table Add_Cart(
+cart_Item_ID int primary key,
+cart_Quantity int not null,
+product_ID int not null,
+company_ID int not null,
+foreign key(company_ID) references company(company_ID),
+foreign key (product_ID) references Product(product_ID)
+);
+
+create table Order_Now(
+order_Now_ID int primary key,
+user_ID int not null,
+company_ID int not null,
+additional_Discount double not null,
+total_Amount double not null,
+foreign key (user_ID) references User(user_ID),
+foreign key(company_ID) references company(company_ID)
+);
+
+create table Payment(
+pay_ID int primary key,
+order_Now_ID int not null,
+user_ID int not null,
+company_ID int not null,
+payment_Method Varchar(20) not null,
+transaction_Complete boolean not null,
+foreign key (order_Now_ID) references Order_Now(order_Now_ID),
+foreign key(company_ID) references company(company_ID),
+foreign key (user_ID) references User(user_ID)
+);
+
+-- seller table -- 
+create table Seller(
+seller_ID int Auto_Increment primary key,
+seller_Name varchar(30) not null,
+seller_Mobile_NO varchar(10) not null,
+company_ID int not null,
+foreign key(company_ID) references company(company_ID)
+);

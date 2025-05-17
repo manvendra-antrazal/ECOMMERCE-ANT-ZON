@@ -1,0 +1,90 @@
+package Controller;
+
+import Constants.Message;
+import Modal.Company;
+import Services.Company_Services;
+import java.util.*;
+
+public class CompanyController {
+
+    public static void startCompanySelection(Scanner inputscanner) {
+        List<Company> companies = Company_Services.getAllCompanies();
+
+        if (companies.isEmpty()) {
+            System.out.println(Message.NO_EXISTING_COMPANY_FOUND);
+            return;
+        }
+
+        Map<Integer, Company> map = new HashMap<>();
+        System.out.println(Message.EXISTING_COMAPNY);
+        for (int i = 0; i < companies.size(); i++) {
+            map.put(i + 1, companies.get(i));
+            System.out.println((i + 1) + ". " + companies.get(i).getCompany_Name());
+        }
+
+        System.out.println(Message.BACK_AND_EXIT_FRAME);
+
+        while (true) {
+            System.out.print(Message.SELECT_OPTION);
+            String input = inputscanner.nextLine().trim();
+
+            switch (input.toUpperCase()) {
+                case "A":
+                    new ApplicationController().run();
+                case "B":
+                    System.out.println(Message.EXIT_MESSAGE);
+                    System.exit(0);
+                    break;
+                default:
+                    try {
+                        int choice = Integer.parseInt(input);
+                        if (map.containsKey(choice)) {
+                            Company selectedCompany = map.get(choice);
+                            handleLoginRoles(selectedCompany, inputscanner);
+                        } else {
+                            System.out.println(Message.INVALID_INPUT);
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println(Message.INVALID_INPUT);
+                    }
+            }
+        }
+    }
+
+    public static void handleLoginRoles(Company company, Scanner inputscanner) {
+        System.out.println("\n" + Message.ROLE_SELECT);
+        System.out.println(Message.BACK_AND_EXIT_FRAME);
+        System.out.print(Message.SELECT_OPTION);
+
+        String input = inputscanner.nextLine().trim();
+
+        switch (input.toUpperCase()) {
+            case "A":
+                startCompanySelection(inputscanner);
+                break;
+            case "B":
+                System.out.println(Message.EXIT_MESSAGE);
+                System.exit(0);
+                break;
+            default:
+                try {
+                    int role = Integer.parseInt(input);
+                    switch (role) {
+                        case 1:
+                            BuyerController.handleBuyerFlow(inputscanner, company);
+                            break;
+                        case 2:
+                            SellerController.handleSellerFlow(inputscanner, company);
+                            break;
+                        case 3:
+                            System.out.println(company.getCompany_Name());
+                            break;
+                        default:
+                            System.out.println("Invalid role selected.");
+                    }
+                } catch (NumberFormatException e) {
+                    System.out.println("Invalid input. Returning to main menu.");
+                }
+        }
+    }
+}
