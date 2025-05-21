@@ -15,9 +15,10 @@ import Constants.Queries;
 public class Register_Seller_Repo {
 
     public boolean REGISTER_SELLER(Scanner inputscanner, String role, Company company) {
-        System.out.print("Enter Name: ");
+        
+        System.out.print("Enter New Seller Name: ");
         String name = inputscanner.nextLine();
-        System.out.print("Enter Username: ");
+        System.out.print("Enter New Seller Username: ");
         String username = inputscanner.nextLine();
 
         // Password field validation
@@ -45,7 +46,7 @@ public class Register_Seller_Repo {
         }
 
         String roleStr = role;
-        String query = Queries.INSERT_SELLER;
+        String query = Queries.INSERT_SELLER_QUERY;
 
         try {
             Connection connection = DBConnection.getInstance().getConnection();

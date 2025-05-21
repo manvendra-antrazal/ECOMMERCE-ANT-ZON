@@ -1,19 +1,19 @@
 package Repository;
 
+import Constants.Queries;
+import Util.DBConnection;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 
-import Constants.Queries;
-import Util.DBConnection;
-
 public class Buyer_Repo {
 
     // Method to check if a buyer with the given username and password exists
-    public boolean checkBuyer(String username, String password) {
-        String query = Queries.CHECK_BUYER;
+    public int getBuyerId(String username, String password) {
+        String query = Queries.CHECK_BUYER_QUERY;
         boolean isBuyerFound = false;
+        int buyerID = -1;
 
         try {
             // db connection
@@ -25,7 +25,7 @@ public class Buyer_Repo {
 
             if (resultset.next()) {
                 isBuyerFound = true;
-                int buyerID = resultset.getInt("Buyer_ID");
+                buyerID = resultset.getInt("Buyer_ID");
                 String buyerUserName = resultset.getString("Buyer_UserName");
                 String buyerPassword = resultset.getString("Buyer_Psd");
                 System.out.println("Buyer Found: " + buyerUserName);
@@ -34,6 +34,6 @@ public class Buyer_Repo {
         } catch (SQLException e) {
             System.out.println("Error fetching buyer details: " + e.getMessage());
         }
-        return isBuyerFound;
+        return buyerID;
     }
 }

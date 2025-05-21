@@ -10,13 +10,21 @@ public class Company {
         this.company_Name = company_Name;
     }
 
-    
-
     public int getCompany_Id() {
         return company_Id;
+    }
+
+    public void setCompany_Id(int company_Id) {
+        this.company_Id = company_Id;
     }
 
     public String getCompany_Name() {
         return company_Name;
     }
+
+    public void setCompany_Name(String company_Name) {
+        this.company_Name = company_Name;
+    }
+
+    
 }

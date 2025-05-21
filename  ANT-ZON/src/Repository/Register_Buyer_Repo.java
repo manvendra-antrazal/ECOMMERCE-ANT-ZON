@@ -53,7 +53,7 @@ public class Register_Buyer_Repo {
         }
 
     System.out.println(Message.REGISTER);
-    String query = Queries.INSERT_BUYER;
+    String query = Queries.INSERT_BUYER_QUERY;
 
     try {
         Connection connection = DBConnection.getInstance().getConnection();
