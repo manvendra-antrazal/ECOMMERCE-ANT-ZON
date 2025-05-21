@@ -80,7 +80,7 @@ public class ProductController {
                 break;
 
             case "5":
-                Product_Service.viewProductStats(sellerId);
+                // Product_Service.viewProductStats(sellerId);
                 break;
 
             default:

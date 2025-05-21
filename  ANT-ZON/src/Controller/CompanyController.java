@@ -17,12 +17,17 @@ public class CompanyController {
 
         Map<Integer, Company> map = new HashMap<>();
         System.out.println(Message.EXISTING_COMAPNY);
+        // for (int i = 0; i < companies.size(); i++) {
+        //     map.put(i + 1, companies.get(i));
+        //     System.out.println((i + 1) + ". " + companies.get(i).getCompany_Name());
+        // }
         for (int i = 0; i < companies.size(); i++) {
-            map.put(i + 1, companies.get(i));
-            System.out.println((i + 1) + ". " + companies.get(i).getCompany_Name());
-        }
-
-        System.out.println(Message.BACK_AND_EXIT_FRAME);
+        map.put(i + 1, companies.get(i));
+        System.out.printf("║  %d. %-32s ║\n", (i + 1), companies.get(i).getCompany_Name());
+    }
+        System.out.println(Message.EXISTING_COMPANY_SEPRATION);
+        // System.out.println(Message.BACK_AND_EXIT_FRAME);
+        // System.out.println(Message.EXISTING_COMPANY_SEPRATION);
 
         while (true) {
             System.out.print(Message.SELECT_OPTION);

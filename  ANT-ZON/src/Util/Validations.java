@@ -2,9 +2,9 @@ package Util;
 
 public class Validations {
 
-    // Validate password: min 8 chars, at least 1 uppercase, 1 lowercase, 1 digit
+    // Validate password: min 8 chars, at least 1 uppercase, 1 lowercase, 1 digit, 1 Special char
     public static boolean isValidPassword(String password) {
-        return password != null && password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d).{8,}$");
+        return password != null && password.matches("^(?=.*[a-z])(?=.*[A-Z])(?=.*\\d)(?=.*[@$!%*?&])[A-Za-z\\d@$!%*?&]{8,}$");
     }
 
     // Validate 10-digit mobile number

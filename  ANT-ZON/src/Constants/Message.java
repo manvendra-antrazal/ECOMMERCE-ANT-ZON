@@ -11,7 +11,7 @@ public class Message {
     public static final String CATEGORY_NOT_AVAILABLE = "No categories available";
     public static final String DELETE_PRODUCT_ID = "Enter the Product ID you want to delete: ";
     public static final String UPDATING_FAILED = "Error! Updating product.";
-    public static final String NO_PRODUCT_FOUND = "You don't have any products to delete.";
+    public static final String NO_PRODUCT_FOUND = "No Product Found! ";
     public static final String INVALID_DELETE_PRODUCT_ID = "Product not found. Please enter a valid Product ID.";
 //     public static final String PRODUCT_DELETED = "Product deleted successfully.";
     public static final String DELETING_FAILED = "Error! Deleting product.";
@@ -37,11 +37,9 @@ public class Message {
             ======================================        
             """;
 
-    public static final String BACK_AND_EXIT_FRAME = """
-            --------------------------------------            
-                    [A] BACK  |  [B] EXIT  
-            ======================================        
-            """;
+    public static final String BACK_AND_EXIT_FRAME = """     
+                [A] BACK  |  [B] EXIT      """;
+            
     
     
     public static final String BUYER_LOGIN_MENU = """
@@ -81,10 +79,16 @@ public class Message {
     public static final String ROLE_NOT_FOUND = "Role not recognized. Please enter A or B.";
 
     // Company
-    public static final String EXISTING_COMAPNY = """
-            ======================================
-                    ==== Companies ====
-            ======================================    """;
+    public static final String EXISTING_COMAPNY = 
+      "\n╔══════════════════════════════════════╗\n" +
+        "║          EXISTING COMPANIES          ║\n" +
+        "╠══════════════════════════════════════╣";
+        
+    public static final String EXISTING_COMPANY_SEPRATION = 
+        "╠══════════════════════════════════════╣\n" +                                                        
+        "║       [A] BACK  |  [B] EXIT          ║\n"+
+        "╚══════════════════════════════════════╝\n"  ;   
+
     public static final String ADD_COMAPNY = "To Add New Company, Press (A)";
     public static final String NO_EXISTING_COMPANY_FOUND = "No companies found!";
     public static final String COMPANY_NAME = "Enter Company Name: ";
@@ -142,13 +146,13 @@ public class Message {
             """;
 
     // Menu
-    public static final String MENU = """
-            ==========================================
-                        ==== MAIN MENU ====
-            ==========================================
-            1. Existing Companies
-            2. Exit
-            """;
+    public static final String MENU =  "\n" +
+        "╔══════════════════════════════════════╗\n" +
+        "║          ANT-ZON MAIN MENU           ║\n" +
+        "╠══════════════════════════════════════╣\n" +
+        "║  1. Existing Companies               ║\n" +
+        "║  2. Exit                             ║\n" +
+        "╚══════════════════════════════════════╝\n" ;
 
 //     // Category
     public static final String CATEGORY = """
@@ -175,6 +179,8 @@ public class Message {
     public static final String PRODUCT_ADDED = "Product added successfully.";
     public static final String PRODUCT_UPDATED = "Product updated successfully.";
     public static final String PRODUCT_DELETED = "Product deleted successfully.";
+    public static final String EMPTY_SELLER_PRODUCT_LIST = "You don't have any products to update.";
+    public static final String UPDATE_PRODUCT_ID = "Enter the Product ID you want to update: ";
     public static final String PRODUCT_OUT_OF_STOCK = "Product is currently out of stock.";
         public static final String EMPTY_SELLER_PRODUCTS_LIST = "You don't have any products.";    
     public static final String PRODUCT_LIST = """
@@ -204,7 +210,7 @@ public class Message {
             """;
 
     // Cart and Wishlist
-    public static final String PRODUCT_ADDED_TO_CART = "Product added to cart.";
+    public static final String PRODUCT_ADDED_TO_CART = "Product added to cart successfully.";
     public static final String PRODUCT_ADDED_TO_WISHLIST = "Product added to wishlist.";
     public static final String CART_EMPTY = "Your cart is empty.";
     public static final String CART_TOTAL = "Cart total (after applicable discounts): ";

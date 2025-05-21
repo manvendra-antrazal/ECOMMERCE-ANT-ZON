@@ -41,7 +41,7 @@ public class Queries {
     public static final String ADD_PRODUCT_SELLER = "INSERT INTO product (product_name, product_description, product_price, product_quantity, company_id, seller_id, category_id, sub_cat_id) VALUES (?, ?, ?, ?, ?, ?, ?, ?)";
 
     // update product field -> product repo 
-    public static final String UPDATE_PRODUCT_SELLER = "UPDATE product SET " + field + " = ? WHERE product_Id = ? AND seller_Id = ?";
+    // public static final String UPDATE_PRODUCT_SELLER = "UPDATE product SET " + field + " = ? WHERE product_Id = ? AND seller_Id = ?";
 
     // 
     public static final String DELETE_PRODUCT_SELLER = "DELETE FROM product WHERE product_Id = ? AND seller_Id = ?";
@@ -56,7 +56,10 @@ public class Queries {
         "VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)";
     
     // getProductsByCategoryAndSubCategory -> product repo 
-    public static final String GET_PRODUCTS_BY_CAT_AND_SUBCAT = "SELECT * FROM Product WHERE Category_ID = ? AND Sub_cat_ID = ?";
+    public static final String GET_PRODUCTS_BY_CAT_AND_SUBCAT = "SELECT * FROM Product WHERE Company_ID = ? AND Sub_cat_ID = ?";
 
 
+
+    // Add to cart 
+    public static final String PRODUCT_ADD_TO_CART = "INSERT INTO cart (product_id, company_id, buyer_id, quantity) VALUES (?, ?, ?, ?)";
 }

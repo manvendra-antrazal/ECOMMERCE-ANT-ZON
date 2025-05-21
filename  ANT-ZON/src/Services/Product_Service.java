@@ -200,7 +200,7 @@ public class Product_Service {
     List<Product> sellerProducts = repo.getProductsBySellerId(sellerId);
 
     if (sellerProducts.isEmpty()) {
-        System.out.println("You don't have any products to update.");
+        System.out.println(Message.EMPTY_SELLER_PRODUCT_LIST);
         return;
     }
 
@@ -212,7 +212,7 @@ public class Product_Service {
     int productId;
 
     while (true) {
-        System.out.print("Enter the Product ID you want to update: ");
+        System.out.print(Message.UPDATE_PRODUCT_ID);
         try {
             int inputProductId = Integer.parseInt(inputscanner.nextLine());
             boolean exists = sellerProducts.stream().anyMatch(p -> p.getProduct_Id() == inputProductId);
@@ -220,10 +220,10 @@ public class Product_Service {
                 productId = inputProductId;
                 break;
             } else {
-                System.out.println("Product not found.");
+                System.out.println(Message.NO_PRODUCT_FOUND);
             }
         } catch (NumberFormatException e) {
-            System.out.println("Invalid input. Try again.");
+            System.out.println(Message.INVALID_OPTION);
         }
     }
 
@@ -334,168 +334,37 @@ public class Product_Service {
 
 
     // stats 
+//     public static void viewProductStats(int sellerId) {
+//     Product_Repo repo = new Product_Repo();
 
-    public static void viewProductStats(int sellerId) {
-    Product_Repo repo = new Product_Repo();
+//     // 1. Total Revenue
+//     double totalRevenue = repo.getTotalRevenueBySeller(sellerId);
 
-    // 1. Total Revenue
-    double totalRevenue = repo.getTotalRevenueBySeller(sellerId);
+//     // 2. Most Liked Product
+//     Product mostLikedProduct = repo.getMostLikedProductBySeller(sellerId);
 
-    // 2. Most Liked Product
-    Product mostLikedProduct = repo.getMostLikedProductBySeller(sellerId);
+//     // 3. Best Selling Product
+//     Product bestSellingProduct = repo.getBestSellingProductBySeller(sellerId);
 
-    // 3. Best Selling Product
-    Product bestSellingProduct = repo.getBestSellingProductBySeller(sellerId);
+//     System.out.println("===== Product Statistics =====");
+//     System.out.printf("Total Revenue: $%.2f\n", totalRevenue);
 
-    System.out.println("===== Product Statistics =====");
-    System.out.printf("Total Revenue: $%.2f\n", totalRevenue);
+//     if (mostLikedProduct != null) {
+//         System.out.println("Most Liked Product:");
+//         System.out.println("  ID: " + mostLikedProduct.getProduct_Id());
+//         System.out.println("  Name: " + mostLikedProduct.getProduct_Name());
+//         // Assuming you have a rating or likes attribute
+//     } else {
+//         System.out.println("Most Liked Product: No data available");
+//     }
 
-    if (mostLikedProduct != null) {
-        System.out.println("Most Liked Product:");
-        System.out.println("  ID: " + mostLikedProduct.getProduct_Id());
-        System.out.println("  Name: " + mostLikedProduct.getProduct_Name());
-        // Assuming you have a rating or likes attribute
-    } else {
-        System.out.println("Most Liked Product: No data available");
-    }
-
-    if (bestSellingProduct != null) {
-        System.out.println("Best Selling Product:");
-        System.out.println("  ID: " + bestSellingProduct.getProduct_Id());
-        System.out.println("  Name: " + bestSellingProduct.getProduct_Name());
-        // Assuming quantity sold is available
-    } else {
-        System.out.println("Best Selling Product: No data available");
-    }
-}
-
-    // View all products functionality in Buyer
-    public static void browseProducts(Scanner inputScanner, String role, Company company, int buyer) {
-    Category_Repo categoryRepo = new Category_Repo();
-    // List<Category> categories = categoryRepo.getAllCategories();
-    List<Category> categories = categoryRepo.getAllCategories();
-
-    if (categories.isEmpty()) {
-        System.out.println(Message.CATEGORY_NOT_AVAILABLE);
-        return;
-    }
-
-    System.out.println(Message.SELLER_CATEGORY); // "Choose a category to browse:"
-    for (int i = 0; i < categories.size(); i++) {
-        System.out.println((i + 1) + ". " + categories.get(i).getCategory_Name());
-    }
-    System.out.println(Message.BACK_AND_EXIT_FRAME); // A. Back | C. Exit
-
-    int selectedCategoryIndex = -1;
-    while (true) {
-        System.out.print(Message.SELECT_OPTION);
-        String input = inputScanner.nextLine().trim().toUpperCase();
-
-        if (input.equals("A")) {
-                BuyerController.showBuyerMenu(inputScanner, role, company, buyer);
-        }  
-        if (input.equals("B")) {
-            System.out.println(Message.EXIT_MESSAGE);
-            System.exit(0);
-        }
-
-        try {
-            selectedCategoryIndex = Integer.parseInt(input) - 1;
-            if (selectedCategoryIndex >= 0 && selectedCategoryIndex < categories.size()) break;
-            System.out.println(Message.INVALID_OPTION);
-        } catch (NumberFormatException e) {
-            System.out.println(Message.INVALID_INPUT);
-        }
-    }
-
-    int categoryId = categories.get(selectedCategoryIndex).getCategory_Id();
-
-    // Fetch subcategories
-    SubCategory_Repo subCategoryRepo = new SubCategory_Repo();
-    List<Sub_Category> subCategories = subCategoryRepo.getSubCategoriesByCategoryId(categoryId, company.getCompany_Id());
-
-    if (subCategories.isEmpty()) {
-        System.out.println(Message.NO_SUB_CATEGORY_FOUND);
-        return;
-    }
-
-    System.out.println(Message.SELLER_SUB_CATEGORY); 
-    for (int i = 0; i < subCategories.size(); i++) {
-        System.out.println((i + 1) + ". " + subCategories.get(i).getSub_cat_Name());
-    }
-    System.out.println(Message.BACK_AND_EXIT_FRAME); // A. Back | C. Exit
-
-    int selectedSubIndex = -1;
-    while (true) {
-        System.out.print(Message.SELECT_OPTION);
-        String input = inputScanner.nextLine().trim().toUpperCase();
-
-        if (input.equals("A")){
-            BuyerController.showBuyerMenu(inputScanner, role, company, buyer);
-        }
-        if (input.equals("B")) {
-            System.out.println(Message.EXIT_MESSAGE);
-            System.exit(0);
-        }
-
-        try {
-            selectedSubIndex = Integer.parseInt(input) - 1;
-            if (selectedSubIndex >= 0 && selectedSubIndex < subCategories.size()) break;
-            System.out.println(Message.INVALID_OPTION);
-        } catch (NumberFormatException e) {
-            System.out.println();
-        }
-    }
-
-    int subCategoryId = subCategories.get(selectedSubIndex).getSub_cat_ID();
-
-    // Fetch products using category_id and sub_category_id
-     Product_Repo productRepo = new Product_Repo();
-    List<Product> products = productRepo.getProductsByCategoryAndSubCategory(categoryId, subCategoryId);
-
-    if (products.isEmpty()) {
-        System.out.println(Message.NO_PRODUCT_FOUND);  // "No products found for this category."
-        return;
-    }
-
-    System.out.println(Message.AVAILABLE_PRODUCTS);    // "Available products in this category:"
-    System.out.println(Message.LINE_SEPRATION);
-    System.out.printf("| %-3s | %-20s | %-8s | %-8s | %-50s |\n", 
-                      "No", "Product Name", "Price", "Qty", "Description");
-    System.out.println(Message.LINE_SEPRATION);
-
-    for (int i = 0; i < products.size(); i++) {
-        Product p = products.get(i);
-
-        String truncatedDescription = p.getProduct_Description();
-        if (truncatedDescription.length() > 50) {
-            truncatedDescription = truncatedDescription.substring(0, 47) + "...";
-        }
-
-        System.out.printf("| %-3d | %-20s | %-8.2f | %-8d | %-50s |\n",
-                i + 1,
-                p.getProduct_Name(),
-                p.getProduct_Price(),
-                p.getProduct_Quantity(),
-                truncatedDescription);
-    }
-
-    System.out.println(Message.LINE_SEPRATION);
-    System.out.println(Message.BACK_ADDCART_ADDWISHLIST_LOGOUT); 
-    System.out.println(Message.SELECT_OPTION);
-    // while(true){
-    // String input = inputScanner.nextLine();
-    // if(input.equalsIgnoreCase("A")){
-    //     BuyerController.showBuyerMenu(inputScanner, input, company, buyer);
-    //     } else if(input.equalsIgnoreCase("B")){
-    //         Cart_Service.addToCart(inputScanner, company, buyer);
-    //     } else if(input.equalsIgnoreCase("C")){
-
-    //     } else if(input.equalsIgnoreCase("D")){
-    //         CompanyController.startCompanySelection(inputScanner);
-    //     } else{
-    //         System.out.println(Message.INVALID_OPTION);
-    //     }
-    //     }
-    }    
+//     if (bestSellingProduct != null) {
+//         System.out.println("Best Selling Product:");
+//         System.out.println("  ID: " + bestSellingProduct.getProduct_Id());
+//         System.out.println("  Name: " + bestSellingProduct.getProduct_Name());
+//         // Assuming quantity sold is available
+//     } else {
+//         System.out.println("Best Selling Product: No data available");
+//     }
+// }
 }

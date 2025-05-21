@@ -4,8 +4,6 @@ import Constants.Message;
 import Modal.Company;
 import Services.Buyer_Service;
 import static Services.Buyer_Service.handleBuyerLogin;
-import Services.Product_Service;
-
 import java.util.Scanner;
 
 public class BuyerController {
@@ -37,10 +35,10 @@ public class BuyerController {
                         int option = Integer.parseInt(input);
                         switch (option) {
                             case 1:
-                                Product_Service.browseProducts(inputscanner, role ,company, buyerId);
+                                Buyer_Service.browseProducts(inputscanner, role ,company, buyerId);
                                 break;
                             // case 2:
-                            //     Wishlist_Service.viewWishlist(inputscanner, buyerId);
+                            // Wishlist_Service.viewWishlist(inputscanner, buyerId);
                             //     break;
                             // case 3:
                             //     Cart_Service.viewCart(inputscanner, buyerId);

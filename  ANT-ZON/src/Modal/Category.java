@@ -34,10 +34,6 @@ public class Category {
 
     public void setCompany_Id(int company_Id) {
         this.company_Id = company_Id;
-    }
-
-
-
-    
+    }  
     
 }

@@ -256,13 +256,13 @@ public List<Product> getProductsBySubCategory(int subCatId) {
 }
 
     // Buyer side 
-    public List<Product> getProductsByCategoryAndSubCategory(int categoryId, int subCategoryId) {
+    public List<Product> getProductsByCategoryAndSubCategory(int companyId , int subCategoryId) {
     List<Product> productList = new ArrayList<>();
     String query = Queries.GET_PRODUCTS_BY_CAT_AND_SUBCAT;
 
     try (Connection connection = DBConnection.getInstance().getConnection();
         PreparedStatement statement = connection.prepareStatement(query)) {
-        statement.setInt(1, categoryId);
+        statement.setInt(1, companyId);
         statement.setInt(2, subCategoryId);
         ResultSet rs = statement.executeQuery();
 
