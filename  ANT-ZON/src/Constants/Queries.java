@@ -62,4 +62,26 @@ public class Queries {
 
     // Add to cart 
     public static final String PRODUCT_ADD_TO_CART = "INSERT INTO cart (product_id, company_id, buyer_id, quantity) VALUES (?, ?, ?, ?)";
+
+
+    // wishlist queries 
+    public static final String GET_WISHLIST_BY_BUYER_ID = 
+    "SELECT * FROM product WHERE product_id IN (SELECT product_id FROM wishlist WHERE buyer_id = ?)";
+
+    public static final String REMOVE_FROM_WISHLIST = 
+        "DELETE FROM wishlist WHERE buyer_id = ? AND product_id = ?";
+
+    // cart repo 
+    public static final String GET_CART_ITEM_BY_BUYERID =
+    "SELECT p.*, c.quantity as cart_quantity " +
+                   "FROM product p JOIN cart c ON p.product_id = c.product_id " +
+                   "WHERE c.buyer_id = ?";
+
+    // sub category 
+    public static final String GET_SUB_CAT_BY_CATID =
+    "SELECT * FROM sub_category WHERE category_Id = ? AND company_ID = ?";
+
+    public static final String GET_SUBCAT_BY_ID = "SELECT * FROM sub_category WHERE sub_cat_ID = ?";
 }
+
+

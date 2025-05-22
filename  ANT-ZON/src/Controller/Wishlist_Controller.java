@@ -1,5 +1,6 @@
 package Controller;
 
+import Constants.Message;
 import Modal.Company;
 import Modal.Product;
 import Services.Wishlist_Service;
@@ -13,9 +14,9 @@ public class Wishlist_Controller {
         boolean success = wishlistService.addToWishlist(buyerId, selectedProduct.getProduct_Id(), company.getCompany_Id());
 
         if (success) {
-            System.out.println("Product added to your wishlist successfully!");
+            System.out.println(Message.PRODUCT_ADDED_TO_WISHLIST);
         } else {
-            System.out.println("Product is already in your wishlist or failed to add.");
+            System.out.println(Message.PRODUCT_EXISTS_IN_WIHSLIST);
         }
     }    
 }

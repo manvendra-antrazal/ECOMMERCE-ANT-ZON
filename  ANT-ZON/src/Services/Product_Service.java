@@ -1,9 +1,7 @@
 package Services;
 
 import Constants.Message;
-import Controller.BuyerController;
 import Modal.Category;
-import Modal.Company;
 import Modal.Product;
 import Modal.Sub_Category;
 import Repository.Category_Repo;
@@ -77,7 +75,7 @@ public class Product_Service {
         }
 
         // Display categories with numbers
-        System.out.println(Message.SELLER_CATEGORY);
+        System.out.println(Message.SELLER_CATEGORY_FRAME );
         for (int i = 0; i < categories.size(); i++) {
             System.out.println((i + 1) + ". " + categories.get(i).getCategory_Name());
         }
@@ -112,11 +110,11 @@ public class Product_Service {
             return;
         }
 
-        System.out.println(Message.SELLER_SUB_CATEGORY);
+        System.out.println(Message.SELLER_SUB_CATEGORY_UPPER_FRAME);
         for (int i = 0; i < subCategories.size(); i++) {
             System.out.println((i + 1) + ". " + subCategories.get(i).getSub_cat_Name());
         }
-        System.out.println(Message.BACK_AND_EXIT_FRAME); // A. Back | C. Exit
+        System.out.println(Message.SELLER_SUB_CATEGORY_LOWER_FRAME);
 
         int selectedSubIndex = -1;
         while (true) {
@@ -204,7 +202,7 @@ public class Product_Service {
         return;
     }
 
-    System.out.println("==== Your Products ====");
+    System.out.println(Message.PRODUCT_LIST);
     for (Product p : sellerProducts) {
         System.out.println("ID: " + p.getProduct_Id() + " | Name: " + p.getProduct_Name());
     }

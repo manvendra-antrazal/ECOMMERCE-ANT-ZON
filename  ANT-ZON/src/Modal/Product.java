@@ -11,8 +11,9 @@ public class Product {
     private int category_ID;
     private int sub_cat_ID;
 
-    public Product(int product_Id, String product_Name, String product_Description, double product_Price,
-               int product_Quantity, int company_ID, int seller_ID, int category_ID, int sub_cat_ID) {
+    public Product() {}
+
+   public Product(int product_Id, String product_Name, String product_Description, double product_Price, int product_Quantity, int company_ID, int seller_ID, int category_ID, int sub_cat_ID) {
     this.product_Id = product_Id;
     this.product_Name = product_Name;
     this.product_Description = product_Description;
@@ -20,11 +21,25 @@ public class Product {
     this.product_Quantity = product_Quantity;
     this.company_ID = company_ID;
     this.seller_ID = seller_ID;
-    this.category_ID = category_ID; // ✅
+    this.category_ID = category_ID;
     this.sub_cat_ID = sub_cat_ID;
-}
+    }
 
-
+    
+    @Override
+    public String toString() {
+        return "-----------------------------------\n" +
+            "Product ID     : " + product_Id + "\n" +
+            "Name           : " + product_Name + "\n" +
+            "Description    : " + product_Description + "\n" +
+            "Price          : $" + product_Price + "\n" +
+            "Quantity       : " + product_Quantity + "\n" +
+            "Company ID     : " + company_ID + "\n" +
+            "Seller ID      : " + seller_ID + "\n" +
+            "Subcategory ID : " + sub_cat_ID + "\n" +
+            "Category ID     : " + category_ID + "\n" +
+            "-----------------------------------";
+    }
 
     public int getProduct_Id() {
         return product_Id;
@@ -82,14 +97,6 @@ public class Product {
         this.seller_ID = seller_ID;
     }
 
-    public int getSub_cat_ID() {
-        return sub_cat_ID;
-    }
-
-    public void setSub_cat_ID(int sub_cat_ID) {
-        this.sub_cat_ID = sub_cat_ID;
-    }
-
     public int getCategory_ID() {
         return category_ID;
     }
@@ -97,21 +104,13 @@ public class Product {
     public void setCategory_ID(int category_ID) {
         this.category_ID = category_ID;
     }
-  
-    
-    @Override
-    public String toString() {
-        return "-----------------------------------\n" +
-            "Product ID     : " + product_Id + "\n" +
-            "Name           : " + product_Name + "\n" +
-            "Description    : " + product_Description + "\n" +
-            "Price          : $" + product_Price + "\n" +
-            "Quantity       : " + product_Quantity + "\n" +
-            "Company ID     : " + company_ID + "\n" +
-            "Seller ID      : " + seller_ID + "\n" +
-            "Subcategory ID : " + sub_cat_ID + "\n" +
-            "Category ID     : " + category_ID + "\n" +
-            "-----------------------------------";
+
+    public int getSub_cat_ID() {
+        return sub_cat_ID;
+    }
+
+    public void setSub_cat_ID(int sub_cat_ID) {
+        this.sub_cat_ID = sub_cat_ID;
     }
 
 

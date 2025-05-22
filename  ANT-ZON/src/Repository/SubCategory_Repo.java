@@ -1,6 +1,7 @@
 package Repository;
 
 import Constants.Message;
+import Constants.Queries;
 import Modal.Sub_Category;
 import Util.DBConnection;
 import java.sql.*;
@@ -12,7 +13,7 @@ public class SubCategory_Repo {
     public List<Sub_Category> getSubCategoriesByCategoryId(int categoryId, int companyId) {
 
         List<Sub_Category> subCategories = new ArrayList<>();
-        String query = "SELECT * FROM sub_category WHERE category_Id = ? AND company_ID = ?";
+        String query = Queries.GET_SUB_CAT_BY_CATID;
 
         try (Connection connection = DBConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -39,7 +40,7 @@ public class SubCategory_Repo {
     }
 
     public Sub_Category getSubCategoryById(int subCatId) {
-    String query = "SELECT * FROM sub_category WHERE sub_cat_ID = ?";
+    String query = Queries.GET_SUBCAT_BY_ID ;
     try (Connection conn = DBConnection.getInstance().getConnection();
          PreparedStatement stmt = conn.prepareStatement(query)) {
         stmt.setInt(1, subCatId);
@@ -53,7 +54,8 @@ public class SubCategory_Repo {
             );
         }
     } catch (SQLException e) {
-        System.out.println("Error fetching subcategory: " + e.getMessage());
+        System.out.println( );
+        e.printStackTrace();
     }
     return null;
 }

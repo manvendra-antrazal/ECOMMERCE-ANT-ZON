@@ -22,7 +22,7 @@ public class Buyer_Service {
     public static void handleBuyerLogin(Scanner inputscanner, String role, Company company) {
         while (true) {
             System.out.println(Message.BUYER_LOGIN_MENU);
-            System.out.println(Message.BACK_AND_EXIT_FRAME);
+            // System.out.println(Message.BACK_AND_EXIT_FRAME);
             System.out.print(Message.SELECT_OPTION);
 
             String input = inputscanner.nextLine().trim();
@@ -81,12 +81,11 @@ public class Buyer_Service {
             System.out.println(Message.WRONG_PASSWORD);
         }
     }
-
+    System.out.print(Message.LOGIN_CREDENTIAL_LOWER);
         Buyer_Repo buyerRepo = new Buyer_Repo();
         int buyerId = buyerRepo.getBuyerId(username, password);
 
     if (buyerId > 0) {
-        System.out.println(Message.LOGIN_SUCCESS);
         return buyerId;
     } else {
         System.out.println(Message.LOGIN_FAILED);
@@ -112,11 +111,11 @@ public class Buyer_Service {
         return;
     }
 
-    System.out.println(Message.SELLER_CATEGORY); // "Choose a category to browse:"
+    System.out.println(Message.SELLER_CATEGORY_FRAME); // "Choose a category to browse:"
     for (int i = 0; i < categories.size(); i++) {
-        System.out.println((i + 1) + ". " + categories.get(i).getCategory_Name());
+        System.out.printf("║   %-2d. %-31s  ║\n", (i + 1), categories.get(i).getCategory_Name());
     }
-    System.out.println(Message.BACK_AND_EXIT_FRAME); // A. Back | C. Exit
+    System.out.println(Message.SELLER_CATEGORY_LOWER_FRAME); // A. Back | C. Exit
 
     int selectedCategoryIndex = -1;
     while (true) {
@@ -151,11 +150,11 @@ public class Buyer_Service {
         return;
     }
 
-    System.out.println(Message.SELLER_SUB_CATEGORY); 
+    System.out.println(Message.SELLER_SUB_CATEGORY_UPPER_FRAME); 
     for (int i = 0; i < subCategories.size(); i++) {
-        System.out.println((i + 1) + ". " + subCategories.get(i).getSub_cat_Name());
+         System.out.printf("║   %-2d. %-31s  ║\n", i + 1, subCategories.get(i).getSub_cat_Name());
     }
-    System.out.println(Message.BACK_AND_EXIT_FRAME); // A. Back | C. Exit
+    System.out.println(Message.SELLER_SUB_CATEGORY_LOWER_FRAME);
 
     int selectedSubIndex = -1;
     while (true) {
@@ -191,10 +190,10 @@ public class Buyer_Service {
     }
 
     System.out.println(Message.AVAILABLE_PRODUCTS);    // "Available products in this category:"
-    System.out.println(Message.LINE_SEPRATION);
-    System.out.printf("| %-3s | %-20s | %-8s | %-8s | %-50s |\n", 
-                      "No", "Product Name", "Price", "Qty", "Description");
-    System.out.println(Message.LINE_SEPRATION);
+    System.out.println(Message.PRODUCT_UPPER);
+    System.out.printf("║ %-3s ║ %-20s ║ %-8s ║ %-8s ║ %-50s ║\n", 
+                  "No", "Product Name", "Price", "Qty", "Description");
+    System.out.println(Message.PRODUCTS_MIDDLE);
 
     for (int i = 0; i < products.size(); i++) {
         Product p = products.get(i);
@@ -204,15 +203,15 @@ public class Buyer_Service {
             truncatedDescription = truncatedDescription.substring(0, 47) + "...";
         }
 
-        System.out.printf("| %-3d | %-20s | %-8.2f | %-8d | %-50s |\n",
-                i + 1,
-                p.getProduct_Name(),
-                p.getProduct_Price(),
-                p.getProduct_Quantity(),
-                truncatedDescription);
+        System.out.printf("║ %-3d ║ %-20s ║ %-8.2f ║ %-8d ║ %-50s ║\n", 
+        i + 1,
+        p.getProduct_Name(),
+        p.getProduct_Price(),
+        p.getProduct_Quantity(),
+        truncatedDescription);
     }
 
-    System.out.println(Message.LINE_SEPRATION);
+    System.out.println(Message.PRODUCTS_LOWER);
     System.out.print(Message.SELECT_OPTION);
 
    int selectedIndex = -1;
@@ -236,9 +235,9 @@ public class Buyer_Service {
 
     //  Show options and take action
     System.out.println(Message.BACK_ADDCART_ADDWISHLIST_LOGOUT);
-    System.out.print(Message.SELECT_OPTION);
-
+    
     while (true) {
+        System.out.print(Message.SELECT_OPTION);
         String input = inputScanner.nextLine().trim();
 
         if (input.equalsIgnoreCase("A")) {

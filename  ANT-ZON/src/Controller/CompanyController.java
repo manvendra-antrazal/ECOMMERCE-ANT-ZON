@@ -17,10 +17,6 @@ public class CompanyController {
 
         Map<Integer, Company> map = new HashMap<>();
         System.out.println(Message.EXISTING_COMAPNY);
-        // for (int i = 0; i < companies.size(); i++) {
-        //     map.put(i + 1, companies.get(i));
-        //     System.out.println((i + 1) + ". " + companies.get(i).getCompany_Name());
-        // }
         for (int i = 0; i < companies.size(); i++) {
         map.put(i + 1, companies.get(i));
         System.out.printf("║  %d. %-32s ║\n", (i + 1), companies.get(i).getCompany_Name());
@@ -58,7 +54,7 @@ public class CompanyController {
 
     public static void handleLoginRoles(Company company, Scanner inputscanner) {
         System.out.println("\n" + Message.ROLE_SELECT);
-        System.out.println(Message.BACK_AND_EXIT_FRAME);
+        // System.out.println(Message.BACK_AND_EXIT_FRAME);
         System.out.print(Message.SELECT_OPTION);
 
         String input = inputscanner.nextLine().trim();
