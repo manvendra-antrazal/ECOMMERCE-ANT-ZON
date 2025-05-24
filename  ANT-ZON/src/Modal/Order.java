@@ -1,38 +1,95 @@
 package Modal;
 
+import java.sql.Timestamp;
+
 public class Order {
 
-    private int order_Id;
-    private double additonal_discount;
-    private double total_amount;
+    private int orderId;
+    private int buyerId;
+    private int productId;
+    private int companyId;
+    private int quantity;
+    private double totalPrice;
+    private String transactionId;
+    private Timestamp orderDate;
 
-    public Order(double additonal_discount, int order_Id, double total_amount) {
-        this.additonal_discount = additonal_discount;
-        this.order_Id = order_Id;
-        this.total_amount = total_amount;
+    public Order(int orderId, int buyerId, int productId, int companyId, int quantity,
+                 double totalPrice, String transactionId, Timestamp orderDate) {
+        this.orderId = orderId;
+        this.buyerId = buyerId;
+        this.productId = productId;
+        this.companyId = companyId;
+        this.quantity = quantity;
+        this.totalPrice = totalPrice;
+        this.transactionId = transactionId;
+        this.orderDate = orderDate;
     }
 
-    public int getOrder_Id() {
-        return order_Id;
+    public int getOrderId() {
+        return orderId;
     }
 
-    public void setOrder_Id(int order_Id) {
-        this.order_Id = order_Id;
+    public void setOrderId(int orderId) {
+        this.orderId = orderId;
     }
 
-    public double getAdditonal_discount() {
-        return additonal_discount;
+    public int getBuyerId() {
+        return buyerId;
     }
 
-    public void setAdditonal_discount(double additonal_discount) {
-        this.additonal_discount = additonal_discount;
+    public void setBuyerId(int buyerId) {
+        this.buyerId = buyerId;
     }
 
-    public double getTotal_amount() {
-        return total_amount;
+    public int getProductId() {
+        return productId;
     }
 
-    public void setTotal_amount(double total_amount) {
-        this.total_amount = total_amount;
+    public void setProductId(int productId) {
+        this.productId = productId;
     }
+
+    public int getCompanyId() {
+        return companyId;
+    }
+
+    public void setCompanyId(int companyId) {
+        this.companyId = companyId;
+    }
+
+    public int getQuantity() {
+        return quantity;
+    }
+
+    public void setQuantity(int quantity) {
+        this.quantity = quantity;
+    }
+
+    public double getTotalPrice() {
+        return totalPrice;
+    }
+
+    public void setTotalPrice(double totalPrice) {
+        this.totalPrice = totalPrice;
+    }
+
+    public String getTransactionId() {
+        return transactionId;
+    }
+
+    public void setTransactionId(String transactionId) {
+        this.transactionId = transactionId;
+    }
+
+    public Timestamp getOrderDate() {
+        return orderDate;
+    }
+
+    public void setOrderDate(Timestamp orderDate) {
+        this.orderDate = orderDate;
+    }
+
+
+
+    
 }

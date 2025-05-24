@@ -5,6 +5,7 @@ import Modal.Company;
 import Services.Buyer_Service;
 import static Services.Buyer_Service.handleBuyerLogin;
 import Services.Cart_Service;
+import Services.Order_Service;
 import Services.Wishlist_Service;
 import java.util.Scanner;
 
@@ -45,18 +46,9 @@ public class BuyerController {
                             case 3:
                                 Cart_Service.viewCart(inputscanner, buyerId);
                                 break;
-                            // case 4:
-                            //     Order_Service.handleCheckout(inputscanner, buyerId);
-                            //     break;
-                            // case 5:
-                            //     Invoice_Service.viewLastInvoice(buyerId);
-                            //     break;
-                            // case 6:
-                            //     Order_Service.viewOrderStatus(inputscanner, buyerId);
-                            //     break;
-                            // case 7:
-                            //     Order_Service.viewOrderHistory(buyerId);
-                            //     break;
+                            case 4:
+                                // Order_Service.viewOrderHistory(inputscanner, role ,company, buyerId);
+                                break;
                             default:
                                 System.out.println(Message.INVALID_OPTION);
                         }

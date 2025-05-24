@@ -1,0 +1,12 @@
+===== ANT-ZON INVOICE =====
+Buyer ID: 8
+Transaction ID: TXN6495213
+Date: 2025-05-23T18:31:46.037393800
+
+Product                   Price      Qty        Total     
+------------------------------------------------------------
+Lenovo IP 5530            $62000.00  2          $124000.00
+
+TOTAL: $124000.0
+Note: Cash on Delivery (COD) is not available.
+Thank you for shopping with ANT-ZON!

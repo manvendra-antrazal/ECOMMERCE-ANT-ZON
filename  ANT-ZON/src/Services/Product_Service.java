@@ -76,9 +76,9 @@ public class Product_Service {
 
         // Display categories with numbers
         System.out.println(Message.SELLER_CATEGORY_FRAME );
-        for (int i = 0; i < categories.size(); i++) {
-            System.out.println((i + 1) + ". " + categories.get(i).getCategory_Name());
-        }
+         for (int i = 0; i < categories.size(); i++) {
+        System.out.printf("║   %-2d. %-31s  ║\n", (i + 1), categories.get(i).getCategory_Name());
+    }
         System.out.println(Message.BACK_AND_EXIT_FRAME); // A. Back | C. Exit
 
         int selectedCategoryIndex = -1;
@@ -111,9 +111,9 @@ public class Product_Service {
         }
 
         System.out.println(Message.SELLER_SUB_CATEGORY_UPPER_FRAME);
-        for (int i = 0; i < subCategories.size(); i++) {
-            System.out.println((i + 1) + ". " + subCategories.get(i).getSub_cat_Name());
-        }
+       for (int i = 0; i < subCategories.size(); i++) {
+        System.out.printf("║   %-2d. %-31s  ║\n", i + 1, subCategories.get(i).getSub_cat_Name());
+    }
         System.out.println(Message.SELLER_SUB_CATEGORY_LOWER_FRAME);
 
         int selectedSubIndex = -1;

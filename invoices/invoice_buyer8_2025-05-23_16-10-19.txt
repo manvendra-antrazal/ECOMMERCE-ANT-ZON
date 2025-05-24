@@ -1,0 +1,12 @@
+===== ANT-ZON INVOICE =====
+Buyer ID: 8
+Transaction ID: TXN16938529
+Date: 2025-05-23T16:10:19.601886500
+
+Product                   Price      Qty        Total     
+------------------------------------------------------------
+Moto Fusion 50            $20000.00  5          $100000.00
+
+TOTAL: $100000.0
+Note: Cash on Delivery (COD) is not available.
+Thank you for shopping with ANT-ZON!

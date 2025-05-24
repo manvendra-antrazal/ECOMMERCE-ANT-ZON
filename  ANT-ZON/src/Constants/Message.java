@@ -4,9 +4,7 @@ public class Message {
 
     // General
     public static final String WELCOME = "Welcome to ANT-ZON E-Commerce Application!";
-    public static final String QUANTITY_GREATER_ZERO = "Quantity must be greater than 0.";
     public static final String VALID_NUMBER = "Please enter a valid number.";
-    public static final String QUANTITY_EXCEED = "Requested quantity exceeds available stock.";
     public static final String EXIT_MESSAGE = "Thank you for visiting ANT-ZON. Goodbye!";
     public static final String INVALID_INPUT = "Invalid input. Please try again.";
     public static final String SELECT_OPTION = "Please enter your choice: ";
@@ -21,6 +19,7 @@ public class Message {
     public static final String NO_SUB_CATEGORY_FOUND = "No subcategories found.";
     public static final String DELETED_CANCEL = "Product deletion canceled.";
     public static final String SELLER_CATEGORY_FRAME = """
+
         ╔════════════════════════════════════════╗
         ║        === SELECT CATEGORY ===         ║
         ╠════════════════════════════════════════╣""";
@@ -31,6 +30,7 @@ public class Message {
                     """;
  
     public static final String SELLER_SUB_CATEGORY_UPPER_FRAME = """
+
         ╔════════════════════════════════════════╗
         ║     ===== Select Subcategory =====     ║
         ╠════════════════════════════════════════╣""";
@@ -53,6 +53,7 @@ public class Message {
     
     
     public static final String BUYER_LOGIN_MENU = """
+
         ╔════════════════════════════════════════╗
         ║         ===  BUYER LOGIN ===           ║
         ╠════════════════════════════════════════╣
@@ -122,14 +123,15 @@ public class Message {
     public static final String COMAPNY_FAILED = "Failed to add company! Try again.";
 
     // Login/Signup
-    public static final String LOGIN_CREDENTIAL = """
+    public static final String LOGIN_CREDENTIAL = """ 
+        
         ╔════════════════════════════════════════╗
         ║        Enter Login Credentials         ║
         ╠════════════════════════════════════════╝
-        ║ Username:  """;
+        ║ Username:   """;
 
     public static final String LOGIN_CREDENTIAL_LOWER = """
-        ╚════════════════════════════════════════╝
+        ╚════════════════════════════════════════╝\n
             """;
 
     public static final String PASSWORD = "║ Password: ";
@@ -147,16 +149,14 @@ public class Message {
     public static final String BUYER_ADDED = "Buyer added successfully.";
     public static final String BUYER_REDIRECTING = "Redirecting to Buyer Login for ";
     public static final String BUYER_MENU = """
+            
             ╔════════════════════════════════════════╗
             ║           === BUYER MENU ===           ║   
             ╠════════════════════════════════════════╣
             ║   1. Browse Products                   ║ 
             ║   2. View Wishlist                     ║
             ║   3. View Cart                         ║
-            ║   4. Checkout                          ║
-            ║   5. Invoice                           ║
-            ║   6. Order Status                      ║
-            ║   7. Order History                     ║
+            ║   4. Order History                     ║
             ╠════════════════════════════════════════╣
             ║  [A] BACK  |  [B] LOGOUT  |  [C] EXIT  ║
             ╚════════════════════════════════════════╝
@@ -166,6 +166,7 @@ public class Message {
 
     public static final String SELLER_ADDED = "Seller added successfully.";
     public static final String SELLER_MENU = """
+
         ╔════════════════════════════════════════╗
         ║           === SELLER MENU ===          ║
         ╠════════════════════════════════════════╣
@@ -188,14 +189,7 @@ public class Message {
         "║  2. Exit                             ║\n" +
         "╚══════════════════════════════════════╝\n" ;
 
-//     // Category
-    public static final String CATEGORY = """
-            ==========================================
-                    ==== CHOOSE CATEGORY ====
-            ==========================================
-            1. Electronic
-            2. Furniture
-            """;
+
 
     // Products
     public static final String ADD_PRODUCT = "Enter product details to add:";
@@ -218,6 +212,7 @@ public class Message {
     public static final String PRODUCT_OUT_OF_STOCK = "Product is currently out of stock.";
         public static final String EMPTY_SELLER_PRODUCTS_LIST = "You don't have any products.";    
     public static final String PRODUCT_LIST = """
+
         ╔════════════════════════════════════════╗
         ║         === Your Products ===          ║
         ╠════════════════════════════════════════╣
@@ -246,7 +241,7 @@ public class Message {
     // Cart and Wishlist
     public static final String PRODUCT_ADDED_TO_CART = "Product added to cart successfully.";
     public static final String CART_ERROR = "Something went wrong while adding the product to cart.";
-    public static final String QUANTITY = "Enter quantity to add: ";
+    // public static final String QUANTITY = "Enter quantity to add: ";
     // public static final String PRODUCT_ADDED_TO_WISHLIST = "Product added to wishlist.";
     public static final String CART_EMPTY = "Your cart is empty.";
     public static final String CART_TOTAL = "Cart total (after applicable discounts): ";
@@ -255,16 +250,18 @@ public class Message {
     public static final String DISCOUNT_APPLIED = "Special discount applied!";
 
     // Invoice
-    public static final String INVOICE_GENERATED = "Invoice has been generated and saved.";
+    // public static final String INVOICE_GENERATED = "Invoice has been generated and saved.";
 
     // Inventory
     public static final String INVENTORY_LIMIT_REACHED = "Cannot add more. Inventory limit reached.";
 
     // Statistics
     public static final String SHOW_STATS_HEADER = """
-            ======================================
-                ===== ANT-ZON Statistics =====
-            ====================================== """;
+
+            ╔════════════════════════════════════╗
+            ║   ===== ANT-ZON Statistics =====   ║
+            ╚════════════════════════════════════╝ 
+            """;
     public static final String STATS_REVENUE = "Total Revenue: ";
     public static final String STATS_MOST_LIKED = "Most Liked Product: ";
     public static final String STATS_BEST_SELLER = "Best Seller Product: ";
@@ -272,6 +269,7 @@ public class Message {
     // Validation 
     public static final String INVALID_NAME = "Enter valid name";
     public static final String SELECT_FIELD_TO_UPDATE = """
+
         ╔════════════════════════════════════════╗
         ║      === SELECT FIELD TO UPDATE ===    ║
         ╠════════════════════════════════════════╣
@@ -311,6 +309,7 @@ public class Message {
                 
             
     public static final String PRODUCT_UPPER =
+
     "╔═══════════════════════════════════════════════════════════════════════════════════════════════════════╗";
     public static final String PRODUCTS_MIDDLE = 
     "╠═══════════════════════════════════════════════════════════════════════════════════════════════════════╣";
@@ -357,4 +356,56 @@ public class Message {
        ║              Your wishlist is empty                ║
        ╚════════════════════════════════════════════════════╝
        """; 
+
+
+    public static final String CHOICE_INPUT = "Enter your choice (A/B/C/D): ";
+    public static final String ENTER_PRODUCT_NO = "Enter the product number to buy: ";
+    public static final String ENTER_PRODUCT_NO_REMOVE = "Enter the product number to remove: ";
+    public static final String QUANTITY = "Enter quantity: ";
+    public static final String QUANTITY_GREATER_ZERO = "Quantity must be greater than 0.";
+    public static final String QUANTITY_EXCEED = "Entered quantity exceeds available stock.";
+    public static final String ORDER_SUCCESSFUL = "Order placed successfully!";
+    public static final String ORDER_FAILED = "Failed to place the order.";
+    public static final String INVALID_CHOICE = "Invalid choice. Please try again.";
+    public static final String PRODUCT_REMOVED_CART = "Product removed from cart.";
+    public static final String LOGOUT_SUCCESS = "Logged out successfully.";
+ 
+    public static final String INVOICE_FOLDER = "invoices/";
+    public static final String INVOICE_HEADER = "===== ANT-ZON INVOICE =====";
+    public static final String INVOICE_FILENAME_PREFIX = "invoice_buyer";
+    public static final String TRANSACTION_ID_PREFIX = "TXN";
+    public static final String NO_COD_NOTE = "Note: Cash on Delivery (COD) is not available.";
+    public static final String STOCK_INSUFFICIENT = "Not enough stock for %s. Available: %d\n";
+    public static final String INVOICE_GENERATED = "Invoice generated and saved to: %s"; 
+    public static final String INVOICE_FOOTER = "Thank you for shopping with ANT-ZON!";
+
+
+    public static final String ORDER_HISTORY_HEADER ="""
+        ╔══════════════════════════════════════════════════════════════════════════════════╗
+        ║                              YOUR ORDER HISTORY                                  ║
+        ╠══════╦════════════════════╦══════════════╦═══════════╦════════════╦══════════════╣
+        ║ O.ID ║ Product Name       ║ Category     ║ Quantity  ║ Price/item ║ Order Date   ║
+        ╠══════╬════════════════════╬══════════════╬═══════════╬════════════╬══════════════╣
+            
+            """;
+       
+
+    public static final String ORDER_HISTORY_FOOTER = """
+         ╚══════╩════════════════════╩══════════════╩═══════════╩════════════╩═════════════╝
+         ║                          [A] MAIN MENU  |  [D] LOGOUT                           ║ 
+         ╚═════════════════════════════════════════════════════════════════════════════════╝
+        """;
+        
+
+    public static final String NO_ORDERS_MSG =
+        "╔══════════════════════════════════════════════╗\n" +
+        "║         No orders found in your history.     ║\n" +
+        "╚══════════════════════════════════════════════╝";
+
+    public static final String NO_ORDERS_FOUND = "...";
+
+
+
 }
+
+

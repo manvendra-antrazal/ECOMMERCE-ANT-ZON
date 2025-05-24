@@ -287,6 +287,70 @@ public List<Product> getProductsBySubCategory(int subCatId) {
     }
     return productList;
 }
+    // Get the available quantity of a product by productId
+public int getProductQuantity(int productId) {
+    String query = "SELECT product_quantity FROM product WHERE product_Id = ?";
+    try (Connection connection = DBConnection.getInstance().getConnection();
+         PreparedStatement statement = connection.prepareStatement(query)) {
+
+        statement.setInt(1, productId);
+        ResultSet rs = statement.executeQuery();
+
+        if (rs.next()) {
+            return rs.getInt("product_quantity");
+        }
+
+    } catch (SQLException e) {
+        System.out.println("Error fetching product quantity: " + e.getMessage());
+    }
+    return -1; // Indicates failure
+}
+
+// Reduce the stock of a product by quantity
+public boolean reduceStock(int productId, int quantity) {
+    String query = "UPDATE product SET product_quantity = product_quantity - ? WHERE product_Id = ? AND product_quantity >= ?";
+    try (Connection connection = DBConnection.getInstance().getConnection();
+         PreparedStatement statement = connection.prepareStatement(query)) {
+
+        statement.setInt(1, quantity);
+        statement.setInt(2, productId);
+        statement.setInt(3, quantity);  // Ensures no negative stock
+
+        int rowsAffected = statement.executeUpdate();
+        return rowsAffected > 0;
+
+    } catch (SQLException e) {
+        System.out.println("Error reducing stock: " + e.getMessage());
+    }
+    return false;
+}
+
+public Product getProductById(int productId) {
+    Product product = null;
+    String query = "SELECT * FROM product WHERE product_id = ?";
+
+    try (Connection connection = DBConnection.getInstance().getConnection();
+         PreparedStatement statement = connection.prepareStatement(query)) {
+
+        statement.setInt(1, productId);
+        ResultSet rs = statement.executeQuery();
+
+        if (rs.next()) {
+            product = new Product();
+            product.setProduct_Id(rs.getInt("product_id"));
+            product.setProduct_Name(rs.getString("product_name"));
+            product.setProduct_Description(rs.getString("product_description"));
+            product.setProduct_Price(rs.getDouble("product_price"));
+            product.setProduct_Quantity(rs.getInt("product_quantity"));
+            product.setCompany_ID(rs.getInt("company_id"));
+        }
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+
+    return product;
+}
 
     
 }

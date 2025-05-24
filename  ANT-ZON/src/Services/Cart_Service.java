@@ -1,13 +1,12 @@
 package Services;
 
 import Constants.Message;
-
+import Modal.Product;
+import Repository.Cart_Repo;
+import Repository.Product_Repo;
 import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
-
-import Modal.Product;
-import Repository.Cart_Repo;
 
 
 public class Cart_Service {
@@ -42,6 +41,83 @@ public class Cart_Service {
                           p.getProduct_Description());
     }
     System.out.println(Message.CART_LOWER_FRAME);
-   
+    // here it takes input for Back, BuyNow, Remove, Logout
+    while (true) {
+            System.out.print(Message.CHOICE_INPUT);
+            String input = sc.nextLine().trim().toUpperCase();
+
+            switch (input) {
+                // back 
+                case "A":
+                    return;
+
+                case "B": {
+                // BuyNow
+                    try {
+                        System.out.print(Message.ENTER_PRODUCT_NO);
+                        int prodNo = Integer.parseInt(sc.nextLine());
+                        if (prodNo < 1 || prodNo > cartItems.size()) {
+                            System.out.println(Message.INVALID_CHOICE);
+                            break;
+                        }
+
+                        Product selectedProduct = cartItems.get(prodNo - 1);
+
+                        System.out.print(Message.QUANTITY);
+                        int qty = Integer.parseInt(sc.nextLine());
+
+                        if (qty <= 0) {
+                            System.out.println(Message.QUANTITY_GREATER_ZERO);
+                        } else {
+                            // Get actual product from product inventory
+                            Product actualProduct = new Product_Repo().getProductById(selectedProduct.getProduct_Id());
+
+                            if (actualProduct == null) {
+                                System.out.println(Message.PRODUCT_NOT_FOUND);
+                            } else if (qty > actualProduct.getProduct_Quantity()) {
+                                System.out.println(Message.QUANTITY_EXCEED);
+                            } else {
+                                Order_Service.placeOrder(actualProduct, qty, buyerId); // Pass actual product to order
+                                System.out.println(Message.ORDER_SUCCESSFUL);
+                                return;
+                            }
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println(Message.VALID_NUMBER);
+                    } catch (Exception e) {
+                        System.out.println(Message.ORDER_FAILED);
+                        e.printStackTrace();
+                    }
+                    break;
+                }
+
+                // Remove Product 
+                case "C": {
+                    try {
+                        System.out.print(Message.ENTER_PRODUCT_NO_REMOVE);
+                        int removeIndex = Integer.parseInt(sc.nextLine());
+                        if (removeIndex < 1 || removeIndex > cartItems.size()) {
+                            System.out.println(Message.INVALID_CHOICE);
+                        } else {
+                            Product toRemove = cartItems.get(removeIndex - 1);
+                            new Cart_Repo().removeFromCart(buyerId, toRemove.getProduct_Id());
+                            System.out.println(Message.PRODUCT_REMOVED_CART);
+                            return;
+                        }
+                    } catch (NumberFormatException e) {
+                        System.out.println(Message.VALID_NUMBER);
+                    }
+                    break;
+                }
+
+                // LOGOUT
+                case "D":
+                    System.out.println(Message.LOGOUT_SUCCESS);
+                    System.exit(0);
+
+                default:
+                    System.out.println(Message.INVALID_CHOICE);
+            }
+        }
     }
 }

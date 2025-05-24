@@ -1,33 +1,24 @@
 package Controller;
 
 import Constants.Message;
-import java.util.Scanner;
-
 import Modal.Company;
 import Modal.Product;
 import Services.Cart_Service;
+import java.util.Scanner;
 
 public class Cart_Controller {
     
     public static void handleAddToCart(Scanner sc, Product product, Company company, int buyerId) {
         while (true) {
-            System.out.print(Message.QUANTITY);
-            String input = sc.nextLine().trim();
-
+            int defaultQuantity = 1;
             try {
-                int quantity = Integer.parseInt(input);
-
-                if (quantity <= 0) {
-                    System.out.println(Message.QUANTITY_GREATER_ZERO);
-                    continue;
-                }
-
-                if (quantity > product.getProduct_Quantity()) {
+                
+                if (defaultQuantity > product.getProduct_Quantity()) {
                     System.out.println(Message.QUANTITY_EXCEED);
                     continue;
                 }
 
-                Cart_Service.addToCart(product, company.getCompany_Id(), buyerId, quantity);
+                Cart_Service.addToCart(product, company.getCompany_Id(), buyerId, defaultQuantity);
                 System.out.println(Message.PRODUCT_ADDED_TO_CART);
                 break;
             } catch (NumberFormatException e) {

@@ -15,7 +15,7 @@ public class Seller_Service {
 
      while (true) {
         System.out.println(Message.SELLER_LOGIN_MENU);
-        System.out.println(Message.BACK_AND_EXIT_FRAME); 
+        // System.out.println(Message.BACK_AND_EXIT_FRAME); 
         System.out.print(Message.SELECT_OPTION);
 
         String input = inputscanner.nextLine().trim();

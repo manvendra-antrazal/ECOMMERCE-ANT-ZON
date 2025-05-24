@@ -1,9 +1,9 @@
 package Services;
 import Constants.Message;
-import java.util.List;
-import java.util.Scanner;
 import Modal.Product;
 import Repository.Wishlist_repo;
+import java.util.List;
+import java.util.Scanner;
 
 public class Wishlist_Service { 
  
@@ -48,7 +48,7 @@ public class Wishlist_Service {
     String input = sc.nextLine().trim();
 
     if (input.isEmpty()) {
-        return; // Go back to previous menu
+        return; // back to previous menu
     }
 
     try {
@@ -64,5 +64,7 @@ public class Wishlist_Service {
         System.out.println("Invalid input.");
     }
     }
+
+
    
 }

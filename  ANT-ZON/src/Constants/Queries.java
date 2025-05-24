@@ -82,6 +82,17 @@ public class Queries {
     "SELECT * FROM sub_category WHERE category_Id = ? AND company_ID = ?";
 
     public static final String GET_SUBCAT_BY_ID = "SELECT * FROM sub_category WHERE sub_cat_ID = ?";
+
+    public static final String GET_ORDER_BY_BUYERID =
+    """
+            SELECT o.order_id, o.transaction_id, o.quantity, o.total_price, o.order_date,
+                   p.product_name
+            FROM `order` o
+            JOIN product p ON o.product_id = p.product_id
+            WHERE o.buyer_id = ?
+            ORDER BY o.order_date DESC
+            """;
+
 }
 
 

@@ -61,4 +61,34 @@ public class Cart_Repo {
         return cartItems;
     }
     
+    public void removeProductFromCart(int buyerId, int productId) {
+    String query = "DELETE FROM cart WHERE buyer_id = ? AND product_id = ?";
+    try (Connection conn = DBConnection.getInstance().getConnection();
+         PreparedStatement stmt = conn.prepareStatement(query)) {
+        stmt.setInt(1, buyerId);
+        stmt.setInt(2, productId);
+        stmt.executeUpdate();
+    } catch (SQLException e) {
+        System.out.println("Failed to remove product: " + e.getMessage());
+    }
+}
+
+    public boolean removeFromCart(int buyerId, int productId) {
+        String query = "DELETE FROM cart WHERE buyer_id = ? AND product_id = ?";
+
+        try (Connection connection = DBConnection.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
+
+            statement.setInt(1, buyerId);
+            statement.setInt(2, productId);
+
+            int rowsAffected = statement.executeUpdate();
+            return rowsAffected > 0;
+
+        } catch (SQLException e) {
+            System.out.println("Failed to remove product from cart: " + e.getMessage());
+        }
+        return false;
+    }
+
 }

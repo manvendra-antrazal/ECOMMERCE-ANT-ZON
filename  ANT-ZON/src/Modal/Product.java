@@ -1,7 +1,7 @@
 package Modal;
 
 public class Product {
-    private int product_Id;
+     private int product_Id;
     private String product_Name;
     private String product_Description;
     private double product_Price;
@@ -13,16 +13,16 @@ public class Product {
 
     public Product() {}
 
-   public Product(int product_Id, String product_Name, String product_Description, double product_Price, int product_Quantity, int company_ID, int seller_ID, int category_ID, int sub_cat_ID) {
-    this.product_Id = product_Id;
-    this.product_Name = product_Name;
-    this.product_Description = product_Description;
-    this.product_Price = product_Price;
-    this.product_Quantity = product_Quantity;
-    this.company_ID = company_ID;
-    this.seller_ID = seller_ID;
-    this.category_ID = category_ID;
-    this.sub_cat_ID = sub_cat_ID;
+    public Product(int product_Id, String product_Name, String product_Description, double product_Price, int product_Quantity, int company_ID, int seller_ID, int category_ID, int sub_cat_ID) {
+        this.product_Id = product_Id;
+        this.product_Name = product_Name;
+        this.product_Description = product_Description;
+        this.product_Price = product_Price;
+        this.product_Quantity = product_Quantity;
+        this.company_ID = company_ID;
+        this.seller_ID = seller_ID;
+        this.category_ID = category_ID;
+        this.sub_cat_ID = sub_cat_ID;
     }
 
     
@@ -113,6 +113,6 @@ public class Product {
         this.sub_cat_ID = sub_cat_ID;
     }
 
-
+    
 
 }
