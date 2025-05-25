@@ -99,7 +99,6 @@ public class Buyer_Service {
     }
 
 
-    //---------------------------------------------------------------------------------------------------------
     // View all products functionality in Buyer
     public static void browseProducts(Scanner inputScanner, String role, Company company, int buyer) {
     Category_Repo categoryRepo = new Category_Repo();

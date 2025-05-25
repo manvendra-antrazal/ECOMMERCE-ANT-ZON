@@ -1,6 +1,8 @@
 package Services;
 import Constants.Message;
+import Controller.Wishlist_Controller;
 import Modal.Product;
+import Repository.Product_Repo;
 import Repository.Wishlist_repo;
 import java.util.List;
 import java.util.Scanner;
@@ -31,38 +33,34 @@ public class Wishlist_Service {
     }
 
     System.out.println(Message.WISHLIST_UPPER_FRAME);
-
     int index = 1;
     for (Product p : wishlist) {
-        System.out.printf("║ %-3d ║ %-20s ║ %-8.2f ║ %-8d ║ %-50s    ║\n",
-                          index++,
-                          p.getProduct_Name(),
-                          p.getProduct_Price(),
-                          p.getProduct_Quantity(),
-                          p.getProduct_Description());
+        System.out.printf("║ %-3d ║ %-20s ║ %-8.2f ║ %-8d ║ %-50s ║\n",
+                index++, p.getProduct_Name(), p.getProduct_Price(), p.getProduct_Quantity(), p.getProduct_Description());
     }
-
     System.out.println(Message.WISHLIST_LOWER_FRAME);
-    System.out.println("\nEnter the number of a product to remove from wishlist (or press ENTER to go back):");
 
-    String input = sc.nextLine().trim();
+    System.out.print("Choose Option [A/B/C/D]: ");
+    String option = sc.nextLine().trim().toUpperCase();
 
-    if (input.isEmpty()) {
-        return; // back to previous menu
-    }
-
-    try {
-        int choice = Integer.parseInt(input);
-        if (choice < 1 || choice > wishlist.size()) {
-            System.out.println("Invalid choice.");
-        } else {
-            Product toRemove = wishlist.get(choice - 1);
-            repo.removeFromWishlist(buyerId, toRemove.getProduct_Id());
-            System.out.println("Product removed from your wishlist.");
+    switch (option) {
+        case "A":
+            return; // back to main menu
+        case "B":
+            System.out.print("Enter product number to ADD to cart: ");
+            Wishlist_Controller.handleAddToCartFromWishlist(sc, wishlist, buyerId);
+            break;
+        case "C":
+            System.out.print("Enter product number to REMOVE from wishlist: ");
+            Wishlist_Controller.handleRemoveFromWishlist(sc, wishlist, buyerId);
+            break;
+        case "D":
+            System.out.println("Logging out...");
+            System.exit(0);
+            break;
+        default:
+            System.out.println("Invalid option selected.");
         }
-    } catch (NumberFormatException e) {
-        System.out.println("Invalid input.");
-    }
     }
 
 

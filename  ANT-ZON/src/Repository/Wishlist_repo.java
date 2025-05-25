@@ -78,15 +78,22 @@ public class Wishlist_repo {
     }
 
     // Remove item from wishlist for a buyer
-    public static void removeFromWishlist(int buyerId, int productId) {
-        try (Connection connection = DBConnection.getInstance().getConnection()) {
-            String query = Queries.REMOVE_FROM_WISHLIST;
-            PreparedStatement statement = connection.prepareStatement(query);
-            statement.setInt(1, buyerId);
-            statement.setInt(2, productId);
-            statement.executeUpdate();
-        } catch (SQLException e) {
-            e.printStackTrace();
-        }
+    // Wishlist_Repo.java
+public boolean removeFromWishlist(int buyerId, int productId) {
+    String query = "DELETE FROM wishlist WHERE buyer_id = ? AND product_id = ?";
+    try (Connection conn = DBConnection.getInstance().getConnection();
+         PreparedStatement stmt = conn.prepareStatement(query)) {
+
+        stmt.setInt(1, buyerId);
+        stmt.setInt(2, productId);
+
+        int rowsAffected = stmt.executeUpdate();
+        return rowsAffected > 0;
+
+    } catch (SQLException e) {
+        System.out.println("Failed to remove from wishlist: " + e.getMessage());
+        return false;
     }
+    }
+
 }

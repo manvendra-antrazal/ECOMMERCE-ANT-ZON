@@ -9,6 +9,7 @@ public class Message {
     public static final String INVALID_INPUT = "Invalid input. Please try again.";
     public static final String SELECT_OPTION = "Please enter your choice: ";
     public static final String FETCHING_FAILED = "An error occurred while fetching the cart items.";
+    public static final String WISHLIST_FETCING_FAILED = "An error occurred while removing from wishlist.";
     public static final String CATEGORY_NOT_AVAILABLE = "No categories available";
     public static final String DELETE_PRODUCT_ID = "Enter the Product ID you want to delete: ";
     public static final String UPDATING_FAILED = "Error! Updating product.";
@@ -17,7 +18,10 @@ public class Message {
     public static final String DELETING_FAILED = "Error! Deleting product.";
     public static final String DELETING_CONFIRMATION = "Are you sure you want to delete this product? (yes/no): ";
     public static final String NO_SUB_CATEGORY_FOUND = "No subcategories found.";
+    public static final String WISHLIST_PRODUCT_REMOVED = "Product removed from wishlist." ;
     public static final String DELETED_CANCEL = "Product deletion canceled.";
+    public static final String FAILED_REMOVED_PRODUCT = "Failed to remove product.";
+    public static final String PRODUCT_EXISTS_IN_CART = "Product already exists in cart.";
     public static final String SELLER_CATEGORY_FRAME = """
 
         ╔════════════════════════════════════════╗
@@ -210,7 +214,7 @@ public class Message {
     public static final String EMPTY_SELLER_PRODUCT_LIST = "You don't have any products to update.";
     public static final String UPDATE_PRODUCT_ID = "Enter the Product ID you want to update: ";
     public static final String PRODUCT_OUT_OF_STOCK = "Product is currently out of stock.";
-        public static final String EMPTY_SELLER_PRODUCTS_LIST = "You don't have any products.";    
+    public static final String EMPTY_SELLER_PRODUCTS_LIST = "You don't have any products.";    
     public static final String PRODUCT_LIST = """
 
         ╔════════════════════════════════════════╗
@@ -240,6 +244,7 @@ public class Message {
 
     // Cart and Wishlist
     public static final String PRODUCT_ADDED_TO_CART = "Product added to cart successfully.";
+    public static final String PRODUCT_ALREADY_IN_CART = "Product is already in your cart.";
     public static final String CART_ERROR = "Something went wrong while adding the product to cart.";
     // public static final String QUANTITY = "Enter quantity to add: ";
     // public static final String PRODUCT_ADDED_TO_WISHLIST = "Product added to wishlist.";
@@ -349,7 +354,7 @@ public class Message {
 
     public static final String WISHLIST_LOWER_FRAME = """
        ╠══════════════════════════════════════════════════════════════════════════════════════════════════════════╣
-       ║                   [A] BACK  |  [B] Add To Cart  |  [C] REMOVE PRODUCT  |  [D] LOGOUT                         ║
+       ║                   [A] BACK  |  [B] Add To Cart  |  [C] REMOVE PRODUCT  |  [D] LOGOUT                     ║
        ╚══════════════════════════════════════════════════════════════════════════════════════════════════════════╝
        """;
       

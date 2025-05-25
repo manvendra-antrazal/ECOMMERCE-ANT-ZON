@@ -91,4 +91,23 @@ public class Cart_Repo {
         return false;
     }
 
+
+    public boolean isProductInCart(int productId, int companyId, int buyerId) {
+    String query = "SELECT 1 FROM cart WHERE product_id = ? AND company_id = ? AND buyer_id = ?";
+    try (Connection conn = DBConnection.getInstance().getConnection();
+         PreparedStatement stmt = conn.prepareStatement(query)) {
+
+        stmt.setInt(1, productId);
+        stmt.setInt(2, companyId);
+        stmt.setInt(3, buyerId);
+
+        ResultSet rs = stmt.executeQuery();
+        return rs.next(); // true if already in cart
+
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return false;
+}
+
 }
