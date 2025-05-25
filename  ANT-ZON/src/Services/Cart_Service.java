@@ -1,6 +1,7 @@
 package Services;
 
 import Constants.Message;
+import Controller.CompanyController;
 import Modal.Product;
 import Repository.Cart_Repo;
 import Repository.Product_Repo;
@@ -112,8 +113,7 @@ public class Cart_Service {
 
                 // LOGOUT
                 case "D":
-                    System.out.println(Message.LOGOUT_SUCCESS);
-                    System.exit(0);
+                    CompanyController.startCompanySelection(sc);
 
                 default:
                     System.out.println(Message.INVALID_CHOICE);

@@ -12,9 +12,15 @@ public class Order {
     private double totalPrice;
     private String transactionId;
     private Timestamp orderDate;
+    private String productName;
+    private String categoryName;
 
-    public Order(int orderId, int buyerId, int productId, int companyId, int quantity,
-                 double totalPrice, String transactionId, Timestamp orderDate) {
+    public Order(){
+        
+    }
+
+    public Order(int orderId, int buyerId, int productId, int companyId, int quantity, double totalPrice,
+            String transactionId, Timestamp orderDate, String productName, String categoryName) {
         this.orderId = orderId;
         this.buyerId = buyerId;
         this.productId = productId;
@@ -23,6 +29,8 @@ public class Order {
         this.totalPrice = totalPrice;
         this.transactionId = transactionId;
         this.orderDate = orderDate;
+        this.productName = productName;
+        this.categoryName = categoryName;
     }
 
     public int getOrderId() {
@@ -89,7 +97,23 @@ public class Order {
         this.orderDate = orderDate;
     }
 
+    public String getProductName() {
+        return productName;
+    }
 
+    public void setProductName(String productName) {
+        this.productName = productName;
+    }
+
+    public String getCategoryName() {
+        return categoryName;
+    }
+
+    public void setCategoryName(String categoryName) {
+        this.categoryName = categoryName;
+    }
+
+    
 
     
 }

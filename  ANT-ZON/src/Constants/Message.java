@@ -347,8 +347,12 @@ public class Message {
        ║ No  ║ Product Name         ║ Price    ║ Qty      ║ Description                                           ║
        ╠══════════════════════════════════════════════════════════════════════════════════════════════════════════╣""";
 
-    public static final String WISHLIST_LOWER_FRAME = 
-      "╚══════════════════════════════════════════════════════════════════════════════════════════════════════════╝";   
+    public static final String WISHLIST_LOWER_FRAME = """
+       ╠══════════════════════════════════════════════════════════════════════════════════════════════════════════╣
+       ║                   [A] BACK  |  [B] Add To Cart  |  [C] REMOVE PRODUCT  |  [D] LOGOUT                         ║
+       ╚══════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+       """;
+      
     
 
      public static final String EMPTY_WISHLIST = """
@@ -371,29 +375,33 @@ public class Message {
     public static final String LOGOUT_SUCCESS = "Logged out successfully.";
  
     public static final String INVOICE_FOLDER = "invoices/";
-    public static final String INVOICE_HEADER = "===== ANT-ZON INVOICE =====";
+    public static final String INVOICE_HEADER = """
+        ╔════════════════════════════════════════════════════════════════════╗
+        ║                           ANT-ZON INVOICE                          ║
+        ╚════════════════════════════════════════════════════════════════════╝
+            """;
     public static final String INVOICE_FILENAME_PREFIX = "invoice_buyer";
     public static final String TRANSACTION_ID_PREFIX = "TXN";
     public static final String NO_COD_NOTE = "Note: Cash on Delivery (COD) is not available.";
     public static final String STOCK_INSUFFICIENT = "Not enough stock for %s. Available: %d\n";
-    public static final String INVOICE_GENERATED = "Invoice generated and saved to: %s"; 
+    public static final String INVOICE_GENERATED = """
+        ╔════════════════════════════════════════════════════════════════════╗
+        ║                THANK YOU FOR SHOPPING WITH ANT-ZON!                ║
+        ╚════════════════════════════════════════════════════════════════════╝
+            """;
     public static final String INVOICE_FOOTER = "Thank you for shopping with ANT-ZON!";
 
 
     public static final String ORDER_HISTORY_HEADER ="""
-        ╔══════════════════════════════════════════════════════════════════════════════════╗
-        ║                              YOUR ORDER HISTORY                                  ║
-        ╠══════╦════════════════════╦══════════════╦═══════════╦════════════╦══════════════╣
-        ║ O.ID ║ Product Name       ║ Category     ║ Quantity  ║ Price/item ║ Order Date   ║
-        ╠══════╬════════════════════╬══════════════╬═══════════╬════════════╬══════════════╣
-            
-            """;
+        ╔════════╦════════════════════════════════╦════════════╦══════════════╦══════════════════════╗
+        ║ O.ID   ║ Product Name                   ║ Quantity   ║ Price/item   ║ Order Date           ║
+        ╠════════╬════════════════════════════════╬════════════╬══════════════╬══════════════════════╣""";
        
 
     public static final String ORDER_HISTORY_FOOTER = """
-         ╚══════╩════════════════════╩══════════════╩═══════════╩════════════╩═════════════╝
-         ║                          [A] MAIN MENU  |  [D] LOGOUT                           ║ 
-         ╚═════════════════════════════════════════════════════════════════════════════════╝
+        ╠════════╩════════════════════════════════╩════════════╩══════════════╩══════════════════════╣
+        ║                                  [A] MENU  |  [B] LOGOUT                                   ║
+        ╚════════════════════════════════════════════════════════════════════════════════════════════╝
         """;
         
 

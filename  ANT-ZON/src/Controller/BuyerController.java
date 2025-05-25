@@ -47,7 +47,7 @@ public class BuyerController {
                                 Cart_Service.viewCart(inputscanner, buyerId);
                                 break;
                             case 4:
-                                // Order_Service.viewOrderHistory(inputscanner, role ,company, buyerId);
+                                Order_Service.viewOrderHistory(inputscanner, role ,company, buyerId);
                                 break;
                             default:
                                 System.out.println(Message.INVALID_OPTION);

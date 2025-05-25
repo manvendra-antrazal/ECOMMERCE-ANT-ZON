@@ -1,0 +1,16 @@
+╔════════════════════════════════════════════════════════════════════╗
+║                           ANT-ZON INVOICE                          ║
+╚════════════════════════════════════════════════════════════════════╝
+
+Buyer ID: 8
+Transaction ID: TXN70753224
+Date: 2025-05-25T11:16:49.804041200
+Product Name: Moto Fusion 50
+
+Product                   Price      Qty        Total     
+------------------------------------------------------------
+Moto Fusion 50            $20000.00  5          $100000.00
+
+TOTAL: $100000.0
+Note: Cash on Delivery (COD) is not available.
+Thank you for shopping with ANT-ZON!

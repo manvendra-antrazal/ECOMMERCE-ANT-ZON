@@ -9,12 +9,7 @@ import Modal.Product;
 import Repository.Cart_Repo;
 import Repository.Order_Repo;
 import Repository.Product_Repo;
-
-import java.io.File;
-import java.io.FileWriter;
 import java.io.IOException;
-import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.Random;
 import java.util.Scanner;
@@ -42,49 +37,13 @@ public class Order_Service {
         double totalPrice = product.getProduct_Price() * quantity;
 
         // Save order
-        orderRepo.insertOrder(buyerId, product.getProduct_Id(), product.getCompany_ID(), quantity, totalPrice, txnId);
+        orderRepo.insertOrder(buyerId, product.getProduct_Id(), product.getCompany_ID(), quantity, totalPrice, txnId, product.getProduct_Name());
 
         // Remove product from cart
         cartRepo.removeProductFromCart(buyerId, product.getProduct_Id());
 
         // Generate invoice
-        generateInvoice(buyerId, product, quantity, totalPrice, txnId);
-    }
-
-    private static void generateInvoice(int buyerId, Product product, int qty, double total, String txnId) throws IOException {
-        DateTimeFormatter dtf = DateTimeFormatter.ofPattern("yyyy-MM-dd_HH-mm-ss");
-        String timestamp = dtf.format(LocalDateTime.now());
-
-        // Ensure invoice folder exists
-        File invoiceDir = new File(Message.INVOICE_FOLDER);
-        if (!invoiceDir.exists()) {
-            invoiceDir.mkdir();
-        }
-
-        String fileName = Message.INVOICE_FOLDER + Message.INVOICE_FILENAME_PREFIX + buyerId + "_" + timestamp + ".txt";
-
-        StringBuilder invoice = new StringBuilder();
-        invoice.append(Message.INVOICE_HEADER).append("\n")
-                .append("Buyer ID: ").append(buyerId).append("\n")
-                .append("Transaction ID: ").append(txnId).append("\n")
-                .append("Date: ").append(LocalDateTime.now()).append("\n\n")
-                .append(String.format("%-25s %-10s %-10s %-10s\n", "Product", "Price", "Qty", "Total"))
-                .append("------------------------------------------------------------\n")
-                .append(String.format("%-25s $%-9.2f %-10d $%-9.2f\n",
-                        product.getProduct_Name(),
-                        product.getProduct_Price(),
-                        qty,
-                        total))
-                .append("\nTOTAL: $").append(total).append("\n")
-                .append(Message.NO_COD_NOTE).append("\n")
-                .append(Message.INVOICE_FOOTER).append("\n");
-
-        try (FileWriter writer = new FileWriter(fileName)) {
-            writer.write(invoice.toString());
-        }
-
-        System.out.println(invoice);
-        System.out.printf((Message.INVOICE_GENERATED) + "%n", fileName);
+        Invoice_Service.generateInvoice(buyerId, product, quantity, totalPrice, txnId);
     }
 
 
@@ -101,19 +60,20 @@ public class Order_Service {
 
         System.out.println(Message.ORDER_HISTORY_HEADER);
 
-        for (Order order : orders) {
-            System.out.printf("║ %-4d ║ %-18s ║ %-12s ║ %-9d ║ ₹%-9.2f ║ %-11s ║\n",
-                    order.getOrderId(),
-                    order.getCompanyId(),
-                    order.getQuantity(),
-                    order.getTotalPrice(),
-                    order.getOrderDate());
+       for (Order order : orders) {
+            System.out.printf("║ %-6d ║ %-30s ║ %-10d ║  %-11.2f ║ %-20s ║\n",
+            order.getOrderId(),
+            order.getProductName(),
+            order.getQuantity(),
+            order.getTotalPrice(),
+            order.getOrderDate().toLocalDateTime());
         }
+
 
         System.out.println(Message.ORDER_HISTORY_FOOTER);
         Scanner sc = new Scanner(System.in);
         while (true) {
-            System.out.print("Enter your choice: ");
+            System.out.print(Message.SELECT_OPTION);
             String choice = sc.nextLine().trim().toUpperCase();
 
             switch (choice) {
@@ -124,9 +84,8 @@ public class Order_Service {
                     CompanyController.startCompanySelection(inputScanner); 
                     return;
                 default:
-                    System.out.println("Invalid input! Please enter valid input.");
+                    System.out.println(Message.INVALID_INPUT);
             }
         }
-}
-
+    }
 }
