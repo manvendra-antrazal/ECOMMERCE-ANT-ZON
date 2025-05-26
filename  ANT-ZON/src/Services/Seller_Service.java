@@ -37,16 +37,13 @@ public class Seller_Service {
                         case 1:
                             int sellerId = LOGIN(inputscanner);
                             if (sellerId > 0) {
-                                System.out.println(Message.LOGIN_SUCCESS);
                                 ProductController.showSellerMenu(inputscanner, role, company, sellerId);
-                            } else{
-                                System.out.println(Message.LOGIN_FAILED);
-                            }
+                            } 
                             break;
                         case 2:
                             if (REGISTER_SELLER(inputscanner, role, company)) {
                                 System.out.println(Message.SELLER_ADDED);
-                                Seller_Service.LOGIN(inputscanner);
+                                LOGIN(inputscanner);
                             } else {
                                 System.out.println(Message.REGISTER_FAILED);
                             }
@@ -68,8 +65,9 @@ public class Seller_Service {
         
         System.out.print(Message.LOGIN_CREDENTIAL);
         String username = inputscanner.nextLine();
-        System.out.print("Enter Password: ");
+        System.out.print(Message.ENTER_PASSWORD);
         String password = inputscanner.nextLine();
+        System.out.println(Message.LOGIN_CREDENTIAL_LOWER);
 
         Seller_Repo sellerRepo = new Seller_Repo();
         int sellerId = sellerRepo.getSellerId(username, password);

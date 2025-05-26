@@ -1,21 +1,18 @@
 package Repository;
 
+import Constants.Message;
+import Constants.Queries;
+import Modal.Category;
+import Util.DBConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
-
-import Constants.Message;
-import Modal.Category;
-import Modal.Company;
-// import Services.Category_Service;
-import Util.DBConnection;
 
 public class Category_Repo {
 
     public List<Category> getAllCategories() {
         List<Category> categories = new ArrayList<>();
-        String query = "SELECT * FROM category";
+        String query = Queries.GET_ALL_CATEGORIES;
 
         try (Connection connection = DBConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(query);
@@ -39,7 +36,7 @@ public class Category_Repo {
     public List<Category> getAllCategoriesByCompany(int companyId) {
     List<Category> categories = new ArrayList<>();
     try (Connection connection = DBConnection.getInstance().getConnection();
-         PreparedStatement statement = connection.prepareStatement("SELECT * FROM category WHERE company_ID = ?")) {
+         PreparedStatement statement = connection.prepareStatement(Queries.GET_ALL_CATEGORIES_BY_COMPANY)) {
 
         statement.setInt(1, companyId);
         ResultSet resultSet = statement.executeQuery();
@@ -54,9 +51,41 @@ public class Category_Repo {
         }
 
     } catch (SQLException e) {
-        System.out.println("Error fetching categories: " + e.getMessage());
+        System.out.println(Message.ERROR_FETCHING_CATEGORIES + e.getMessage());
     }
     return categories;
     }
 
+
+    public Integer getCategoryIdByName(String name) {
+        String query = Queries.GET_CATEGORY_ID_BY_NAME;
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setString(1, name.toLowerCase());
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("category_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null; // or throw custom exception
+    }
+
+    public Integer getSubCategoryIdByName(String name) {
+        String query = Queries.GET_SUB_CATEGORY_ID_BY_NAME;
+        try (Connection conn = DBConnection.getInstance().getConnection();
+             PreparedStatement ps = conn.prepareStatement(query)) {
+
+            ps.setString(1, name.toLowerCase());
+            ResultSet rs = ps.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("sub_cat_id");
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+        return null;
+    }
 }

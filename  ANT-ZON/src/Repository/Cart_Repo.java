@@ -1,5 +1,6 @@
 package Repository;
 
+import Constants.Message;
 import Constants.Queries;
 import Modal.Product;
 import Util.DBConnection;
@@ -28,7 +29,8 @@ public class Cart_Repo {
         }
     }
 
-     public List<Product> getCartItemsByBuyerId(int buyerId) {
+
+    public List<Product> getCartItemsByBuyerId(int buyerId) {
         List<Product> cartItems = new ArrayList<>();
 
         String query = Queries.GET_CART_ITEM_BY_BUYERID;
@@ -62,19 +64,19 @@ public class Cart_Repo {
     }
     
     public void removeProductFromCart(int buyerId, int productId) {
-    String query = "DELETE FROM cart WHERE buyer_id = ? AND product_id = ?";
+    String query = Queries.REMOVE_FROM_CART; 
     try (Connection conn = DBConnection.getInstance().getConnection();
          PreparedStatement stmt = conn.prepareStatement(query)) {
         stmt.setInt(1, buyerId);
         stmt.setInt(2, productId);
         stmt.executeUpdate();
     } catch (SQLException e) {
-        System.out.println("Failed to remove product: " + e.getMessage());
+        System.out.println(Message.FAILED_REMOVED_PRODUCT_FROM_CART + e.getMessage());
     }
 }
 
     public boolean removeFromCart(int buyerId, int productId) {
-        String query = "DELETE FROM cart WHERE buyer_id = ? AND product_id = ?";
+        String query = Queries.REMOVE_FROM_CART; 
 
         try (Connection connection = DBConnection.getInstance().getConnection();
              PreparedStatement statement = connection.prepareStatement(query)) {
@@ -86,14 +88,14 @@ public class Cart_Repo {
             return rowsAffected > 0;
 
         } catch (SQLException e) {
-            System.out.println("Failed to remove product from cart: " + e.getMessage());
+            System.out.println(Message.FAILED_REMOVED_PRODUCT_FROM_CART + e.getMessage());
         }
         return false;
     }
 
 
     public boolean isProductInCart(int productId, int companyId, int buyerId) {
-    String query = "SELECT 1 FROM cart WHERE product_id = ? AND company_id = ? AND buyer_id = ?";
+    String query = Queries.IS_PRODUCT_IN_CART;
     try (Connection conn = DBConnection.getInstance().getConnection();
          PreparedStatement stmt = conn.prepareStatement(query)) {
 

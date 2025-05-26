@@ -1,6 +1,7 @@
 // Repository/Order_Repo.java
 package Repository;
 
+import Constants.Message;
 import Util.DBConnection;
 import java.sql.*;
 import java.util.*;
@@ -13,7 +14,7 @@ import Repository.Product_Repo;
 public class Order_Repo {
 
         public boolean insertOrder(int buyerId, int productId, int companyId, int quantity, double totalPrice, String transactionId, String productName) {
-    String query = "INSERT INTO `order` (buyer_id, product_id, company_id, quantity, total_price, transaction_id, product_name) VALUES (?, ?, ?, ?, ?, ?, ?)";
+    String query = Queries.INSERT_ORDER;
 
     try (Connection conn = DBConnection.getInstance().getConnection();
          PreparedStatement ps = conn.prepareStatement(query)) {
@@ -41,8 +42,7 @@ public class Order_Repo {
     public List<Order> getOrdersByBuyerId(int buyerId) {
 
     List<Order> orders = new ArrayList<>();
-    String query = "SELECT order_id, product_name, quantity, total_price, order_date " +
-                   "FROM `order` WHERE buyer_id = ? ORDER BY order_date DESC";
+    String query = Queries.GET_ORDERS_BY_BUYERID;
 
     try (Connection conn = DBConnection.getInstance().getConnection();
          PreparedStatement ps = conn.prepareStatement(query)) {

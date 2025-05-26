@@ -23,10 +23,10 @@ public class Product_Service {
     }
 
     System.out.println(Message.AVAILABLE_PRODUCTS); 
-    System.out.println("----------------------------------------------------------------------------------------------------------");
-    System.out.printf("| %-3s | %-20s | %-8s | %-8s | %-50s |\n",
-            "No", "Product Name", "Price", "Qty", "Description");
-    System.out.println("----------------------------------------------------------------------------------------------------------");
+    System.out.println(Message.PRODUCT_UPPER);
+    System.out.printf("║ %-3s ║ %-20s ║ %-8s ║ %-8s ║ %-50s ║\n", 
+                  "No", "Product Name", "Price", "Qty", "Description");
+    System.out.println(Message.PRODUCTS_MIDDLE);
 
     for (int i = 0; i < sellerProducts.size(); i++) {
         Product p = sellerProducts.get(i);
@@ -35,7 +35,7 @@ public class Product_Service {
             truncatedDescription = truncatedDescription.substring(0, 47) + "...";
         }
 
-        System.out.printf("| %-3d | %-20s | %-8.2f | %-8d | %-50s |\n",
+        System.out.printf("║ %-3d ║ %-20s ║ %-8.2f ║ %-8d ║ %-50s ║\n", 
                 i + 1,
                 p.getProduct_Name(),
                 p.getProduct_Price(),
@@ -43,7 +43,7 @@ public class Product_Service {
                 truncatedDescription);
     }
 
-    System.out.println("----------------------------------------------------------------------------------------------------------");
+    System.out.println(Message.PRODUCTS_LAST);
 
     while (true) {
         System.out.println(Message.BACK_AND_EXIT_FRAME);  // A Back | B Exit
@@ -79,7 +79,7 @@ public class Product_Service {
          for (int i = 0; i < categories.size(); i++) {
         System.out.printf("║   %-2d. %-31s  ║\n", (i + 1), categories.get(i).getCategory_Name());
     }
-        System.out.println(Message.BACK_AND_EXIT_FRAME); // A. Back | C. Exit
+        System.out.println(Message.SELLER_CATEGORY_LOWER_FRAME); // A. Back | C. Exit
 
         int selectedCategoryIndex = -1;
         while (true) {
@@ -176,9 +176,6 @@ public class Product_Service {
             }
             System.out.println(Message.INVALID_PRODUCT_QUANTITY);
         }
-
-        // Product product = new Product(0, name, info, price, quantity, companyID, sellerID, subCatId, selectedCategoryId);
-        // Product_Repo repo = new Product_Repo();
 
         Product product = new Product(0, name, info, price, quantity, sellerID, companyID, selectedCategoryId, subCatId);
         Product_Repo repo = new Product_Repo();

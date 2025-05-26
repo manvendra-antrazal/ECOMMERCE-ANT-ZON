@@ -1,5 +1,6 @@
 package Services;
 import Constants.Message;
+import Controller.CompanyController;
 import Controller.Wishlist_Controller;
 import Modal.Product;
 import Repository.Product_Repo;
@@ -35,31 +36,30 @@ public class Wishlist_Service {
     System.out.println(Message.WISHLIST_UPPER_FRAME);
     int index = 1;
     for (Product p : wishlist) {
-        System.out.printf("║ %-3d ║ %-20s ║ %-8.2f ║ %-8d ║ %-50s ║\n",
+        System.out.printf("║ %-3d ║ %-20s ║ %-8.2f ║ %-8d ║ %-50s   ║\n",
                 index++, p.getProduct_Name(), p.getProduct_Price(), p.getProduct_Quantity(), p.getProduct_Description());
     }
     System.out.println(Message.WISHLIST_LOWER_FRAME);
 
-    System.out.print("Choose Option [A/B/C/D]: ");
+    System.out.print(Message.CHOOSE_OPTION);
     String option = sc.nextLine().trim().toUpperCase();
 
     switch (option) {
         case "A":
             return; // back to main menu
         case "B":
-            System.out.print("Enter product number to ADD to cart: ");
+            System.out.print(Message.ADD_TO_CART_PROMPT);
             Wishlist_Controller.handleAddToCartFromWishlist(sc, wishlist, buyerId);
             break;
         case "C":
-            System.out.print("Enter product number to REMOVE from wishlist: ");
+            System.out.print(Message.PRODUCT_REMOVE_FROM_WISHLIST);
             Wishlist_Controller.handleRemoveFromWishlist(sc, wishlist, buyerId);
             break;
         case "D":
-            System.out.println("Logging out...");
-            System.exit(0);
+           CompanyController.startCompanySelection(sc);
             break;
         default:
-            System.out.println("Invalid option selected.");
+            System.out.println(Message.INVALID_OPTION);
         }
     }
 

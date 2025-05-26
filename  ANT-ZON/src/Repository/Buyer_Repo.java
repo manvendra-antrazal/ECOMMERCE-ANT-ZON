@@ -1,5 +1,6 @@
 package Repository;
 
+import Constants.Message;
 import Constants.Queries;
 import Util.DBConnection;
 import java.sql.Connection;
@@ -28,11 +29,11 @@ public class Buyer_Repo {
                 buyerID = resultset.getInt("Buyer_ID");
                 String buyerUserName = resultset.getString("Buyer_UserName");
                 String buyerPassword = resultset.getString("Buyer_Psd");
-                System.out.println("Buyer Found: " + buyerUserName);
+                // System.out.println("Buyer Found: " + buyerUserName);
             }
 
         } catch (SQLException e) {
-            System.out.println("Error fetching buyer details: " + e.getMessage());
+            System.out.println(Message.ERROR_FETCHING_BUYER + e.getMessage());
         }
         return buyerID;
     }

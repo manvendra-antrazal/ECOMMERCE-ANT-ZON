@@ -30,7 +30,7 @@ public class Wishlist_Controller {
         try {
         int index = Integer.parseInt(sc.nextLine().trim());
         if (index < 1 || index > wishlist.size()) {
-            System.out.println("Invalid selection.");
+            System.out.println(Message.INVALID_SELECTION);
             return;
         }
 
@@ -46,7 +46,7 @@ public class Wishlist_Controller {
         // Check if already in cart
         Cart_Repo cartRepo = new Cart_Repo();
         if (cartRepo.isProductInCart(product.getProduct_Id(), product.getCompany_ID(), buyerId)) {
-            System.out.println("Product already exists in cart.");
+            System.out.println(Message.PRODUCT_EXISTS_IN_CART);
             return;
         }
 
@@ -84,7 +84,7 @@ public class Wishlist_Controller {
             if (removed) {
                 System.out.println(Message.WISHLIST_PRODUCT_REMOVED);
             } else {
-                System.out.println(Message.FAILED_REMOVED_PRODUCT);
+                System.out.println(Message.FAILED_REMOVED_PRODUCT_FROM_WISHLIST);
             }
 
         } catch (NumberFormatException e) {

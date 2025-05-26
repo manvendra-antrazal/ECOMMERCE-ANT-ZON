@@ -11,33 +11,20 @@ import java.util.Scanner;
 public class ProductController {
 
     // Existing getProducts (Electronics)
-    public static void getProducts(int product) {
-        Product_Repo repo = new Product_Repo();
-        List<Product> products = repo.getProductsByCategory("Electronics");
+    // public static void getProducts(int product) {
+    //     Product_Repo repo = new Product_Repo();
+    //     List<Product> products = repo.getProductsByCategory("Electronics");
 
-        if (products.isEmpty()) {
-            System.out.println("No electronics products found.");
-        } else {
-            for (Product p : products) {
-                System.out.println(p);
-            }
-        }
-    }
+    //     if (products.isEmpty()) {
+    //         System.out.println("No electronics products found.");
+    //     } else {
+    //         for (Product p : products) {
+    //             System.out.println(p);
+    //         }
+    //     }
+    // }
 
-      // 🔹 New method for Furniture
-    public static void getFurnitureProducts(int product) {
-        Product_Repo repo = new Product_Repo();
-        List<Product> products = repo.getProductsByCategory("Furniture");
-
-        if (products.isEmpty()) {
-            System.out.println("No furniture products found.");
-        } else {
-            for (Product p : products) {
-                System.out.println(p);
-            }
-        }
-    }
-
+    
 
     public static void showSellerMenu(Scanner inputscanner, String role, Company company, int sellerId) {
     while (true) {

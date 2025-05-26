@@ -1,5 +1,6 @@
 package Repository;
 
+import Constants.Message;
 import Constants.Queries;
 import Util.DBConnection;
 import java.sql.Connection;
@@ -10,7 +11,7 @@ import java.sql.SQLException;
 public class Seller_Repo {
 
     public int getBuyerId(String username, String password) {
-    String query = "SELECT Buyer_ID FROM Buyer WHERE Buyer_UserName = ? AND Buyer_Psd = ?";
+    String query = Queries.GET_BUYER_ID;
     try (Connection conn = DBConnection.getInstance().getConnection();
          PreparedStatement stmt = conn.prepareStatement(query)) {
 
@@ -22,7 +23,8 @@ public class Seller_Repo {
             return rs.getInt("Buyer_ID");
         }
     } catch (SQLException e) {
-        System.out.println("Login error: " + e.getMessage());
+        System.out.println(Message.ERROR_LOGIN );
+        e.getMessage();
     }
     return -1;
 }
@@ -40,7 +42,8 @@ public class Seller_Repo {
             return rs.getInt("seller_ID"); // assumes seller_ID exists in the seller table
         }
     } catch (SQLException e) {
-        System.out.println("Login Error: " + e.getMessage());
+        System.out.println( Message.ERROR_LOGIN);
+        e.getMessage();
     }
     return -1;
     }

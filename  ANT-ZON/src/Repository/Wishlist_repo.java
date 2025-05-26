@@ -1,5 +1,6 @@
 package Repository;
 
+import Constants.Message;
 import Constants.Queries;
 import Modal.Product;
 import Util.DBConnection;
@@ -14,7 +15,7 @@ public class Wishlist_repo {
 
         public boolean isProductInWishlist(int buyerId, int productId, int companyId) {
         try (Connection connection = DBConnection.getInstance().getConnection()) {
-            String query = "SELECT * FROM wishlist WHERE buyer_id = ? AND product_id = ? AND company_id = ?";
+            String query = Queries.IS_PRODUCT_IN_WISHLIST;
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setInt(1, buyerId);
             ps.setInt(2, productId);
@@ -31,7 +32,7 @@ public class Wishlist_repo {
     public boolean addToWishlist(int buyerId, int productId, int companyId) {
 
         try (Connection connection = DBConnection.getInstance().getConnection()) {
-            String query = "INSERT INTO wishlist (company_id, buyer_id, product_id, added_on) VALUES (?, ?, ?, NOW())";
+            String query = Queries.ADD_TO_WISHLIST;
             PreparedStatement ps = connection.prepareStatement(query);
             ps.setInt(1, companyId);
             ps.setInt(2, buyerId);
@@ -80,7 +81,7 @@ public class Wishlist_repo {
     // Remove item from wishlist for a buyer
     // Wishlist_Repo.java
 public boolean removeFromWishlist(int buyerId, int productId) {
-    String query = "DELETE FROM wishlist WHERE buyer_id = ? AND product_id = ?";
+    String query = Queries.REMOVE_FROM_WISHLIST;
     try (Connection conn = DBConnection.getInstance().getConnection();
          PreparedStatement stmt = conn.prepareStatement(query)) {
 
@@ -91,7 +92,7 @@ public boolean removeFromWishlist(int buyerId, int productId) {
         return rowsAffected > 0;
 
     } catch (SQLException e) {
-        System.out.println("Failed to remove from wishlist: " + e.getMessage());
+        System.out.println(Message.FAILED_REMOVED_PRODUCT_FROM_WISHLIST + e.getMessage());
         return false;
     }
     }

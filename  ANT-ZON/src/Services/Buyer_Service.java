@@ -107,7 +107,7 @@ public class Buyer_Service {
 
     if (categories.isEmpty()) {
         System.out.println(Message.CATEGORY_NOT_AVAILABLE);
-        return;
+        return;  
     }
 
     System.out.println(Message.SELLER_CATEGORY_FRAME); // "Choose a category to browse:"

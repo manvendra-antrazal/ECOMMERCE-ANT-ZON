@@ -54,7 +54,6 @@ public class CompanyController {
 
     public static void handleLoginRoles(Company company, Scanner inputscanner) {
         System.out.println("\n" + Message.ROLE_SELECT);
-        // System.out.println(Message.BACK_AND_EXIT_FRAME);
         System.out.print(Message.SELECT_OPTION);
 
         String input = inputscanner.nextLine().trim();
@@ -78,13 +77,13 @@ public class CompanyController {
                             SellerController.handleSellerFlow(inputscanner, company);
                             break;
                         case 3:
-                            System.out.println(company.getCompany_Name());
+                            AdminController.handleAdminFlow(inputscanner, company);
                             break;
                         default:
-                            System.out.println("Invalid role selected.");
+                            System.out.println(Message.INVALID_ROLE_SELECTION);
                     }
                 } catch (NumberFormatException e) {
-                    System.out.println("Invalid input. Returning to main menu.");
+                    System.out.println(Message.INVALID_INPUT);
                 }
         }
     }

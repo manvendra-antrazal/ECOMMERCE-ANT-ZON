@@ -7,6 +7,7 @@ import Modal.Company;
 import Modal.Order;
 import Modal.Product;
 import Repository.Cart_Repo;
+import Repository.Category_Repo;
 import Repository.Order_Repo;
 import Repository.Product_Repo;
 import java.io.IOException;
@@ -17,34 +18,57 @@ import java.util.Scanner;
 public class Order_Service {
 
     public static void placeOrder(Product product, int quantity, int buyerId) throws IOException {
-        Product_Repo productRepo = new Product_Repo();
-        Cart_Repo cartRepo = new Cart_Repo();
-        Order_Repo orderRepo = new Order_Repo();
-        // print companyID
+    Product_Repo productRepo = new Product_Repo();
+    Cart_Repo cartRepo = new Cart_Repo();
+    Order_Repo orderRepo = new Order_Repo();
 
-        int stock = productRepo.getProductQuantity(product.getProduct_Id());
-        if (quantity > stock) {
-            throw new IllegalArgumentException(String.format(Message.STOCK_INSUFFICIENT, product.getProduct_Name(), stock));
-        }
-
-        // Update stock
-        productRepo.reduceStock(product.getProduct_Id(), quantity);
-
-        // Generate transaction ID
-        String txnId = Message.TRANSACTION_ID_PREFIX + new Random().nextInt(99999999);
-
-        // Total price
-        double totalPrice = product.getProduct_Price() * quantity;
-
-        // Save order
-        orderRepo.insertOrder(buyerId, product.getProduct_Id(), product.getCompany_ID(), quantity, totalPrice, txnId, product.getProduct_Name());
-
-        // Remove product from cart
-        cartRepo.removeProductFromCart(buyerId, product.getProduct_Id());
-
-        // Generate invoice
-        Invoice_Service.generateInvoice(buyerId, product, quantity, totalPrice, txnId);
+    int stock = productRepo.getProductQuantity(product.getProduct_Id());
+    if (quantity > stock) {
+        throw new IllegalArgumentException(String.format(Message.STOCK_INSUFFICIENT, product.getProduct_Name(), stock));
     }
+
+    // Calculate discounted total price
+    double originalPrice = product.getProduct_Price();
+    double discountedPrice = originalPrice;
+
+    // You will need these repo instances to get category and subcategory IDs
+    Category_Repo categoryRepo = new Category_Repo();
+    int furnitureCatId = categoryRepo.getCategoryIdByName("furniture");
+    int eventSubCatId = categoryRepo.getSubCategoryIdByName("event");
+
+    String productNameLower = product.getProduct_Name().toLowerCase();
+
+    double discountPercent = 0.0;
+
+    // Check product name discount
+    if (productNameLower.contains("dell 7640") || productNameLower.contains("lenovo 5540")) {
+        discountPercent += 2.5;
+    }
+
+    // Check Event category discount
+    if (product.getCategory_ID() == furnitureCatId && product.getSub_cat_ID() == eventSubCatId) {
+        discountPercent += 2.5;
+    }
+
+    discountedPrice = originalPrice - (originalPrice * discountPercent / 100.0);
+    double totalPrice = discountedPrice * quantity;
+
+    // Update stock
+    productRepo.reduceStock(product.getProduct_Id(), quantity);
+
+    // Generate transaction ID
+    String txnId = Message.TRANSACTION_ID_PREFIX + new Random().nextInt(99999999);
+
+    // Save order with discounted total price in total_price column
+    orderRepo.insertOrder(buyerId, product.getProduct_Id(), product.getCompany_ID(), quantity, totalPrice, txnId, product.getProduct_Name());
+
+    // Remove product from cart
+    cartRepo.removeProductFromCart(buyerId, product.getProduct_Id());
+
+    // Generate invoice - pass both original and discounted prices if needed
+    Invoice_Service.generateInvoice(buyerId, product, quantity, totalPrice, txnId);
+}
+
 
 
     // this method show's Order history 

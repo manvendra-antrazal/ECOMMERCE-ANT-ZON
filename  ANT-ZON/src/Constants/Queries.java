@@ -11,6 +11,8 @@ public class Queries {
     public static final String INSERT_SELLER_QUERY =
         "INSERT INTO seller (seller_Name, seller_username, seller_password, seller_Mobile_NO, company_ID, role) " +
         "VALUES (?, ?, ?, ?, ?, ?)";
+
+    public static final String GET_BUYER_ID = "SELECT Buyer_ID FROM Buyer WHERE Buyer_UserName = ? AND Buyer_Psd = ?";
     
     // Add product
     // public static final String ADD_PRODUCT_QUERY = "INSERT INTO product (product_Name, product_Info, product_Price, product_Quantity) VALUES (?, ?, ?, ?)";
@@ -69,13 +71,29 @@ public class Queries {
     "SELECT * FROM product WHERE product_id IN (SELECT product_id FROM wishlist WHERE buyer_id = ?)";
 
     public static final String REMOVE_FROM_WISHLIST = 
-        "DELETE FROM wishlist WHERE buyer_id = ? AND product_id = ?";
+    "DELETE FROM wishlist WHERE buyer_id = ? AND product_id = ?";
+
+    public static final String ADD_TO_WISHLIST = "INSERT INTO wishlist (company_id, buyer_id, product_id, added_on) VALUES (?, ?, ?, NOW())";
+
+    public static final String IS_PRODUCT_IN_WISHLIST = "SELECT * FROM wishlist WHERE buyer_id = ? AND product_id = ? AND company_id = ?";
+
 
     // cart repo 
     public static final String GET_CART_ITEM_BY_BUYERID =
     "SELECT p.*, c.quantity as cart_quantity " +
                    "FROM product p JOIN cart c ON p.product_id = c.product_id " +
                    "WHERE c.buyer_id = ?";
+
+    public static final String IS_PRODUCT_IN_CART = "SELECT 1 FROM cart WHERE product_id = ? AND company_id = ? AND buyer_id = ?";    
+
+    public static final String REMOVE_FROM_CART = "DELETE FROM cart WHERE buyer_id = ? AND product_id = ?";
+
+
+    // category 
+    public static final String GET_ALL_CATEGORIES = "SELECT * FROM category";
+    public static final String GET_ALL_CATEGORIES_BY_COMPANY = "SELECT * FROM category WHERE company_ID = ?";
+    public static final String GET_CATEGORY_ID_BY_NAME = "SELECT category_id FROM category WHERE LOWER(category_name) = ?";
+    public static final String GET_SUB_CATEGORY_ID_BY_NAME = "SELECT sub_cat_id FROM sub_category WHERE LOWER(sub_cat_name) = ?";
 
     // sub category 
     public static final String GET_SUB_CAT_BY_CATID =
@@ -92,6 +110,15 @@ public class Queries {
             WHERE o.buyer_id = ?
             ORDER BY o.order_date DESC
             """;
+
+
+
+    // order 
+       public static final String GET_ORDERS_BY_BUYERID = 
+       "SELECT order_id, product_name, quantity, total_price, order_date " +
+                   "FROM `order` WHERE buyer_id = ? ORDER BY order_date DESC";
+
+        public static final String INSERT_ORDER = "INSERT INTO `order` (buyer_id, product_id, company_id, quantity, total_price, transaction_id, product_name) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
 }
 
