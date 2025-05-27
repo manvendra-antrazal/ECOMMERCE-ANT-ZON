@@ -19,17 +19,16 @@ import java.util.List;
 import java.util.Scanner;
 
 public class Buyer_Service {
-    public static void handleBuyerLogin(Scanner inputscanner, String role, Company company) {
+    public static void handleBuyerLogin(Scanner inputScanner, String role, Company company) {
         while (true) {
             System.out.println(Message.BUYER_LOGIN_MENU);
-            // System.out.println(Message.BACK_AND_EXIT_FRAME);
             System.out.print(Message.SELECT_OPTION);
 
-            String input = inputscanner.nextLine().trim();
+            String input = inputScanner.nextLine().trim();
 
             switch (input.toUpperCase()) {
                 case "A":
-                    CompanyController.handleLoginRoles(company, inputscanner); 
+                    CompanyController.handleLoginRoles(company, inputScanner);
                     return;
                 case "B":
                     System.out.println(Message.EXIT_MESSAGE);
@@ -40,22 +39,19 @@ public class Buyer_Service {
                         int option = Integer.parseInt(input);
                         switch (option) {
                             case 1:
-                                int buyerId = LOGIN(inputscanner);
-                                if (buyerId > 0) {
+                                int buyerId = loginBuyer(inputScanner, company);
+                                if (buyerId != -1) {
                                     System.out.println(Message.LOGIN_SUCCESS);
-                                    BuyerController.showBuyerMenu(inputscanner, role, company, buyerId);
+                                    BuyerController.showBuyerMenu(inputScanner, role, company, buyerId);
+                                } else {
+                                    System.out.println(Message.LOGIN_FAILED);
                                 }
                                 break;
                             case 2:
-                                if (REGISTER_BUYER(inputscanner, role, company)) {
-                                    // System.out.println(Message.BUYER_ADDED);
-                                    LOGIN(inputscanner);
-                                } else {
-                                    System.out.println(Message.REGISTER_FAILED);
-                                }
+                                REGISTER_BUYER(inputScanner, role, company);
                                 break;
                             default:
-                                System.out.println(Message.INVALID_INPUT);
+                                System.out.println(Message.INVALID_OPTION);
                         }
                     } catch (NumberFormatException e) {
                         System.out.println(Message.INVALID_INPUT);
@@ -64,39 +60,28 @@ public class Buyer_Service {
         }
     }
 
+
     
+    private static int loginBuyer(Scanner inputScanner, Company company) {
+        System.out.print(Message.LOGIN_CREDENTIAL);  // "Enter username: "
+        String username = inputScanner.nextLine().trim();
 
-    public static int LOGIN(Scanner inputscanner) {
-    System.out.print(Message.LOGIN_CREDENTIAL);
-    String username = inputscanner.nextLine();
+        System.out.print(Message.PASSWORD);          // "Enter password: "
+        String password = inputScanner.nextLine().trim();
 
-    String password;
-    while (true) {
-        System.out.print(Message.PASSWORD);
-        password = inputscanner.nextLine();
+        System.out.println(Message.LOGIN_CREDENTIAL_LOWER); // "Validating credentials..."
 
-        if (Validations.isValidPassword(password)) {
-            break;
-        } else {
-            System.out.println(Message.WRONG_PASSWORD);
-        }
-    }
-    System.out.print(Message.LOGIN_CREDENTIAL_LOWER);
         Buyer_Repo buyerRepo = new Buyer_Repo();
-        int buyerId = buyerRepo.getBuyerId(username, password);
-
-    if (buyerId > 0) {
-        return buyerId;
-    } else {
-        System.out.println(Message.LOGIN_FAILED);
-        return -1;
-    }
+        return buyerRepo.getBuyerId(username, password);
     }
 
+    // register buyer 
     public static boolean REGISTER_BUYER(Scanner inputscanner, String role, Company company) {
         Register_Buyer_Repo registerRepo = new Register_Buyer_Repo();
         return registerRepo.REGISTER(inputscanner, role, company);
     }
+
+
 
 
     // View all products functionality in Buyer

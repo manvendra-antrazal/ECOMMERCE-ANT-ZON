@@ -507,7 +507,7 @@ public static final String CART_LOWER_FRAME = """
     public static final String ENTER_STATE = "Enter State: ";
     public static final String ENTER_COUNTRY = "Enter Country: ";
     public static final String ENTER_ADDRESS = "Enter Local Address: ";
-
+    public static final String ENTER_NEW_BUYER_USERNAME = ""
 
 }
 
