@@ -27,11 +27,11 @@ public class Order_Service {
         throw new IllegalArgumentException(String.format(Message.STOCK_INSUFFICIENT, product.getProduct_Name(), stock));
     }
 
-    // Calculate discounted total price
+    // discount total price
     double originalPrice = product.getProduct_Price();
     double discountedPrice = originalPrice;
 
-    // You will need these repo instances to get category and subcategory IDs
+    // category and subcategory IDs
     Category_Repo categoryRepo = new Category_Repo();
     int furnitureCatId = categoryRepo.getCategoryIdByName("furniture");
     int eventSubCatId = categoryRepo.getSubCategoryIdByName("event");
@@ -59,19 +59,19 @@ public class Order_Service {
     // Generate transaction ID
     String txnId = Message.TRANSACTION_ID_PREFIX + new Random().nextInt(99999999);
 
-    // Save order with discounted total price in total_price column
+    // Save order with discounted total price 
     orderRepo.insertOrder(buyerId, product.getProduct_Id(), product.getCompany_ID(), quantity, totalPrice, txnId, product.getProduct_Name());
 
     // Remove product from cart
     cartRepo.removeProductFromCart(buyerId, product.getProduct_Id());
 
-    // Generate invoice - pass both original and discounted prices if needed
+    // invoice
     Invoice_Service.generateInvoice(buyerId, product, quantity, totalPrice, txnId);
 }
 
 
 
-    // this method show's Order history 
+    // here it show's Order history 
     public static void viewOrderHistory(Scanner inputScanner, String role, Company company, int buyerId) {
 
         Order_Repo orderRepo = new Order_Repo(); // Create instance

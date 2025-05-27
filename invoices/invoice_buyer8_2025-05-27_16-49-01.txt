@@ -1,0 +1,15 @@
+╔════════════════════════════════════════════════════════════════════╗
+║                           ANT-ZON INVOICE                          ║
+╚════════════════════════════════════════════════════════════════════╝
+
+Buyer ID: 8
+Transaction ID: TXN25951281
+Date: 2025-05-27T16:49:01.192569900
+Product Name: Event Canopy Tent
+
+Product                   Unit Price   Qty        Total       
+----------------------------------------------------------------
+Event Canopy Tent         $120.00      20          2400.00    
+
+FINAL TOTAL:  2400.00
+Note: Cash on Delivery (COD) is not available.

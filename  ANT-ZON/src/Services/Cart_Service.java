@@ -59,7 +59,7 @@ public class Cart_Service {
 
             // Display the cart with Discounted Price column
             System.out.println(Message.CART_UPPER_FRAME);
-            System.out.printf("║ %-3s | %-20s | %-10s | %-12s | %-8s | %-50s            ║\n",
+            System.out.printf("║ %-3s | %-20s | %-10s | %-12s | %-8s | %-50s             ║\n",
                     "No", "Product Name", "Price", "Discounted", "Qty", "Description");
             System.out.println(Message.CART_MIDDLE_FRAME);
 
@@ -78,7 +78,7 @@ public class Cart_Service {
 
                 discountedPrice = originalPrice - (originalPrice * discount / 100.0);
 
-                System.out.printf("║ %-3d | %-20s | %-10.2f | %-12.2f | %-8d | %-50s            ║\n",
+                System.out.printf("║ %-3d | %-20s | %-10.2f | %-12.2f | %-8d | %-50s             ║\n",
                         index++,
                         p.getProduct_Name(),
                         originalPrice,

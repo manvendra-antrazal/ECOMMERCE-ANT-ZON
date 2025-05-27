@@ -120,6 +120,35 @@ public class Queries {
 
         public static final String INSERT_ORDER = "INSERT INTO `order` (buyer_id, product_id, company_id, quantity, total_price, transaction_id, product_name) VALUES (?, ?, ?, ?, ?, ?, ?)";
 
+    // like increment 
+        public static final String LIKE_INCREMENT = "UPDATE product SET likes = likes + 1 WHERE product_id = ?";
+
+    // Admin 
+        public static final String VALIDATE_ADMIN_LOGIN = 
+            "SELECT admin_id FROM admin WHERE username = ? AND password = ? AND company_id = ?";
+
+        public static final String VALIDATE_NEW_ADMIN_REGISTER =     
+        "SELECT COUNT(*) FROM admin WHERE username = ? AND company_id = ?";    
+
+        public static final String INSERT_INTO_ADMIN = 
+        "INSERT INTO admin (username, password, company_id) VALUES (?, ?, ?)";
+
+        public static final String FETCH_TOTAL_REVENUE =
+        "SELECT SUM(total_price) AS revenue FROM `order` WHERE company_id = ?";
+
+        public static final String FETCH_MOST_LIKED_PRODUCTS =
+        "SELECT product_id, product_name, likes FROM product WHERE company_id = ? ORDER BY likes DESC LIMIT 1";
+
+        public static final String FETCH_BEST_SELLER_PRODUCTS = """
+            SELECT p.product_id, p.product_name, SUM(o.quantity) AS total_sold
+            FROM `order` o
+            JOIN product p ON o.product_id = p.product_id
+            WHERE o.company_id = ?
+            GROUP BY o.product_id, p.product_name
+            ORDER BY total_sold DESC
+            LIMIT 5
+        """;
+
 }
 
 

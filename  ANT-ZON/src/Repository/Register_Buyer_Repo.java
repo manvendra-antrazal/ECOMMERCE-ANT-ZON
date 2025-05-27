@@ -13,16 +13,35 @@ import java.util.Scanner;
 public class Register_Buyer_Repo {
 
     public boolean REGISTER(Scanner inputscanner, String role, Company company){
-    System.out.print("Enter Username: ");
-    String username = inputscanner.nextLine();
 
-    System.out.print("Enter Email: ");
-    String email = inputscanner.nextLine();
+    String username;
+    while (true) {
+        System.out.print(Message.USERNAME);
+        username = inputscanner.nextLine().trim();
+
+        if (Validations.isValidUsername(username)) {
+            break;
+        } else {
+            System.out.println(Message.USERNAME_INVALID);
+        }
+    }
+
+     String email;
+    while (true) {
+        System.out.print(Message.ENETR_EMAIL);
+        email = inputscanner.nextLine().trim();
+
+        if (Validations.isValidEmail(email)) {
+            break;
+        } else {
+            System.out.println(Message.EMAIL_INVALID);
+        }
+    }
 
     // Validate Password
     String password;
     while (true) {
-        System.out.print("Enter Password: ");
+        System.out.print(Message.ENETR_PASSWORD);
         password = inputscanner.nextLine();
         if (Validations.isValidPassword(password)) {
             break;
@@ -32,18 +51,42 @@ public class Register_Buyer_Repo {
     }
 
     String roleStr = role;
-    System.out.print("Enter City: ");
-    String city = inputscanner.nextLine();
-    System.out.print("Enter State: ");
-    String state = inputscanner.nextLine();
-    System.out.print("Enter County: ");
-    String county = inputscanner.nextLine();
-    System.out.print("Enter Local Address: ");
-    String localAddress = inputscanner.nextLine();
+
+    String city;
+    while (true) {
+        System.out.print(Message.ENTER_CITY);
+        city = inputscanner.nextLine().trim();
+        if (Validations.isValidString(city))break;
+        else System.out.println(Message.INVALID_CITY_ERROR);
+    }
+
+    String state;
+    while (true) {
+        System.out.print(Message.ENTER_STATE);
+        state = inputscanner.nextLine().trim();
+        if (Validations.isValidString(state)) break;
+        else System.out.println(Message.INVALID_STATE_ERROR);
+    }
+
+    String county;
+    while (true) {
+        System.out.print(Message.ENTER_COUNTRY);
+        county = inputscanner.nextLine().trim();
+        if (Validations.isValidString(county)) break;
+        else System.out.println(Message.INVALID_COUNTRY_ERROR);
+    }
+
+    String localAddress;
+    while (true) {
+        System.out.print(Message.ENTER_ADDRESS);
+        localAddress = inputscanner.nextLine().trim();
+        if (Validations.isValidAddress(localAddress)) break;
+        else System.out.println(Message.INVALID_ADDRESS_ERROR);
+    }
     // Mobile field validation
     String mobile;
     while (true) {
-        System.out.print("Enter Mobile Number: ");
+        System.out.print(Message.ENTER_MOBILE_NUM);
         mobile = inputscanner.nextLine();
         if (Validations.isValidMobile(mobile)) {
             break;

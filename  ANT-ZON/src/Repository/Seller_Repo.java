@@ -39,7 +39,7 @@ public class Seller_Repo {
         ResultSet rs = ps.executeQuery();
 
         if (rs.next()) {
-            return rs.getInt("seller_ID"); // assumes seller_ID exists in the seller table
+            return rs.getInt("seller_ID"); 
         }
     } catch (SQLException e) {
         System.out.println( Message.ERROR_LOGIN);

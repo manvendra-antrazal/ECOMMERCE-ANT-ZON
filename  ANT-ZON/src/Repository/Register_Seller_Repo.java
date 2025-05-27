@@ -16,15 +16,27 @@ public class Register_Seller_Repo {
 
     public boolean REGISTER_SELLER(Scanner inputscanner, String role, Company company) {
         
-        System.out.print("Enter New Seller Name: ");
+        System.out.print(Message.ENTER_NEW_SELLER_NAME);
         String name = inputscanner.nextLine();
-        System.out.print("Enter New Seller Username: ");
-        String username = inputscanner.nextLine();
+        System.out.print(Message.ENTER_NEW_SELLER_USERNAME);
+
+        String username;
+        while (true) {
+            System.out.print(Message.ENTER_NEW_SELLER_USERNAME);
+            username = inputscanner.nextLine().trim();
+
+            if (Validations.isValidUsername(username)) {
+                break; 
+            } else {
+                System.out.println(Message.USERNAME_INVALID); 
+            }
+        }
+
 
         // Password field validation
         String password;
         while (true) {
-            System.out.print("Enter Password: ");
+            System.out.print(Message.ENTER_PASSWORD);
             password = inputscanner.nextLine();
             if (Validations.isValidPassword(password)) {
                 break;
@@ -36,7 +48,7 @@ public class Register_Seller_Repo {
         // Mobile field validation
         String mobile;
         while (true) {
-            System.out.print("Enter Mobile Number: ");
+            System.out.print(Message.ENTER_MOBILE_NUM);
             mobile = inputscanner.nextLine();
             if (Validations.isValidMobile(mobile)) {
                 break;

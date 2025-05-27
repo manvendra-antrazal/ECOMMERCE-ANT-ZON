@@ -182,7 +182,6 @@ public class Message {
         ║   2. Add Product                       ║
         ║   3. Update Product                    ║
         ║   4. Delete Product                    ║
-        ║   5. View Stats                        ║
         ╠════════════════════════════════════════╣
         ║        [A] BACK  |  [B] EXIT           ║
         ╚════════════════════════════════════════╝
@@ -227,31 +226,10 @@ public class Message {
         """;
         
 
-//     public static final String ELECTRONIC_PRODUCT_LIST = """
-//             ======================================
-//                 ==== Electronic Products ====
-//             ======================================
-//             1. Laptop
-//             2. Mobile
-//             3. Wearable
-//             4. Printers
-//             """;
-
-//     public static final String FURNITURE_PRODUCT_LIST = """
-//             ======================================
-//                 ==== Furniture Products ====
-//             ======================================
-//             1. Room
-//             2. Office
-//             3. Event
-//             """;
-
     // Cart and Wishlist
     public static final String PRODUCT_ADDED_TO_CART = "Product added to cart successfully.";
     public static final String PRODUCT_ALREADY_IN_CART = "Product is already in your cart.";
     public static final String CART_ERROR = "Something went wrong while adding the product to cart.";
-    // public static final String QUANTITY = "Enter quantity to add: ";
-    // public static final String PRODUCT_ADDED_TO_WISHLIST = "Product added to wishlist.";
     public static final String CART_EMPTY = "Your cart is empty.";
     public static final String CART_TOTAL = "Cart total (after applicable discounts): ";
 
@@ -315,7 +293,7 @@ public class Message {
         ║  [A] BACK  |  [B] ADD TO CART  |  [C] ADD TO WISHLIST  |  [D] LOGOUT  ║
         ╚═══════════════════════════════════════════════════════════════════════╝
         """;
-                
+    public static final String SELECT_OPTION_A_B = "Please enter your choice (A/B): ";
             
     public static final String PRODUCT_UPPER =
 
@@ -326,9 +304,9 @@ public class Message {
     "╚═══════════════════════════════════════════════════════════════════════════════════════════════════════╝\n";
 
     public static final String PRODUCTS_LAST = """
-       ╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣
-       ║                                                    [A] BACK  |   [B] EXIT                                                          ║
-       ╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
+     ╠═══════════════════════════════════════════════════════════════════════════════════════════════════════╣
+     ║                                         [A] BACK  |   [B] EXIT                                        ║
+     ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════╝
        """;
 
     
@@ -355,14 +333,15 @@ public static final String CART_LOWER_FRAME = """
        """;
 
     public static final String WISHLIST_UPPER_FRAME = """
+    
        ╔══════════════════════════════════════════════════════════════════════════════════════════════════════════╗ 
        ║                                                Wishlist                                                  ║                                                                   
-       ╠══════════════════════════════════════════════════════════════════════════════════════════════════════════╣
+       ╠═════╦══════════════════════╦══════════╦══════════╦═══════════════════════════════════════════════════════╣
        ║ No  ║ Product Name         ║ Price    ║ Qty      ║ Description                                           ║
-       ╠══════════════════════════════════════════════════════════════════════════════════════════════════════════╣""";
+       ╠═════╬══════════════════════╬══════════╬══════════╬═══════════════════════════════════════════════════════╣""";
 
     public static final String WISHLIST_LOWER_FRAME = """
-       ╠══════════════════════════════════════════════════════════════════════════════════════════════════════════╣
+       ╠═════╩══════════════════════╩══════════╩══════════╩═══════════════════════════════════════════════════════╣
        ║                   [A] BACK  |  [B] Add To Cart  |  [C] REMOVE PRODUCT  |  [D] LOGOUT                     ║
        ╚══════════════════════════════════════════════════════════════════════════════════════════════════════════╝
        """;
@@ -431,6 +410,9 @@ public static final String CART_LOWER_FRAME = """
     public static final String ERROR_FETCHING__CATEGORY_AND_SUBCAT = "Error: Could not fetch furniture/event category/subcategory IDs.";
 
 
+    // Admin 
+    public static final String ADMIN_REGISTERED_SUCCESS = "Admin registration successful.";
+    public static final String ADMIN_REGISTERED_FAILED = "Registration failed. Username may already exist.";
     public static final String ADMIN_MENU_FRAME =
     """
     ╔══════════════════════════════════════════════════════════════════╗
@@ -440,11 +422,91 @@ public static final String CART_LOWER_FRAME = """
     ║  2. View Total Revenue                                           ║
     ║  3. View Most Liked Products                                     ║
     ║  4. View Best Seller Products                                    ║
-    ║  5. Delete Buyer & Seller                                        ║
     ╠══════════════════════════════════════════════════════════════════╣
     ║         [A] Back to Company Selection  |  [B] Exit               ║
     ╚══════════════════════════════════════════════════════════════════╝
     """;
+
+    public static final String TOTAL_REVENUE_FRAME_TOP = """
+
+            ╔════════════════════════════════════════════╗
+            ║       TOTAL REVENUE FOR THIS COMPANY       ║
+            ╠════════════════════════════════════════════╣""";
+
+    public static final String TOTAL_REVENUE_FRAME_BOTTOM = """
+            ╠════════════════════════════════════════════╣
+            ║           [A] BACK  |  [B] EXIT            ║
+            ╚════════════════════════════════════════════╝
+            """;
+
+    public static final String MOST_LIKED_FRAME_TOP = """
+         ╔═══════════════════════════════════╗
+         ║          Liked Products           ║
+         ╠═══════╦═══════════════════════════╣""";
+        
+    public static final String MOST_LIKED_FRAME_DIVIDER = 
+        "╠═══════╬═══════════════════════════╣";
+    
+        public static final String MOST_LIKED_FRAME_BOTTOM =  """
+         ╠═══════╩═══════════════════════════╣
+         ║       [A] BACK  |  [B] EXIT       ║
+         ╚═══════════════════════════════════╝
+                """;
+
+    public static final String NO_LIKED_PRODUCT = """
+
+        ╔════════════════════════════════════════════════╗
+        ║         ===  No liked products found ===       ║
+        ╚════════════════════════════════════════════════╝
+        """;
+
+    public static final String BEST_SELLERS_FRAME_TOP ="""
+        ╔═════════════════════════════════════════════════════════════╗
+        ║                    Best-Selling Products                    ║
+        ╠═════╦══════════════════════════════════╦════════════════════╣""";
+
+        public static final String BEST_SELLERS_FRAME_MIDDLE = """
+        ╠═════╬══════════════════════════════════╬════════════════════╣""";
+    
+        public static final String BEST_SELLERS_FRAME_BOTTOM = """
+        ╠═════╩══════════════════════════════════╩════════════════════╣
+        ║                  [A] BACK  |  [B] EXIT                      ║
+        ╚═════════════════════════════════════════════════════════════╝
+        """;
+    public static final String NO_BEST_SELLERS = """
+
+        ╔════════════════════════════════════════════════╗
+        ║      === No best-seller data available ===     ║
+        ╚════════════════════════════════════════════════╝
+        """;
+
+    public static final String CURRENT_COMPANY_UPPER = 
+    "╔════════════════════════════════════════════════╗";
+
+    public static final String CURRENT_COMPANY_BOTTOM = 
+    "╚════════════════════════════════════════════════╝";
+
+    public static final String ERROR_FETCHING_REVENUE = "Error fetching revenue:";
+    public static final String ERROR_FETCHING_MOST_LIKED = "Error fetching most liked products: ";
+    public static final String ERROR_FETCHING_BEST_PRODUCTS = "Error fetching best sellers: ";
+    public static final String ENTER_MOBILE_NUM= "Enter Mobile Number: ";
+    public static final String ENTER_NEW_SELLER_NAME = "Enter New Seller Name: ";
+    public static final String ENTER_NEW_SELLER_USERNAME = "Enter New Seller Username: ";
+    public static final String ENTER_NEW_ADMIN_USERNAME = "Enter new username: ";
+    public static final String ENTER_NEW_ADMIN_PASSWORD = "Enter new password: ";
+    public static final String USERNAME_INVALID = "Username can only contain letters, digits, underscores and @.";
+    public static final String EMAIL_INVALID = "Invalid email format. Please enter a valid email.";
+    public static final String INVALID_CITY_ERROR = "Invalid input. City must contain only alphabets and spaces.";
+    public static final String INVALID_STATE_ERROR = "Invalid input. State must contain only alphabets and spaces.";
+    public static final String INVALID_COUNTRY_ERROR = "Invalid input. County must contain only alphabets and spaces.";
+    public static final String INVALID_ADDRESS_ERROR = "Invalid address. Use only letters, digits, spaces, commas, dots, slashes, and dashes.";
+    public static final String USERNAME = "Enter Username: ";   
+    public static final String ENETR_PASSWORD = "Enter Password: ";
+    public static final String ENETR_EMAIL = "Enter Email: ";
+    public static final String ENTER_CITY = "Enter City: ";
+    public static final String ENTER_STATE = "Enter State: ";
+    public static final String ENTER_COUNTRY = "Enter Country: ";
+    public static final String ENTER_ADDRESS = "Enter Local Address: ";
 
 
 }

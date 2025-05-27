@@ -51,7 +51,8 @@ public class Cart_Repo {
                 rs.getInt("company_id"),
                 rs.getInt("seller_id"),
                 rs.getInt("category_id"),
-                rs.getInt("sub_cat_id")
+                rs.getInt("sub_cat_id"),
+                rs.getInt("likes")
                 );
 
                 cartItems.add(p);

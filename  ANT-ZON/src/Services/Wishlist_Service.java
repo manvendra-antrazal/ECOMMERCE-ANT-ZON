@@ -36,7 +36,7 @@ public class Wishlist_Service {
     System.out.println(Message.WISHLIST_UPPER_FRAME);
     int index = 1;
     for (Product p : wishlist) {
-        System.out.printf("║ %-3d ║ %-20s ║ %-8.2f ║ %-8d ║ %-50s   ║\n",
+        System.out.printf("║ %-3d ║ %-20s ║ %-8.2f ║ %-8d ║ %-50s    ║\n",
                 index++, p.getProduct_Name(), p.getProduct_Price(), p.getProduct_Quantity(), p.getProduct_Description());
     }
     System.out.println(Message.WISHLIST_LOWER_FRAME);

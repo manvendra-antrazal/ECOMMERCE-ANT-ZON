@@ -38,7 +38,16 @@ public class Wishlist_repo {
             ps.setInt(2, buyerId);
             ps.setInt(3, productId);
 
-            return ps.executeUpdate() > 0;
+            if (ps.executeUpdate() > 0) {
+
+            // Increment likes after insert 
+            String likeUpdateQuery = Queries.LIKE_INCREMENT;
+            PreparedStatement updateLikes = connection.prepareStatement(likeUpdateQuery);
+            updateLikes.setInt(1, productId);
+            updateLikes.executeUpdate();
+
+            return true;
+        }
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -79,22 +88,21 @@ public class Wishlist_repo {
     }
 
     // Remove item from wishlist for a buyer
-    // Wishlist_Repo.java
-public boolean removeFromWishlist(int buyerId, int productId) {
-    String query = Queries.REMOVE_FROM_WISHLIST;
-    try (Connection conn = DBConnection.getInstance().getConnection();
-         PreparedStatement stmt = conn.prepareStatement(query)) {
+    public boolean removeFromWishlist(int buyerId, int productId) {
+        String query = Queries.REMOVE_FROM_WISHLIST;
+        try (Connection conn = DBConnection.getInstance().getConnection();
+            PreparedStatement stmt = conn.prepareStatement(query)) {
 
-        stmt.setInt(1, buyerId);
-        stmt.setInt(2, productId);
+            stmt.setInt(1, buyerId);
+            stmt.setInt(2, productId);
 
-        int rowsAffected = stmt.executeUpdate();
-        return rowsAffected > 0;
+            int rowsAffected = stmt.executeUpdate();
+            return rowsAffected > 0;
 
-    } catch (SQLException e) {
-        System.out.println(Message.FAILED_REMOVED_PRODUCT_FROM_WISHLIST + e.getMessage());
-        return false;
+        } catch (SQLException e) {
+            System.out.println(Message.FAILED_REMOVED_PRODUCT_FROM_WISHLIST + e.getMessage());
+            return false;
+        }
+        }
+
     }
-    }
-
-}

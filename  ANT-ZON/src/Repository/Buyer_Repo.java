@@ -10,7 +10,7 @@ import java.sql.SQLException;
 
 public class Buyer_Repo {
 
-    // Method to check if a buyer with the given username and password exists
+    // Method it checks, if buyer with the given username and password exists
     public int getBuyerId(String username, String password) {
         String query = Queries.CHECK_BUYER_QUERY;
         boolean isBuyerFound = false;

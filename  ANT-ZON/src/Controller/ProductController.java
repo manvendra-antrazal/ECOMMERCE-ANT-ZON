@@ -2,10 +2,7 @@ package Controller;
 
 import Constants.Message;
 import Modal.Company;
-import Modal.Product;
-import Repository.Product_Repo;
 import Services.Product_Service;
-import java.util.List;
 import java.util.Scanner;
 
 public class ProductController {
@@ -59,16 +56,16 @@ public class ProductController {
                 break;
 
             case "3":
-                Product_Service.updateProductInfo(inputscanner, sellerId);
+                Product_Service.updateProductInfo(inputscanner, role, company, sellerId);
                 break;
 
             case "4":
                 Product_Service.deleteProduct(inputscanner, sellerId);
                 break;
 
-            case "5":
-                // Product_Service.viewProductStats(sellerId);
-                break;
+            // case "5":
+            //     // Product_Service.viewProductStats(sellerId);
+            //     break;
 
             default:
                 System.out.println(Message.INVALID_INPUT);

@@ -184,11 +184,11 @@ public class Buyer_Service {
     List<Product> products = productRepo.getProductsByCategoryAndSubCategory(company.getCompany_Id(), subCategoryId);
 
     if (products.isEmpty()) {
-        System.out.println(Message.NO_PRODUCT_FOUND);  // "No products found for this category."
+        System.out.println(Message.NO_PRODUCT_FOUND);  // No products found for this category
         return;
     }
 
-    System.out.println(Message.AVAILABLE_PRODUCTS);    // "Available products in this category:"
+    System.out.println(Message.AVAILABLE_PRODUCTS);    // Available products in this category:
     System.out.println(Message.PRODUCT_UPPER);
     System.out.printf("║ %-3s ║ %-20s ║ %-8s ║ %-8s ║ %-50s ║\n", 
                   "No", "Product Name", "Price", "Qty", "Description");
@@ -232,7 +232,7 @@ public class Buyer_Service {
     }
     Product selectedProduct = products.get(selectedIndex);
 
-    //  Show options and take action
+    //  Show options 
     System.out.println(Message.BACK_ADDCART_ADDWISHLIST_LOGOUT);
     
     while (true) {

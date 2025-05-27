@@ -77,7 +77,7 @@ public class CompanyController {
                             SellerController.handleSellerFlow(inputscanner, company);
                             break;
                         case 3:
-                            AdminController.handleAdminFlow(inputscanner, company);
+                            Admin_Controller.handleAdminFlow(inputscanner, company);
                             break;
                         default:
                             System.out.println(Message.INVALID_ROLE_SELECTION);
