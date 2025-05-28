@@ -114,11 +114,16 @@ public class Register_Buyer_Repo {
         preparedStatement.setInt(10, company.getCompany_Id());
 
         int affected = preparedStatement.executeUpdate();
-        return affected > 0;
-    } catch (SQLException e) {
-        System.out.println(e.getMessage());
-        return false;
-    }
+        if (affected > 0) return true;
+            else throw new RuntimeException(Message.REGISTRATION_FAILED);
+
+        } catch (SQLException e) {
+            System.out.println(Message.DATABASE_ERROR);
+            throw new RuntimeException(e.getMessage());
+        } catch (Exception e) {
+            System.out.println(Message.UNEXPECTED_ERROR);
+            throw new RuntimeException(e.getMessage());
+        }
 }
 
 }

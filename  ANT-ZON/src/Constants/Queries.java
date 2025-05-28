@@ -2,6 +2,9 @@ package Constants;
 
 public class Queries {
 
+    // Company 
+    public static final String GET_ALL_EXISTING_COMPANY  = "Select * from company";
+
     // ------------------ Seller Queries ------------------
     public static final String CHECK_SELLER_QUERY =
         "SELECT Buyer_ID, Buyer_UserName, Buyer_Psd FROM Buyer WHERE Buyer_UserName = ? AND Buyer_Psd = ?";
@@ -73,8 +76,9 @@ public class Queries {
                    "WHERE c.buyer_id = ?";
 
     public static final String IS_PRODUCT_IN_CART = "SELECT 1 FROM cart WHERE product_id = ? AND company_id = ? AND buyer_id = ?";    
-
+    public static final String UPDATE_CART_QUANTITY = "UPDATE cart SET quantity = ? WHERE buyer_id = ? AND product_id = ?";
     public static final String REMOVE_FROM_CART = "DELETE FROM cart WHERE buyer_id = ? AND product_id = ?";
+    public static final String GET_CATEGORY_NAME_BY_ID = "SELECT category_name FROM category WHERE category_id = ?";
 
 
     // category 
@@ -137,6 +141,13 @@ public class Queries {
             LIMIT 5
         """;
 
+    
+        public static final String GET_PRODUCTS_BY_SUB_CAT = "SELECT * FROM product WHERE sub_category_id = ?";
+        public static final String GET_PRODUCT_QUANTITY = "SELECT product_quantity FROM product WHERE product_Id = ?";
+        public static final String REDUSE_STOCK = "UPDATE product SET product_quantity = product_quantity - ? WHERE product_Id = ? AND product_quantity >= ?";
+        public static final String GET_PRODUCT_BY_ID = "SELECT * FROM product WHERE product_id = ?";
+        public static final String GET_PRODUCT_STOCK = "SELECT quantity FROM product WHERE product_id = ? AND company_id = ?";
+        public static final String REMOVE_FROM_WISHLIST_DESCREASE_LIKE = "UPDATE product SET likes = likes - 1 WHERE product_id = ? AND likes > 0";
 }
 
 

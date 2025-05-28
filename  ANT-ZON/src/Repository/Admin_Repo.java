@@ -6,13 +6,12 @@ import Util.DBConnection;
 import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Scanner;
 
 import Modal.Product;
 
 public class Admin_Repo {
 
-    public static int validateAdminLogin(String username, String password, int companyId) {
+    public static int validateAdminLogin(String username, String password, int companyId) throws SQLException {
         String query = Queries.VALIDATE_ADMIN_LOGIN;
         try (Connection connection = DBConnection.getInstance().getConnection();
              PreparedStatement ps = connection.prepareStatement(query)) {
@@ -26,37 +25,35 @@ public class Admin_Repo {
                 return rs.getInt("admin_id");
             }
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
+            throw new SQLException(Message.ERROR_VALIDATE_ADMIN_LOGIN + e.getMessage(), e);
         }
         return -1;
     }
 
-    public static boolean registerNewAdmin(String username, String password, int companyId) {
-    try (Connection connection = DBConnection.getInstance().getConnection()) {
-        String checkSql = Queries.VALIDATE_NEW_ADMIN_REGISTER;
-        try (PreparedStatement ps = connection.prepareStatement(checkSql)) {
-            ps.setString(1, username);
-            ps.setInt(2, companyId);
-            ResultSet rs = ps.executeQuery();
-            if (rs.next() && rs.getInt(1) > 0) return false;
-        }
+    public static boolean registerNewAdmin(String username, String password, int companyId) throws SQLException {
+        try (Connection connection = DBConnection.getInstance().getConnection()) {
+            String checkSql = Queries.VALIDATE_NEW_ADMIN_REGISTER;
+            try (PreparedStatement ps = connection.prepareStatement(checkSql)) {
+                ps.setString(1, username);
+                ps.setInt(2, companyId);
+                ResultSet rs = ps.executeQuery();
+                if (rs.next() && rs.getInt(1) > 0) return false;
+            }
 
-        String insertSql = Queries.INSERT_INTO_ADMIN;
-        try (PreparedStatement ps = connection.prepareStatement(insertSql)) {
-            ps.setString(1, username);
-            ps.setString(2, password);
-            ps.setInt(3, companyId);
-            return ps.executeUpdate() > 0;
-        }
+            String insertSql = Queries.INSERT_INTO_ADMIN;
+            try (PreparedStatement ps = connection.prepareStatement(insertSql)) {
+                ps.setString(1, username);
+                ps.setString(2, password);
+                ps.setInt(3, companyId);
+                return ps.executeUpdate() > 0;
+            }
 
-    } catch (SQLException e) {
-        e.printStackTrace();
-        return false;
+        } catch (SQLException e) {
+            throw new SQLException(Message.ERROR_REGISTER_ADMIN + e.getMessage(), e);
+        }
     }
-}
 
-
-    public static double fetchTotalRevenue(int companyId) {
+    public static double fetchTotalRevenue(int companyId) throws SQLException {
         String query = Queries.FETCH_TOTAL_REVENUE;
         try (Connection connection = DBConnection.getInstance().getConnection();
             PreparedStatement ps = connection.prepareStatement(query)) {
@@ -69,12 +66,12 @@ public class Admin_Repo {
                 return rs.wasNull() ? 0.0 : revenue;  
             }
         } catch (SQLException e) {
-            System.out.println(Message.ERROR_FETCHING_REVENUE + e.getMessage());
+            throw new SQLException(Message.ERROR_FETCHING_REVENUE + e.getMessage(), e);
         }
         return 0.0;
     }
 
-    public static List<Product> fetchMostLikedProducts(int companyId) {
+    public static List<Product> fetchMostLikedProducts(int companyId) throws SQLException {
         List<Product> productList = new ArrayList<>();
 
         String query = Queries.FETCH_MOST_LIKED_PRODUCTS;
@@ -94,15 +91,13 @@ public class Admin_Repo {
             }
 
         } catch (SQLException e) {
-            System.out.println(Message.ERROR_FETCHING_MOST_LIKED + e.getMessage());
+            throw new SQLException(Message.ERROR_FETCHING_MOST_LIKED + e.getMessage(), e);
         }
 
         return productList;
     }
 
-
-    // best seller 
-    public static List<Product> fetchBestSellerProducts(int companyId) {
+    public static List<Product> fetchBestSellerProducts(int companyId) throws SQLException {
         List<Product> productList = new ArrayList<>();
 
         String query = Queries.FETCH_BEST_SELLER_PRODUCTS;
@@ -123,11 +118,12 @@ public class Admin_Repo {
             }
 
         } catch (SQLException e) {
-            System.out.println(Message.ERROR_FETCHING_BEST_PRODUCTS + e.getMessage());
+            throw new SQLException(Message.ERROR_FETCHING_BEST_PRODUCTS + e.getMessage(), e);
         }
 
         return productList;
     }
+}
 
     
 
@@ -194,4 +190,4 @@ public class Admin_Repo {
     //         System.out.println("-> Error occurred: " + e.getMessage());
     //     }
     // }
-}
+

@@ -10,12 +10,13 @@ import Repository.Category_Repo;
 import Repository.Product_Repo;
 import Repository.SubCategory_Repo;
 import Util.Validations;
+import java.sql.SQLException;
 import java.util.List;
 import java.util.Scanner;
 
 public class Product_Service {
 
-    public static void viewAllProducts(Scanner inputScanner, int sellerId) {
+    public static void viewAllProducts(Scanner inputScanner, int sellerId) throws SQLException {
         Product_Repo repo = new Product_Repo();
         List<Product> sellerProducts = repo.getProductsBySellerId(sellerId);
 
@@ -64,7 +65,7 @@ public class Product_Service {
     }
 
     // add product
-    public static void addProduct(Scanner inputscanner, int sellerID, int companyID) {
+    public static void addProduct(Scanner inputscanner, int sellerID, int companyID) throws SQLException {
         Category_Repo catRepo = new Category_Repo();
         // List<Category> categories = catRepo.getAllCategories();
         List<Category> categories = catRepo.getAllCategories();
@@ -196,7 +197,7 @@ public class Product_Service {
     }
 
     // update product discription
-    public static void updateProductInfo(Scanner inputscanner, String role, Company company, int sellerId) {
+    public static void updateProductInfo(Scanner inputscanner, String role, Company company, int sellerId) throws SQLException {
         Product_Repo repo = new Product_Repo();
         List<Product> sellerProducts = repo.getProductsBySellerId(sellerId);
 
@@ -297,7 +298,7 @@ public class Product_Service {
     }
 
     // delete product
-    public static void deleteProduct(Scanner inputscanner, int sellerId) {
+    public static void deleteProduct(Scanner inputscanner, int sellerId) throws SQLException {
         Product_Repo repo = new Product_Repo();
         List<Product> sellerProducts = repo.getProductsBySellerId(sellerId);
 
@@ -308,7 +309,7 @@ public class Product_Service {
 
         System.out.println(Message.PRODUCT_LIST);
         for (Product p : sellerProducts) {
-            System.out.println("ID: " + p.getProduct_Id() + " | Name: " + p.getProduct_Name());
+            System.out.printf("║ ID: %-4d | Name: %-25s ║\n", p.getProduct_Id(), p.getProduct_Name());
         }
 
         int productId;

@@ -3,74 +3,63 @@ package Controller;
 import Constants.Message;
 import Modal.Company;
 import Services.Product_Service;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 public class ProductController {
 
-    // Existing getProducts (Electronics)
-    // public static void getProducts(int product) {
-    //     Product_Repo repo = new Product_Repo();
-    //     List<Product> products = repo.getProductsByCategory("Electronics");
+    public static void showSellerMenu(Scanner inputScanner, String role, Company company, int sellerId) {
+        while (true) {
+            try {
+                System.out.println(Message.SELLER_MENU);
+                System.out.print(Message.SELECT_OPTION);
 
-    //     if (products.isEmpty()) {
-    //         System.out.println("No electronics products found.");
-    //     } else {
-    //         for (Product p : products) {
-    //             System.out.println(p);
-    //         }
-    //     }
-    // }
+                String input = inputScanner.nextLine().trim().toUpperCase();
 
-    
+                switch (input) {
+                    case "A":
+                        CompanyController.handleLoginRoles(company, inputScanner);
+                        return;
 
-    public static void showSellerMenu(Scanner inputscanner, String role, Company company, int sellerId) {
-    while (true) {
-        System.out.println(Message.SELLER_MENU);
-        // System.out.println(Message.BACK_LOGOUT_EXIT_FRAME);
-        System.out.print(Message.SELECT_OPTION);
+                    case "B":
+                        CompanyController.startCompanySelection(inputScanner);
+                        return;
 
-        String input = inputscanner.nextLine().trim();
+                    case "C":
+                        System.out.println(Message.EXIT_MESSAGE);
+                        System.exit(0);
+                        break;
 
-        switch (input.toUpperCase()) {
-            case "A":
-                // Go back to role selection
-                CompanyController.handleLoginRoles(company, inputscanner);
-                return;
+                    case "1":
+                        Product_Service.viewAllProducts(inputScanner, sellerId);
+                        break;
 
-            case "B":
-                // Logout and go back to company selection
-                CompanyController.startCompanySelection(inputscanner);
-                return;
+                    case "2":
+                        Product_Service.addProduct(inputScanner, sellerId, company.getCompany_Id());
+                        break;
 
-            case "C":
-                System.out.println(Message.EXIT_MESSAGE);
-                System.exit(0);
-                break;
+                    case "3":
+                        Product_Service.updateProductInfo(inputScanner, role, company, sellerId);
+                        break;
 
-            case "1":
-                Product_Service.viewAllProducts(inputscanner, sellerId);
-                break;
+                    case "4":
+                        Product_Service.deleteProduct(inputScanner, sellerId);
+                        break;
 
-            case "2":
-                Product_Service.addProduct(inputscanner, sellerId, company.getCompany_Id());
-                break;
+                    // case "5":
+                    //     Product_Service.viewProductStats(sellerId);
+                    //     break;
 
-            case "3":
-                Product_Service.updateProductInfo(inputscanner, role, company, sellerId);
-                break;
-
-            case "4":
-                Product_Service.deleteProduct(inputscanner, sellerId);
-                break;
-
-            // case "5":
-            //     // Product_Service.viewProductStats(sellerId);
-            //     break;
-
-            default:
+                    default:
+                        System.out.println(Message.INVALID_INPUT);
+                        break;
+                }
+            } catch (InputMismatchException e) {
                 System.out.println(Message.INVALID_INPUT);
+                inputScanner.nextLine(); // Clear the invalid input
+            } catch (Exception e) {
+                System.out.println(Message.UNEXPECTED_ERROR + e.getMessage());
+            }
         }
     }
-}
-    
 }

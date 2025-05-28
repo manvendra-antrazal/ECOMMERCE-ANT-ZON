@@ -13,26 +13,23 @@ import java.util.List;
 
 public class Product_Repo {
 
-    public int getProductStock(int productId, int companyId) {
-    int stock = 0;
-    try (Connection connection = DBConnection.getInstance().getConnection();
-         PreparedStatement stmt = connection.prepareStatement("SELECT quantity FROM product WHERE product_id = ? AND company_id = ?")) {
-        stmt.setInt(1, productId);
-        stmt.setInt(2, companyId);
-        ResultSet rs = stmt.executeQuery();
-        if (rs.next()) {
-            stock = rs.getInt("quantity");
+    public int getProductStock(int productId, int companyId) throws SQLException {
+        String query = Queries.GET_PRODUCT_STOCK;
+        try (Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement stmt = connection.prepareStatement(query)) {
+            stmt.setInt(1, productId);
+            stmt.setInt(2, companyId);
+            ResultSet rs = stmt.executeQuery();
+            if (rs.next()) {
+                return rs.getInt("quantity");
+            }
+            return 0;
         }
-    } catch (SQLException e) {
-        e.printStackTrace();
     }
-    return stock;
-}
 
 
 
-
-    public List<Product> getProductsByCategory(String categoryName) {
+    public List<Product> getProductsByCategory(String categoryName) throws SQLException {
     List<Product> products = new ArrayList<>();
     String query = Queries.GET_PRODUCTS_BY_CATEGORY;
     try (Connection connection = DBConnection.getInstance().getConnection();
@@ -67,7 +64,7 @@ public class Product_Repo {
     
 
     // view all products 
-    public List<Product> getProductsBySellerId(int sellerId) {
+    public List<Product> getProductsBySellerId(int sellerId) throws SQLException {
         List<Product> products = new ArrayList<>();
         String query = Queries.GET_PRODUCTS_BY_SELLER_ID;
 
@@ -102,33 +99,29 @@ public class Product_Repo {
     }
 
     // Add Product 
-    public boolean addProduct(Product product) {
+    public boolean addProduct(Product product) throws SQLException {
         String query = Queries.ADD_PRODUCT_SELLER;
 
-            try (Connection connection = DBConnection.getInstance().getConnection();
-                PreparedStatement statement = connection.prepareStatement(query)) {
+        try (Connection connection = DBConnection.getInstance().getConnection();
+            PreparedStatement statement = connection.prepareStatement(query)) {
 
-                statement.setString(1, product.getProduct_Name());
-                statement.setString(2, product.getProduct_Description());
-                statement.setDouble(3, product.getProduct_Price());
-                statement.setInt(4, product.getProduct_Quantity());
-                statement.setInt(5, product.getSeller_ID());
-                statement.setInt(6, product.getCompany_ID());
-                statement.setInt(7, product.getCategory_ID());
-                statement.setInt(8, product.getSub_cat_ID());
+            statement.setString(1, product.getProduct_Name());
+            statement.setString(2, product.getProduct_Description());
+            statement.setDouble(3, product.getProduct_Price());
+            statement.setInt(4, product.getProduct_Quantity());
+            statement.setInt(5, product.getSeller_ID());
+            statement.setInt(6, product.getCompany_ID());
+            statement.setInt(7, product.getCategory_ID());
+            statement.setInt(8, product.getSub_cat_ID());
 
-                return statement.executeUpdate() > 0;
-
-            } catch (SQLException e) {
-                System.out.println(Message.ADD_PRODUCT_ERROR);
-                e.printStackTrace();
-            }
-            return false;
+            return statement.executeUpdate() > 0;
+        }
     }
 
 
+
    // update product 
-   public boolean updateProductField(int productId, int sellerId, String field, String newValue) {
+   public boolean updateProductField(int productId, int sellerId, String field, String newValue) throws SQLException {
     String query = "UPDATE product SET " + field + " = ? WHERE product_Id = ? AND seller_Id = ?";
     // String query = Queries.UPDATE_PRODUCT_SELLER;
     try (Connection connection = DBConnection.getInstance().getConnection();
@@ -153,7 +146,7 @@ public class Product_Repo {
 
 
     // delete product 
-    public boolean deleteProduct(int productId, int sellerId) {
+    public boolean deleteProduct(int productId, int sellerId) throws SQLException {
     String query = Queries.DELETE_PRODUCT_SELLER;
 
     try (Connection connection = DBConnection.getInstance().getConnection();
@@ -172,85 +165,85 @@ public class Product_Repo {
         }
     }
 
-    // stats 
+    
 
-    // Example: get total revenue of all seller's products
-    public double getTotalRevenueBySeller(int sellerId) {
-        double revenue = 0;
-        String query = "SELECT SUM(product_Price * quantity_sold) AS total_revenue FROM sales WHERE seller_ID = ?";
+// //  get revenue 
+//     public double getTotalRevenueBySeller(int sellerId) {
+//         double revenue = 0;
+//         String query = "SELECT SUM(product_Price * quantity_sold) AS total_revenue FROM sales WHERE seller_ID = ?";
 
-        try (Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, sellerId);
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                revenue = rs.getDouble("total_revenue");
-            }
-        } catch (SQLException e) {
-            System.out.println("Failed to fetch revenue: " + e.getMessage());
-        }
-        return revenue;
-    }
+//         try (Connection connection = DBConnection.getInstance().getConnection();
+//             PreparedStatement statement = connection.prepareStatement(query)) {
+//             statement.setInt(1, sellerId);
+//             ResultSet rs = statement.executeQuery();
+//             if (rs.next()) {
+//                 revenue = rs.getDouble("total_revenue");
+//             }
+//         } catch (SQLException e) {
+//             System.out.println("Failed to fetch revenue: " + e.getMessage());
+//         }
+//         return revenue;
+//     }
 
-    public Product getMostLikedProductBySeller(int sellerId) {
-        String query = "SELECT * FROM product WHERE seller_id = ? ORDER BY likes DESC LIMIT 1";
-        try (Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, sellerId);
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                return new Product(
-                    rs.getInt("product_id"),
-                    rs.getString("product_name"),
-                    rs.getString("product_description"),
-                    rs.getDouble("product_price"),
-                    rs.getInt("product_quantity"),
-                    rs.getInt("company_id"),
-                    rs.getInt("seller_id"),
-                    rs.getInt("category_id"),       
-                    rs.getInt("sub_cat_id"),
-                    rs.getInt("likes")      
-                );
-            }
-        } catch (SQLException e) {
-            System.out.println("Failed to fetch most liked product: " + e.getMessage());
-        }
-        return null;
-    }
-
-
-// Example: get best selling product (based on quantity sold)
-    public Product getBestSellingProductBySeller(int sellerId) {
-        String query = "SELECT p.*, s.quantity_sold FROM product p JOIN sales s ON p.product_id = s.product_id WHERE p.seller_id = ? ORDER BY s.quantity_sold DESC LIMIT 1";
-
-        try (Connection connection = DBConnection.getInstance().getConnection();
-            PreparedStatement statement = connection.prepareStatement(query)) {
-            statement.setInt(1, sellerId);
-            ResultSet rs = statement.executeQuery();
-            if (rs.next()) {
-                return new Product(
-                    rs.getInt("product_id"),
-                    rs.getString("product_name"),
-                    rs.getString("product_description"),
-                    rs.getDouble("product_price"),
-                    rs.getInt("product_quantity"),
-                    rs.getInt("company_id"),
-                    rs.getInt("seller_id"),
-                    rs.getInt("category_id"),       
-                    rs.getInt("sub_cat_id"),
-                    rs.getInt("quantity_sold")  // passing this as 10th param if constructor allows
-                );
-            }
-        } catch (SQLException e) {
-            System.out.println("Failed to fetch best selling product: " + e.getMessage());
-        }
-        return null;
-    }
+//     public Product getMostLikedProductBySeller(int sellerId) {
+//         String query = "SELECT * FROM product WHERE seller_id = ? ORDER BY likes DESC LIMIT 1";
+//         try (Connection connection = DBConnection.getInstance().getConnection();
+//             PreparedStatement statement = connection.prepareStatement(query)) {
+//             statement.setInt(1, sellerId);
+//             ResultSet rs = statement.executeQuery();
+//             if (rs.next()) {
+//                 return new Product(
+//                     rs.getInt("product_id"),
+//                     rs.getString("product_name"),
+//                     rs.getString("product_description"),
+//                     rs.getDouble("product_price"),
+//                     rs.getInt("product_quantity"),
+//                     rs.getInt("company_id"),
+//                     rs.getInt("seller_id"),
+//                     rs.getInt("category_id"),       
+//                     rs.getInt("sub_cat_id"),
+//                     rs.getInt("likes")      
+//                 );
+//             }
+//         } catch (SQLException e) {
+//             System.out.println("Failed to fetch most liked product: " + e.getMessage());
+//         }
+//         return null;
+//     }
 
 
-    public List<Product> getProductsBySubCategory(int subCatId) {
+// // Example: get best selling product (based on quantity sold)
+//     public Product getBestSellingProductBySeller(int sellerId) {
+//         String query = "SELECT p.*, s.quantity_sold FROM product p JOIN sales s ON p.product_id = s.product_id WHERE p.seller_id = ? ORDER BY s.quantity_sold DESC LIMIT 1";
+
+//         try (Connection connection = DBConnection.getInstance().getConnection();
+//             PreparedStatement statement = connection.prepareStatement(query)) {
+//             statement.setInt(1, sellerId);
+//             ResultSet rs = statement.executeQuery();
+//             if (rs.next()) {
+//                 return new Product(
+//                     rs.getInt("product_id"),
+//                     rs.getString("product_name"),
+//                     rs.getString("product_description"),
+//                     rs.getDouble("product_price"),
+//                     rs.getInt("product_quantity"),
+//                     rs.getInt("company_id"),
+//                     rs.getInt("seller_id"),
+//                     rs.getInt("category_id"),       
+//                     rs.getInt("sub_cat_id"),
+//                     rs.getInt("quantity_sold")  // passing this as 10th param if constructor allows
+//                 );
+//             }
+//         } catch (SQLException e) {
+//             System.out.println("Failed to fetch best selling product: " + e.getMessage());
+//         }
+//         return null;
+//     }
+
+
+    public List<Product> getProductsBySubCategory(int subCatId) throws SQLException {
     List<Product> products = new ArrayList<>();
-    String query = "SELECT * FROM product WHERE sub_category_id = ?";
+    String query = Queries.GET_PRODUCTS_BY_SUB_CAT;
 
     try (Connection connection = DBConnection.getInstance().getConnection();
          PreparedStatement statement = connection.prepareStatement(query)) {
@@ -275,7 +268,7 @@ public class Product_Repo {
         }
 
     } catch (SQLException e) {
-        System.out.println("Failed to fetch products: " + e.getMessage());
+        System.out.println(Message.FAILED_TO_FETCH_PRODUCTS + e.getMessage());
     }
 
     return products;
@@ -284,7 +277,7 @@ public class Product_Repo {
 
 
     // Buyer side 
-    public List<Product> getProductsByCategoryAndSubCategory(int companyId , int subCategoryId) {
+    public List<Product> getProductsByCategoryAndSubCategory(int companyId , int subCategoryId) throws SQLException {
     List<Product> productList = new ArrayList<>();
     String query = Queries.GET_PRODUCTS_BY_CAT_AND_SUBCAT;
 
@@ -295,7 +288,7 @@ public class Product_Repo {
         statement.setInt(2, subCategoryId);
         ResultSet rs = statement.executeQuery();
 
-       while (rs.next()) {  // <--- iterate over all rows
+       while (rs.next()) {  
             Product product = new Product(
                 rs.getInt("product_id"),
                 rs.getString("product_name"),
@@ -320,8 +313,8 @@ public class Product_Repo {
 
 
 // Get the available quantity of a product by productId
-public int getProductQuantity(int productId) {
-    String query = "SELECT product_quantity FROM product WHERE product_Id = ?";
+public int getProductQuantity(int productId) throws SQLException{
+    String query = Queries.GET_PRODUCT_QUANTITY;
     try (Connection connection = DBConnection.getInstance().getConnection();
          PreparedStatement statement = connection.prepareStatement(query)) {
 
@@ -333,14 +326,14 @@ public int getProductQuantity(int productId) {
         }
 
     } catch (SQLException e) {
-        System.out.println("Error fetching product quantity: " + e.getMessage());
+        System.out.println(Message.FAILED_TO_FETCH_PRODUCTS_QUANTITY + e.getMessage());
     }
     return -1; // Indicates failure
 }
 
 // Reduce the stock of a product by quantity
-public boolean reduceStock(int productId, int quantity) {
-    String query = "UPDATE product SET product_quantity = product_quantity - ? WHERE product_Id = ? AND product_quantity >= ?";
+public boolean reduceStock(int productId, int quantity) throws SQLException {
+    String query = Queries.REDUSE_STOCK;
     try (Connection connection = DBConnection.getInstance().getConnection();
          PreparedStatement statement = connection.prepareStatement(query)) {
 
@@ -351,15 +344,12 @@ public boolean reduceStock(int productId, int quantity) {
         int rowsAffected = statement.executeUpdate();
         return rowsAffected > 0;
 
-    } catch (SQLException e) {
-        System.out.println("Error reducing stock: " + e.getMessage());
-    }
-    return false;
+    } 
 }
 
-public Product getProductById(int productId) {
+public Product getProductById(int productId) throws SQLException {
     Product product = null;
-    String query = "SELECT * FROM product WHERE product_id = ?";
+    String query = Queries.GET_PRODUCT_BY_ID;
 
     try (Connection connection = DBConnection.getInstance().getConnection();
          PreparedStatement statement = connection.prepareStatement(query)) {

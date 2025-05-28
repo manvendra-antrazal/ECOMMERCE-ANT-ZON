@@ -69,86 +69,89 @@ public class Order_Service {
 
 
     public static double placeOrderReturnPrice(Product product, int buyerId, int quantity) throws IOException {
-        Product_Repo productRepo = new Product_Repo();
-        Cart_Repo cartRepo = new Cart_Repo();
-        Order_Repo orderRepo = new Order_Repo();
+        try {
+            Product_Repo productRepo = new Product_Repo();
+            Cart_Repo cartRepo = new Cart_Repo();
+            Order_Repo orderRepo = new Order_Repo();
 
-        int stock = productRepo.getProductQuantity(product.getProduct_Id());
-        if (quantity > stock) {
-            throw new IllegalArgumentException(String.format(Message.STOCK_INSUFFICIENT, product.getProduct_Name(), stock));
+            int stock = productRepo.getProductQuantity(product.getProduct_Id());
+            if (quantity > stock) {
+                throw new IllegalArgumentException(String.format(Message.STOCK_INSUFFICIENT, product.getProduct_Name(), stock));
+            }
+
+            double originalPrice = product.getProduct_Price();
+            double discountPercent = 0.0;
+
+            Category_Repo categoryRepo = new Category_Repo();
+            int furnitureCatId = categoryRepo.getCategoryIdByName("furniture");
+            int eventSubCatId = categoryRepo.getSubCategoryIdByName("event");
+
+            String nameLower = product.getProduct_Name().toLowerCase();
+            if (nameLower.contains("dell 7640") || nameLower.contains("lenovo 5540")) {
+                discountPercent += 2.5;
+            }
+            if (product.getCategory_ID() == furnitureCatId && product.getSub_cat_ID() == eventSubCatId) {
+                discountPercent += 2.5;
+            }
+
+            double discountedPrice = originalPrice - (originalPrice * discountPercent / 100.0);
+            double totalPrice = discountedPrice * quantity;
+
+            productRepo.reduceStock(product.getProduct_Id(), quantity);
+
+            String txnId = Message.TRANSACTION_ID_PREFIX + new Random().nextInt(99999999);
+            orderRepo.insertOrder(buyerId, product.getProduct_Id(), product.getCompany_ID(), quantity, totalPrice, txnId, product.getProduct_Name());
+
+            cartRepo.removeProductFromCart(buyerId, product.getProduct_Id());
+
+            return totalPrice;
+        } catch (IllegalArgumentException e) {
+            throw e; // Rethrow for calling function to handle
+        } catch (Exception e) {
+            throw new RuntimeException(Message.ORDER_FAILED + " " + e.getMessage());
         }
-
-        // Discount logic
-        double originalPrice = product.getProduct_Price();
-        double discountPercent = 0.0;
-
-        Category_Repo categoryRepo = new Category_Repo();
-        int furnitureCatId = categoryRepo.getCategoryIdByName("furniture");
-        int eventSubCatId = categoryRepo.getSubCategoryIdByName("event");
-
-        String nameLower = product.getProduct_Name().toLowerCase();
-        if (nameLower.contains("dell 7640") || nameLower.contains("lenovo 5540")) {
-            discountPercent += 2.5;
-        }
-        if (product.getCategory_ID() == furnitureCatId && product.getSub_cat_ID() == eventSubCatId) {
-            discountPercent += 2.5;
-        }
-
-        double discountedPrice = originalPrice - (originalPrice * discountPercent / 100.0);
-        double totalPrice = discountedPrice * quantity;
-
-        // DB operations
-        productRepo.reduceStock(product.getProduct_Id(), quantity);
-
-        String txnId = Message.TRANSACTION_ID_PREFIX + new Random().nextInt(99999999);
-        orderRepo.insertOrder(buyerId, product.getProduct_Id(), product.getCompany_ID(), quantity, totalPrice, txnId, product.getProduct_Name());
-
-        cartRepo.removeProductFromCart(buyerId, product.getProduct_Id());
-
-        return totalPrice;
     }
 
-
-
-    // here it show's Order history 
     public static void viewOrderHistory(Scanner inputScanner, String role, Company company, int buyerId) {
+        try {
+            Order_Repo orderRepo = new Order_Repo();
+            List<Order> orders = orderRepo.getOrdersByBuyerId(buyerId);
 
-        Order_Repo orderRepo = new Order_Repo(); // Create instance
-        List<Order> orders = orderRepo.getOrdersByBuyerId(buyerId);
-
-        if (orders.isEmpty()) {
-            System.out.println(Message.NO_ORDERS_MSG);
-            return;
-        }
-
-        System.out.println(Message.ORDER_HISTORY_HEADER);
-
-       for (Order order : orders) {
-            System.out.printf("║ %-6d ║ %-30s ║ %-10d ║  %-11.2f ║ %-20s ║\n",
-            order.getOrderId(),
-            order.getProductName(),
-            order.getQuantity(),
-            order.getTotalPrice(),
-            order.getOrderDate().toLocalDateTime());
-        }
-
-
-        System.out.println(Message.ORDER_HISTORY_FOOTER);
-        Scanner sc = new Scanner(System.in);
-        while (true) {
-            System.out.print(Message.SELECT_OPTION);
-            String choice = sc.nextLine().trim().toUpperCase();
-
-            switch (choice) {
-                case "A":
-                    BuyerController.showBuyerMenu(inputScanner, role ,company, buyerId);
-                    return;
-                case "B":
-                    CompanyController.startCompanySelection(inputScanner); 
-                    return;
-                default:
-                    System.out.println(Message.INVALID_INPUT);
+            if (orders.isEmpty()) {
+                System.out.println(Message.NO_ORDERS_MSG);
+                return;
             }
+
+            System.out.println(Message.ORDER_HISTORY_HEADER);
+
+            for (Order order : orders) {
+                System.out.printf("║ %-6d ║ %-30s ║ %-10d ║  %-11.2f ║ %-20s ║\n",
+                        order.getOrderId(),
+                        order.getProductName(),
+                        order.getQuantity(),
+                        order.getTotalPrice(),
+                        order.getOrderDate().toLocalDateTime());
+            }
+
+            System.out.println(Message.ORDER_HISTORY_FOOTER);
+            Scanner sc = new Scanner(System.in);
+            while (true) {
+                System.out.print(Message.SELECT_OPTION);
+                String choice = sc.nextLine().trim().toUpperCase();
+
+                switch (choice) {
+                    case "A":
+                        BuyerController.showBuyerMenu(inputScanner, role, company, buyerId);
+                        return;
+                    case "B":
+                        CompanyController.startCompanySelection(inputScanner);
+                        return;
+                    default:
+                        System.out.println(Message.INVALID_INPUT);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println(Message.ERROR_RETRIEVING_HISTORY + " " + e.getMessage());
         }
     }
 }

@@ -3,11 +3,12 @@ package Controller;
 import Constants.Message;
 import Modal.Company;
 import Services.Company_Services;
+import java.sql.SQLException;
 import java.util.*;
 
 public class CompanyController {
 
-    public static void startCompanySelection(Scanner inputscanner) {
+    public static void startCompanySelection(Scanner inputscanner) throws SQLException {
         List<Company> companies = Company_Services.getAllCompanies();
 
         if (companies.isEmpty()) {
@@ -32,6 +33,7 @@ public class CompanyController {
             switch (input.toUpperCase()) {
                 case "A":
                     new ApplicationController().run();
+                    break;
                 case "B":
                     System.out.println(Message.EXIT_MESSAGE);
                     System.exit(0);
@@ -52,7 +54,7 @@ public class CompanyController {
         }
     }
 
-    public static void handleLoginRoles(Company company, Scanner inputscanner) {
+    public static void handleLoginRoles(Company company, Scanner inputscanner) throws SQLException {
         System.out.println("\n" + Message.ROLE_SELECT);
         System.out.print(Message.SELECT_OPTION);
 

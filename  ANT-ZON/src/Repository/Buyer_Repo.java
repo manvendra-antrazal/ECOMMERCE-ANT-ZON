@@ -11,7 +11,7 @@ import java.sql.SQLException;
 public class Buyer_Repo {
 
     // Method it checks, if buyer with the given username and password exists
-    public int getBuyerId(String username, String password) {
+    public int getBuyerId(String username, String password) throws SQLException {
         String query = Queries.CHECK_BUYER_QUERY;
         boolean isBuyerFound = false;
         int buyerID = -1;
@@ -29,7 +29,6 @@ public class Buyer_Repo {
                 buyerID = resultset.getInt("Buyer_ID");
                 String buyerUserName = resultset.getString("Buyer_UserName");
                 String buyerPassword = resultset.getString("Buyer_Psd");
-                // System.out.println("Buyer Found: " + buyerUserName);
             }
 
         } catch (SQLException e) {

@@ -18,7 +18,6 @@ public class Register_Seller_Repo {
         
         System.out.print(Message.ENTER_NEW_SELLER_NAME);
         String name = inputscanner.nextLine();
-        System.out.print(Message.ENTER_NEW_SELLER_USERNAME);
 
         String username;
         while (true) {
@@ -26,14 +25,12 @@ public class Register_Seller_Repo {
             username = inputscanner.nextLine().trim();
 
             if (Validations.isValidUsername(username)) {
-                break; 
+                break;
             } else {
-                System.out.println(Message.USERNAME_INVALID); 
+                System.out.println(Message.USERNAME_INVALID);
             }
         }
 
-
-        // Password field validation
         String password;
         while (true) {
             System.out.print(Message.ENTER_PASSWORD);
@@ -45,7 +42,6 @@ public class Register_Seller_Repo {
             }
         }
 
-        // Mobile field validation
         String mobile;
         while (true) {
             System.out.print(Message.ENTER_MOBILE_NUM);
@@ -74,8 +70,9 @@ public class Register_Seller_Repo {
             int affected = preparedStatement.executeUpdate();
             return affected > 0;
         } catch (SQLException e) {
-            System.out.println(e.getMessage());
-            return false;
+            throw new RuntimeException(Message.DATABASE_ERROR + e.getMessage());
+        } catch (Exception e) {
+            throw new RuntimeException(Message.UNEXPECTED_ERROR + e.getMessage());
         }
     }
 }

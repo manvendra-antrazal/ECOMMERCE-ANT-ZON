@@ -5,6 +5,7 @@ public class Message {
     // General
     public static final String WELCOME = "Welcome to ANT-ZON E-Commerce Application!";
     public static final String VALID_NUMBER = "Please enter a valid number.";
+    public static final String SELECT_PRODUCT_INDEX = "Enter the product no: ";
     public static final String INVALID_SELECTION = "Invalid selection.";
     public static final String INVALID_ROLE_SELECTION = "Invalid role selected.";
     public static final String EXIT_MESSAGE = "Thank you for visiting ANT-ZON. Goodbye!";
@@ -24,8 +25,11 @@ public class Message {
     public static final String DELETED_CANCEL = "Product deletion canceled.";
     public static final String FAILED_REMOVED_PRODUCT_FROM_CART = "Failed to remove product from cart.";
     public static final String FAILED_REMOVED_PRODUCT_FROM_WISHLIST = "Failed to remove from wishlist: ";
+    public static final String WISHLIST_REMOVE_ERROR = "Error removing product from wishlist: ";
     public static final String PRODUCT_EXISTS_IN_CART = "Product already exists in cart.";
+    public static final String PRODUCT_EXISTS_IN_WISHLIST = "Product already exists in wishlist.";
     public static final String ERROR_FETCHING_CATEGORIES = "Error fetching categories: ";
+    public static final String WISHLIST_ADD_ERROR = "Error adding product to wishlist: ";
     public static final String SELLER_CATEGORY_FRAME = """
 
         ╔════════════════════════════════════════╗
@@ -227,11 +231,12 @@ public class Message {
   
     public static final String PRODUCT_LIST = """
 
-        ╔════════════════════════════════════════╗
-        ║         === Your Products ===          ║
-        ╠════════════════════════════════════════╣
-        """;
-        
+       ╔════════════════════════════════════════════╗
+       ║               Product's List                ║
+       ╠══════════╬═════════════════════════════════╣""";
+    
+    public static final String PRODUCT_LIST_LOWER = 
+      "╚══════════╩═════════════════════════════════╝\n";
 
     // Cart and Wishlist
     public static final String PRODUCT_ADDED_TO_CART = "Product added to cart successfully.";
@@ -514,6 +519,8 @@ public class Message {
     public static final String ENTER_STATE = "Enter State: ";
     public static final String ENTER_COUNTRY = "Enter Country: ";
     public static final String ENTER_ADDRESS = "Enter Local Address: ";
+     public static final String ORDER_INSERT_FAILED = "Failed to insert order into database.";
+    public static final String ORDER_FETCH_FAILED = "Failed to fetch orders for buyer.";
 
     public static final String CHECKOUT_OPTIONS_MENU ="""
     ╔════════════════════════════════════════╗
@@ -533,10 +540,48 @@ public class Message {
     public static final String ORDER_CANCELLED = "Order cancelled. Returning to cart...";
     public static final String INVALID_OPTION_RETURNING = "Invalid option. Returning to cart menu.";
     public static final String FAILED_ORDER = "Failed to place order due to I/O error.";
-   
-
+    public static final String SELLER_FLOW_ERROR = "An unexpected error occurred in Seller flow. Please try again.";
+    public static final String ERROR_VALIDATE_ADMIN_LOGIN = "Error validating admin login: ";
+    public static final String ERROR_REGISTER_ADMIN = "Error registering new admin: ";
     // Errors 
     
+    public static final String EMPTY_INPUT = "Input cannot be empty. Please enter a valid option.";
+    public static final String GENERAL_ERROR = "An error occurred:";
+    public static final String ERROR_ADMIN_LOGIN = "Admin login failed!";
+    public static final String UNEXPECTED_ERROR = "An unexpected error occurred!";
+    
+
+    public static final String ERROR_VIEW_COMPANY = "Unable to fetch company details.";
+    public static final String ERROR_VIEW_REVENUE = "Failed to fetch total revenue.";
+    public static final String ERROR_VIEW_MOST_LIKED = "Error while fetching most liked products.";
+    public static final String ERROR_VIEW_BEST_SELLER = "Error while fetching best seller products.";
+    public static final String DATABASE_ERROR = "Database error while updating cart quantity.";
+    public static final String REGISTRATION_FAILED = "Registration failed. Please try again."; 
+    public static final String FAILED_TO_FETCH_PRODUCTS = "Failed to fetch products: ";
+    public static final String FAILED_TO_FETCH_PRODUCTS_QUANTITY = "Error fetching product quantity: ";
+    public static final String ERROR_REDUSE_STOCK = "Error reducing stock: ";
+    public static final String WISHLIST_CHECK_ERROR = "Error checking wishlist: ";
+    public static final String ADD_TO_WISHLIST_ERROR = "Error adding to wishlist: ";
+    public static final String GET_WISHLIST_ERROR = "Error retrieving wishlist: ";
+    public static final String COMPANY_VIEW_ERROR = "Unable to display company name: ";
+    public static final String REVENUE_VIEW_ERROR = "Failed to retrieve revenue: ";
+    public static final String MOST_LIKED_VIEW_ERROR = "Failed to load most liked products: ";
+    public static final String BEST_SELLERS_VIEW_ERROR = "Failed to load best-seller products: ";
+    public static final String DELETE_USER_ERROR = "Failed to delete user data: ";
+    public static final String LOGIN_ERROR = "Error occurred during login. Please try again.";
+    public static final String INTERNAL_ERROR = "An unexpected error occurred. Please contact support.";
+    public static final String ERROR_ADD_TO_CART = "Error occurred while adding product to cart.";
+    public static final String ERROR_FETCHING_CART = "Error fetching cart items.";
+    public static final String REMOVE_FAILED = "Failed to remove product from cart.";
+    public static final String NO_VALID_PRODUCTS_PURCHASED = "No valid products were selected for purchase.";
+    public static final String DB_ERROR_FETCHING_COMPANIES = "Error: Unable to fetch companies from the database.";
+    public static final String UNKNOWN_ERROR = "An unknown error occurred.";
+    public static final String ERROR_RETRIEVING_HISTORY = "Error retrieving order history.";
+    public static final String REGISTER_ERROR = "Error during registration";
+    public static final String ERROR_ADDING_TO_WISHLIST = "An error occurred while adding the product to wishlist.";
+    public static final String ERROR_VIEWING_WISHLIST = "An error occurred while viewing the wishlist.";
+    public static final String LOGIN_FAILED_DB_ERROR = "Login failed due to database error ";
+    public static final String SELLER_REGISTER_FAILED = "Seller registration failed";
 }
 
 

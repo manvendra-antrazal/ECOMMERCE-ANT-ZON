@@ -4,6 +4,7 @@ import Constants.Message;
 import Constants.Queries;
 import Modal.Product;
 import Util.DBConnection;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -13,7 +14,7 @@ import java.util.List;
 
 public class Wishlist_repo {
 
-        public boolean isProductInWishlist(int buyerId, int productId, int companyId) {
+    public boolean isProductInWishlist(int buyerId, int productId, int companyId) throws Exception {
         try (Connection connection = DBConnection.getInstance().getConnection()) {
             String query = Queries.IS_PRODUCT_IN_WISHLIST;
             PreparedStatement ps = connection.prepareStatement(query);
@@ -22,15 +23,13 @@ public class Wishlist_repo {
             ps.setInt(3, companyId);
             ResultSet rs = ps.executeQuery();
 
-            return rs.next(); // already exists
+            return rs.next();
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new Exception(Message.WISHLIST_CHECK_ERROR + e.getMessage(), e);
         }
-        return false;
     }
 
-    public boolean addToWishlist(int buyerId, int productId, int companyId) {
-
+    public boolean addToWishlist(int buyerId, int productId, int companyId) throws Exception {
         try (Connection connection = DBConnection.getInstance().getConnection()) {
             String query = Queries.ADD_TO_WISHLIST;
             PreparedStatement ps = connection.prepareStatement(query);
@@ -39,28 +38,25 @@ public class Wishlist_repo {
             ps.setInt(3, productId);
 
             if (ps.executeUpdate() > 0) {
+                // Increment likes after insert 
+                String likeUpdateQuery = Queries.LIKE_INCREMENT;
+                PreparedStatement updateLikes = connection.prepareStatement(likeUpdateQuery);
+                updateLikes.setInt(1, productId);
+                updateLikes.executeUpdate();
 
-            // Increment likes after insert 
-            String likeUpdateQuery = Queries.LIKE_INCREMENT;
-            PreparedStatement updateLikes = connection.prepareStatement(likeUpdateQuery);
-            updateLikes.setInt(1, productId);
-            updateLikes.executeUpdate();
-
-            return true;
-        }
+                return true;
+            }
         } catch (Exception e) {
-            e.printStackTrace();
+            throw new Exception(Message.ADD_TO_WISHLIST_ERROR + e.getMessage(), e);
         }
         return false;
     }
 
-    // Get wishlist items for a specific buyer
-    public static List<Product> getWishlistByBuyerId(int buyerId) {
+    public static List<Product> getWishlistByBuyerId(int buyerId) throws Exception {
         List<Product> wishlist = new ArrayList<>();
-
         String query = Queries.GET_WISHLIST_BY_BUYER_ID;
 
-         try (Connection conn = DBConnection.getInstance().getConnection();
+        try (Connection conn = DBConnection.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
 
             ps.setInt(1, buyerId);
@@ -79,26 +75,23 @@ public class Wishlist_repo {
                 p.setSub_cat_ID(rs.getInt("sub_cat_id"));
                 wishlist.add(p);
             }
-
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new Exception(Message.GET_WISHLIST_ERROR + e.getMessage(), e);
         }
 
         return wishlist;
     }
 
-    // Remove item from wishlist for a buyer
-    public boolean removeFromWishlist(int buyerId, int productId) {
+    public boolean removeFromWishlist(int buyerId, int productId) throws Exception {
         String deleteWishlistQuery = Queries.REMOVE_FROM_WISHLIST;
-        String decrementLikesQuery = "UPDATE product SET likes = likes - 1 WHERE product_id = ? AND likes > 0";
+        String decrementLikesQuery = Queries.REMOVE_FROM_WISHLIST_DESCREASE_LIKE;
 
         try (Connection conn = DBConnection.getInstance().getConnection()) {
-            conn.setAutoCommit(false); // Start transaction
+            conn.setAutoCommit(false);
 
             try (PreparedStatement deleteStmt = conn.prepareStatement(deleteWishlistQuery);
-                PreparedStatement updateLikesStmt = conn.prepareStatement(decrementLikesQuery)) {
+                 PreparedStatement updateLikesStmt = conn.prepareStatement(decrementLikesQuery)) {
 
-                // Delete from wishlist
                 deleteStmt.setInt(1, buyerId);
                 deleteStmt.setInt(2, productId);
                 int rowsDeleted = deleteStmt.executeUpdate();
@@ -108,7 +101,6 @@ public class Wishlist_repo {
                     return false;
                 }
 
-                // Decrease like count
                 updateLikesStmt.setInt(1, productId);
                 updateLikesStmt.executeUpdate();
 
@@ -117,16 +109,13 @@ public class Wishlist_repo {
 
             } catch (SQLException e) {
                 conn.rollback();
-                System.out.println(Message.REMOVE_PRODUCT_FROM_WISHLIST_AND_LIKE_DECREASE + e.getMessage());
-                return false;
+                throw new Exception(Message.REMOVE_PRODUCT_FROM_WISHLIST_AND_LIKE_DECREASE + e.getMessage(), e);
             } finally {
                 conn.setAutoCommit(true);
             }
 
         } catch (SQLException e) {
-            System.out.println(Message.CONNECTION_ERROR + e.getMessage());
-            return false;
+            throw new Exception(Message.CONNECTION_ERROR + e.getMessage(), e);
         }
     }
-
 }

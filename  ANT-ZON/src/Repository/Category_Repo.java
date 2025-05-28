@@ -10,30 +10,28 @@ import java.util.List;
 
 public class Category_Repo {
 
-    
-    public static String getCategoryNameById(int categoryId) {
-    String categoryName = null;
-    String query = "SELECT category_name FROM category WHERE category_id = ?";
+    public static String getCategoryNameById(int categoryId) throws SQLException {
+        String categoryName = null;
+        String query = Queries.GET_CATEGORY_NAME_BY_ID;
 
-    try (Connection connection = DBConnection.getInstance().getConnection();
-         PreparedStatement statement = connection.prepareStatement(query)) {
+        try (Connection connection = DBConnection.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(query)) {
 
-        statement.setInt(1, categoryId);
+            statement.setInt(1, categoryId);
 
-        try (ResultSet rs = statement.executeQuery()) {
-            if (rs.next()) {
-                categoryName = rs.getString("category_name");
+            try (ResultSet rs = statement.executeQuery()) {
+                if (rs.next()) {
+                    categoryName = rs.getString("category_name");
+                }
             }
-        }
 
-    } catch (SQLException e) {
-        System.out.println(Message.FETCHING_FAILED + e.getMessage());
-    }
+        } catch (SQLException e) {
+            throw new SQLException(Message.FETCHING_FAILED + e.getMessage(), e);
+        }
         return categoryName;
     }
 
-
-    public List<Category> getAllCategories() {
+    public List<Category> getAllCategories() throws SQLException {
         List<Category> categories = new ArrayList<>();
         String query = Queries.GET_ALL_CATEGORIES;
 
@@ -50,37 +48,36 @@ public class Category_Repo {
             }
 
         } catch (SQLException e) {
-            System.out.println(Message.FETCHING_FAILED + e.getMessage());
+            throw new SQLException(Message.FETCHING_FAILED + e.getMessage(), e);
         }
 
         return categories;
     }
 
-    public List<Category> getAllCategoriesByCompany(int companyId) {
-    List<Category> categories = new ArrayList<>();
-    try (Connection connection = DBConnection.getInstance().getConnection();
-         PreparedStatement statement = connection.prepareStatement(Queries.GET_ALL_CATEGORIES_BY_COMPANY)) {
+    public List<Category> getAllCategoriesByCompany(int companyId) throws SQLException {
+        List<Category> categories = new ArrayList<>();
+        try (Connection connection = DBConnection.getInstance().getConnection();
+             PreparedStatement statement = connection.prepareStatement(Queries.GET_ALL_CATEGORIES_BY_COMPANY)) {
 
-        statement.setInt(1, companyId);
-        ResultSet resultSet = statement.executeQuery();
+            statement.setInt(1, companyId);
+            ResultSet resultSet = statement.executeQuery();
 
-        while (resultSet.next()) {
-            Category c = new Category(
-                resultSet.getInt("category_ID"),
-                resultSet.getString("category_Name"),
-                resultSet.getInt("company_ID")
-            );  
-            categories.add(c);
+            while (resultSet.next()) {
+                Category c = new Category(
+                    resultSet.getInt("category_ID"),
+                    resultSet.getString("category_Name"),
+                    resultSet.getInt("company_ID")
+                );
+                categories.add(c);
+            }
+
+        } catch (SQLException e) {
+            throw new SQLException(Message.ERROR_FETCHING_CATEGORIES + e.getMessage(), e);
         }
-
-    } catch (SQLException e) {
-        System.out.println(Message.ERROR_FETCHING_CATEGORIES + e.getMessage());
-    }
-    return categories;
+        return categories;
     }
 
-
-    public Integer getCategoryIdByName(String name) {
+    public Integer getCategoryIdByName(String name) throws SQLException {
         String query = Queries.GET_CATEGORY_ID_BY_NAME;
         try (Connection conn = DBConnection.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
@@ -91,12 +88,12 @@ public class Category_Repo {
                 return rs.getInt("category_id");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SQLException(Message.FETCHING_FAILED + e.getMessage(), e);
         }
         return null; // or throw custom exception
     }
 
-    public Integer getSubCategoryIdByName(String name) {
+    public Integer getSubCategoryIdByName(String name) throws SQLException {
         String query = Queries.GET_SUB_CATEGORY_ID_BY_NAME;
         try (Connection conn = DBConnection.getInstance().getConnection();
              PreparedStatement ps = conn.prepareStatement(query)) {
@@ -107,7 +104,7 @@ public class Category_Repo {
                 return rs.getInt("sub_cat_id");
             }
         } catch (SQLException e) {
-            e.printStackTrace();
+            throw new SQLException(Message.FETCHING_FAILED + e.getMessage(), e);
         }
         return null;
     }
