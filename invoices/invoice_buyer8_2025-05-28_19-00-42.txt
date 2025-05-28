@@ -3,14 +3,12 @@
 ╚════════════════════════════════════════════════════════════════════╝
 
 Buyer ID: 8
-Transaction ID: TXN70753224
-Date: 2025-05-25T11:16:49.804041200
-Product Name: Moto Fusion 50
+Date: 2025-05-28T19:00:42.407076300
 
-Product                   Price      Qty        Total     
-------------------------------------------------------------
-Moto Fusion 50            $20000.00  5          $100000.00
+No.   Product                   Unit Price   Qty        Total        Transaction ID 
+-----------------------------------------------------------------------------
+1     Lenovo 5540               $62000.00    2          $124000.00   TXN39416120    
+2     Galaxy S22                $30000.00    1          $30000.00    TXN34276468    
 
-TOTAL: $100000.0
+GRAND TOTAL: $150900.00
 Note: Cash on Delivery (COD) is not available.
-Thank you for shopping with ANT-ZON!

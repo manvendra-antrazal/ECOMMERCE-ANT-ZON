@@ -89,20 +89,44 @@ public class Wishlist_repo {
 
     // Remove item from wishlist for a buyer
     public boolean removeFromWishlist(int buyerId, int productId) {
-        String query = Queries.REMOVE_FROM_WISHLIST;
-        try (Connection conn = DBConnection.getInstance().getConnection();
-            PreparedStatement stmt = conn.prepareStatement(query)) {
+        String deleteWishlistQuery = Queries.REMOVE_FROM_WISHLIST;
+        String decrementLikesQuery = "UPDATE product SET likes = likes - 1 WHERE product_id = ? AND likes > 0";
 
-            stmt.setInt(1, buyerId);
-            stmt.setInt(2, productId);
+        try (Connection conn = DBConnection.getInstance().getConnection()) {
+            conn.setAutoCommit(false); // Start transaction
 
-            int rowsAffected = stmt.executeUpdate();
-            return rowsAffected > 0;
+            try (PreparedStatement deleteStmt = conn.prepareStatement(deleteWishlistQuery);
+                PreparedStatement updateLikesStmt = conn.prepareStatement(decrementLikesQuery)) {
+
+                // Delete from wishlist
+                deleteStmt.setInt(1, buyerId);
+                deleteStmt.setInt(2, productId);
+                int rowsDeleted = deleteStmt.executeUpdate();
+
+                if (rowsDeleted == 0) {
+                    conn.rollback();
+                    return false;
+                }
+
+                // Decrease like count
+                updateLikesStmt.setInt(1, productId);
+                updateLikesStmt.executeUpdate();
+
+                conn.commit();
+                return true;
+
+            } catch (SQLException e) {
+                conn.rollback();
+                System.out.println(Message.REMOVE_PRODUCT_FROM_WISHLIST_AND_LIKE_DECREASE + e.getMessage());
+                return false;
+            } finally {
+                conn.setAutoCommit(true);
+            }
 
         } catch (SQLException e) {
-            System.out.println(Message.FAILED_REMOVED_PRODUCT_FROM_WISHLIST + e.getMessage());
+            System.out.println(Message.CONNECTION_ERROR + e.getMessage());
             return false;
         }
-        }
-
     }
+
+}

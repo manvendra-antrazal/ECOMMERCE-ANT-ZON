@@ -10,6 +10,29 @@ import java.util.List;
 
 public class Category_Repo {
 
+    
+    public static String getCategoryNameById(int categoryId) {
+    String categoryName = null;
+    String query = "SELECT category_name FROM category WHERE category_id = ?";
+
+    try (Connection connection = DBConnection.getInstance().getConnection();
+         PreparedStatement statement = connection.prepareStatement(query)) {
+
+        statement.setInt(1, categoryId);
+
+        try (ResultSet rs = statement.executeQuery()) {
+            if (rs.next()) {
+                categoryName = rs.getString("category_name");
+            }
+        }
+
+    } catch (SQLException e) {
+        System.out.println(Message.FETCHING_FAILED + e.getMessage());
+    }
+        return categoryName;
+    }
+
+
     public List<Category> getAllCategories() {
         List<Category> categories = new ArrayList<>();
         String query = Queries.GET_ALL_CATEGORIES;

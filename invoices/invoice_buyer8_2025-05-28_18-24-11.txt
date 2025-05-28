@@ -3,13 +3,14 @@
 ╚════════════════════════════════════════════════════════════════════╝
 
 Buyer ID: 8
-Transaction ID: TXN70672123
-Date: 2025-05-27T07:38:27.729898800
-Product Name: Galaxy S22
+Transaction IDs: TXN5344869
+Date: 2025-05-28T18:24:11.945927600
 
-Product                   Unit Price   Qty        Total       
-----------------------------------------------------------------
-Galaxy S22                $30000.00    1           30000.00   
+Product                   Unit Price   Qty        Total        Discounted   Discount% 
+------------------------------------------------------------------------------------------
+Event Canopy Tent         $120.00      10         $1200.00     $1200.00     -0.0%
 
-FINAL TOTAL:  30000.00
+TOTAL DISCOUNT:  -0.00
+FINAL TOTAL:     1200.00
+
 Note: Cash on Delivery (COD) is not available.

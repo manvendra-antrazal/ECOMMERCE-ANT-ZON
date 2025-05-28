@@ -17,57 +17,96 @@ import java.util.Scanner;
 
 public class Order_Service {
 
-    public static void placeOrder(Product product, int quantity, int buyerId) throws IOException {
-    Product_Repo productRepo = new Product_Repo();
-    Cart_Repo cartRepo = new Cart_Repo();
-    Order_Repo orderRepo = new Order_Repo();
+    // public static void placeOrder(Product product, int buyerId) throws IOException {
+    //     Product_Repo productRepo = new Product_Repo();
+    //     Cart_Repo cartRepo = new Cart_Repo();
+    //     Order_Repo orderRepo = new Order_Repo();
 
-    int stock = productRepo.getProductQuantity(product.getProduct_Id());
-    if (quantity > stock) {
-        throw new IllegalArgumentException(String.format(Message.STOCK_INSUFFICIENT, product.getProduct_Name(), stock));
+    //     int stock = productRepo.getProductQuantity(product.getProduct_Id());
+    //     int quantity = 1;  // Default quantity from cart
+
+    //     if (quantity > stock) {
+    //         throw new IllegalArgumentException(String.format(Message.STOCK_INSUFFICIENT, product.getProduct_Name(), stock));
+    //     }
+
+    //     // Apply discount
+    //     double originalPrice = product.getProduct_Price();
+    //     double discountedPrice = originalPrice;
+
+    //     Category_Repo categoryRepo = new Category_Repo();
+    //     int furnitureCatId = categoryRepo.getCategoryIdByName("furniture");
+    //     int eventSubCatId = categoryRepo.getSubCategoryIdByName("event");
+
+    //     double discountPercent = 0.0;
+    //     String productNameLower = product.getProduct_Name().toLowerCase();
+
+    //     if (productNameLower.contains("dell 7640") || productNameLower.contains("lenovo 5540")) {
+    //         discountPercent += 2.5;
+    //     }
+
+    //     if (product.getCategory_ID() == furnitureCatId && product.getSub_cat_ID() == eventSubCatId) {
+    //         discountPercent += 2.5;
+    //     }
+
+    //     discountedPrice = originalPrice - (originalPrice * discountPercent / 100.0);
+    //     double totalPrice = discountedPrice * quantity;
+
+    //     // Update stock
+    //     productRepo.reduceStock(product.getProduct_Id(), quantity);
+
+    //     // Generate transaction ID
+    //     String txnId = Message.TRANSACTION_ID_PREFIX + new Random().nextInt(99999999);
+
+    //     // Save order
+    //     orderRepo.insertOrder(buyerId, product.getProduct_Id(), product.getCompany_ID(), quantity, totalPrice, txnId, product.getProduct_Name());
+
+    //     // Remove from cart
+    //     cartRepo.removeProductFromCart(buyerId, product.getProduct_Id());
+
+    //     // Generate invoice
+    //     Invoice_Service.generateInvoice(buyerId, product, quantity, totalPrice, txnId);
+    // }
+
+
+    public static double placeOrderReturnPrice(Product product, int buyerId, int quantity) throws IOException {
+        Product_Repo productRepo = new Product_Repo();
+        Cart_Repo cartRepo = new Cart_Repo();
+        Order_Repo orderRepo = new Order_Repo();
+
+        int stock = productRepo.getProductQuantity(product.getProduct_Id());
+        if (quantity > stock) {
+            throw new IllegalArgumentException(String.format(Message.STOCK_INSUFFICIENT, product.getProduct_Name(), stock));
+        }
+
+        // Discount logic
+        double originalPrice = product.getProduct_Price();
+        double discountPercent = 0.0;
+
+        Category_Repo categoryRepo = new Category_Repo();
+        int furnitureCatId = categoryRepo.getCategoryIdByName("furniture");
+        int eventSubCatId = categoryRepo.getSubCategoryIdByName("event");
+
+        String nameLower = product.getProduct_Name().toLowerCase();
+        if (nameLower.contains("dell 7640") || nameLower.contains("lenovo 5540")) {
+            discountPercent += 2.5;
+        }
+        if (product.getCategory_ID() == furnitureCatId && product.getSub_cat_ID() == eventSubCatId) {
+            discountPercent += 2.5;
+        }
+
+        double discountedPrice = originalPrice - (originalPrice * discountPercent / 100.0);
+        double totalPrice = discountedPrice * quantity;
+
+        // DB operations
+        productRepo.reduceStock(product.getProduct_Id(), quantity);
+
+        String txnId = Message.TRANSACTION_ID_PREFIX + new Random().nextInt(99999999);
+        orderRepo.insertOrder(buyerId, product.getProduct_Id(), product.getCompany_ID(), quantity, totalPrice, txnId, product.getProduct_Name());
+
+        cartRepo.removeProductFromCart(buyerId, product.getProduct_Id());
+
+        return totalPrice;
     }
-
-    // discount total price
-    double originalPrice = product.getProduct_Price();
-    double discountedPrice = originalPrice;
-
-    // category and subcategory IDs
-    Category_Repo categoryRepo = new Category_Repo();
-    int furnitureCatId = categoryRepo.getCategoryIdByName("furniture");
-    int eventSubCatId = categoryRepo.getSubCategoryIdByName("event");
-
-    String productNameLower = product.getProduct_Name().toLowerCase();
-
-    double discountPercent = 0.0;
-
-    // Check product name discount
-    if (productNameLower.contains("dell 7640") || productNameLower.contains("lenovo 5540")) {
-        discountPercent += 2.5;
-    }
-
-    // Check Event category discount
-    if (product.getCategory_ID() == furnitureCatId && product.getSub_cat_ID() == eventSubCatId) {
-        discountPercent += 2.5;
-    }
-
-    discountedPrice = originalPrice - (originalPrice * discountPercent / 100.0);
-    double totalPrice = discountedPrice * quantity;
-
-    // Update stock
-    productRepo.reduceStock(product.getProduct_Id(), quantity);
-
-    // Generate transaction ID
-    String txnId = Message.TRANSACTION_ID_PREFIX + new Random().nextInt(99999999);
-
-    // Save order with discounted total price 
-    orderRepo.insertOrder(buyerId, product.getProduct_Id(), product.getCompany_ID(), quantity, totalPrice, txnId, product.getProduct_Name());
-
-    // Remove product from cart
-    cartRepo.removeProductFromCart(buyerId, product.getProduct_Id());
-
-    // invoice
-    Invoice_Service.generateInvoice(buyerId, product, quantity, totalPrice, txnId);
-}
 
 
 

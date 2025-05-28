@@ -7,7 +7,9 @@ import Repository.Cart_Repo;
 import Repository.Category_Repo;
 import Repository.Product_Repo;
 import java.sql.SQLException;
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Random;
 import java.util.Scanner;
 
 
@@ -96,44 +98,86 @@ public class Cart_Service {
                     case "A":
                         return;
 
-                    case "B": {
-                        try {
-                            System.out.print(Message.ENTER_PRODUCT_NO);
-                            int prodNo = Integer.parseInt(sc.nextLine());
+                case "B": {
+                    try {
+                        System.out.print("Enter product numbers to buy (comma-separated): ");
+                        String[] selections = sc.nextLine().split(",");
+
+                        List<Product> purchasedProducts = new ArrayList<>();
+                        List<Integer> quantities = new ArrayList<>();
+                        double totalPrice = 0.0;
+                        List<String> txnIds = new ArrayList<>();
+
+                        for (String selection : selections) {
+                            int prodNo;
+                            try {
+                                prodNo = Integer.parseInt(selection.trim());
+                            } catch (NumberFormatException e) {
+                                System.out.println("Invalid product number: " + selection.trim());
+                                continue;
+                            }
 
                             if (prodNo < 1 || prodNo > cartItems.size()) {
-                                System.out.println(Message.INVALID_CHOICE);
-                                break;
+                                System.out.println(Message.INVALID_CHOICE + ": " + prodNo);
+                                continue;
                             }
 
                             Product selectedProduct = cartItems.get(prodNo - 1);
+                            Product actualProduct = new Product_Repo().getProductById(selectedProduct.getProduct_Id());
 
-                            System.out.print(Message.QUANTITY);
-                            int qty = Integer.parseInt(sc.nextLine());
-
-                            if (qty <= 0) {
-                                System.out.println(Message.QUANTITY_GREATER_ZERO);
-                            } else {
-                                Product actualProduct = new Product_Repo().getProductById(selectedProduct.getProduct_Id());
-
-                                if (actualProduct == null) {
-                                    System.out.println(Message.PRODUCT_NOT_FOUND);
-                                } else if (qty > actualProduct.getProduct_Quantity()) {
-                                    System.out.println(Message.QUANTITY_EXCEED);
-                                } else {
-                                    Order_Service.placeOrder(actualProduct, qty, buyerId);
-                                    System.out.println(Message.ORDER_SUCCESSFUL);
-                                    return;
-                                }
+                            if (actualProduct == null) {
+                                System.out.println(Message.PRODUCT_NOT_FOUND + ": " + selectedProduct.getProduct_Name());
+                                continue;
                             }
-                        } catch (NumberFormatException e) {
-                            System.out.println(Message.VALID_NUMBER);
-                        } catch (Exception e) {
-                            System.out.println(Message.ORDER_FAILED);
-                            e.printStackTrace();
+
+                            // Ask for quantity to buy
+                            System.out.print("Enter quantity for " + actualProduct.getProduct_Name() + ": ");
+                            int qty;
+                            try {
+                                qty = Integer.parseInt(sc.nextLine().trim());
+                                if (qty < 1) {
+                                    System.out.println("Quantity must be at least 1.");
+                                    continue;
+                                }
+                            } catch (NumberFormatException e) {
+                                System.out.println("Invalid quantity entered.");
+                                continue;
+                            }
+
+                            if (actualProduct.getProduct_Quantity() < qty) {
+                                System.out.println(String.format(Message.STOCK_INSUFFICIENT, actualProduct.getProduct_Name(), actualProduct.getProduct_Quantity()));
+                                continue;
+                            }
+
+                            // Place order and get final price (with any discounts applied)
+                            double discounted = Order_Service.placeOrderReturnPrice(actualProduct, buyerId, qty); // Adjust placeOrderReturnPrice to accept qty
+                            totalPrice += discounted;
+
+                            purchasedProducts.add(actualProduct);
+                            quantities.add(qty);
+
+                            // Generate pseudo transaction ID
+                            String txnId = Message.TRANSACTION_ID_PREFIX + new Random().nextInt(99999999);
+                            txnIds.add(txnId);
+
+                            System.out.println("✔ Order placed for: " + actualProduct.getProduct_Name() + " (Qty: " + qty + ")");
                         }
-                        break;
+
+                        // Generate invoice if any product was ordered
+                        if (!purchasedProducts.isEmpty()) {
+                            Invoice_Service.generateInvoice(buyerId, purchasedProducts, quantities, totalPrice, txnIds);
+                            System.out.println(Message.ORDER_SUCCESSFUL);
+                        } else {
+                            System.out.println("No valid products were selected for purchase.");
+                        }
+
+                    } catch (Exception e) {
+                        System.out.println(Message.ORDER_FAILED);
+                        e.printStackTrace();
                     }
+                    break;
+                }
+
 
                     case "C": {
                         try {
@@ -166,6 +210,7 @@ public class Cart_Service {
                             }
 
                             Product toUpdate = cartItems.get(updateIndex - 1);
+
                             Product actualProduct = new Product_Repo().getProductById(toUpdate.getProduct_Id());
                             if (actualProduct == null) {
                                 System.out.println(Message.PRODUCT_NOT_FOUND);

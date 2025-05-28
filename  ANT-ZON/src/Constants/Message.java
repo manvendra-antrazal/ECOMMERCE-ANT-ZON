@@ -222,6 +222,8 @@ public class Message {
     public static final String ENTER_NEW_QUANTITY = "Enter new quantity: ";
     public static final String QUANTITY_UPDATED = "Quantity updated successfully!";
     public static final String UPDATE_FAILED = "Error occurred while updating quantity. Please try again.";
+    public static final String REMOVE_PRODUCT_FROM_WISHLIST_AND_LIKE_DECREASE = "Failed to remove product from wishlist: ";
+    public static final String CONNECTION_ERROR = "Database connection error: ";
   
     public static final String PRODUCT_LIST = """
 
@@ -348,8 +350,7 @@ public class Message {
     public static final String WISHLIST_LOWER_FRAME = """
        ╠═════╩══════════════════════╩══════════╩══════════╩═══════════════════════════════════════════════════════╣
        ║                   [A] BACK  |  [B] Add To Cart  |  [C] REMOVE PRODUCT  |  [D] LOGOUT                     ║
-       ╚══════════════════════════════════════════════════════════════════════════════════════════════════════════╝
-       """;
+       ╚══════════════════════════════════════════════════════════════════════════════════════════════════════════╝\n""";
       
     
 
@@ -514,6 +515,28 @@ public class Message {
     public static final String ENTER_COUNTRY = "Enter Country: ";
     public static final String ENTER_ADDRESS = "Enter Local Address: ";
 
+    public static final String CHECKOUT_OPTIONS_MENU ="""
+    ╔════════════════════════════════════════╗
+    ║           Choose checkout type:        ║
+    ╠════════════════════════════════════════╣
+    ║   1. Order a single item               ║
+    ║   2. Order all items in cart           ║
+    ╚════════════════════════════════════════╝
+            """;
+    
+    public static final String ENTER_CHOICE = "Enter your choice: ";
+    public static final String ENTER_PRODUCT_ID = "Enter Product ID to order: ";
+    public static final String INVALID_PRODUCT_ID = "Invalid Product ID. Item not found in cart.";
+    public static final String INVALID_NUMERIC_INPUT = "Invalid input. Please enter a numeric Product ID.";
+    public static final String BULK_CONFIRM_MESSAGE = "You are about to place order for **ALL ITEMS** in your cart.";
+    public static final String CONFIRM_YN = "Are you sure? (Y/N): ";
+    public static final String ORDER_CANCELLED = "Order cancelled. Returning to cart...";
+    public static final String INVALID_OPTION_RETURNING = "Invalid option. Returning to cart menu.";
+    public static final String FAILED_ORDER = "Failed to place order due to I/O error.";
+   
+
+    // Errors 
+    
 }
 
 
