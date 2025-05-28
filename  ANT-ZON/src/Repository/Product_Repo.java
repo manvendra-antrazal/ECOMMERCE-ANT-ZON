@@ -13,7 +13,26 @@ import java.util.List;
 
 public class Product_Repo {
 
-public List<Product> getProductsByCategory(String categoryName) {
+    public int getProductStock(int productId, int companyId) {
+    int stock = 0;
+    try (Connection connection = DBConnection.getInstance().getConnection();
+         PreparedStatement stmt = connection.prepareStatement("SELECT quantity FROM product WHERE product_id = ? AND company_id = ?")) {
+        stmt.setInt(1, productId);
+        stmt.setInt(2, companyId);
+        ResultSet rs = stmt.executeQuery();
+        if (rs.next()) {
+            stock = rs.getInt("quantity");
+        }
+    } catch (SQLException e) {
+        e.printStackTrace();
+    }
+    return stock;
+}
+
+
+
+
+    public List<Product> getProductsByCategory(String categoryName) {
     List<Product> products = new ArrayList<>();
     String query = Queries.GET_PRODUCTS_BY_CATEGORY;
     try (Connection connection = DBConnection.getInstance().getConnection();

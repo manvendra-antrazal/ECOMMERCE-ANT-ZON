@@ -88,7 +88,7 @@ public class Admin_Service {
     }
 
 
-
+    // company name 
     public static void viewCompanyName(Company company) {
         System.out.println(Message.CURRENT_COMPANY_UPPER);
          System.out.printf("║ Current Company: %-30s║\n", company.getCompany_Name());

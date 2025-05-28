@@ -13,6 +13,24 @@ import java.util.List;
 
 public class Cart_Repo {
 
+
+    public void updateCartQuantity(int buyerId, int productId, int newQty) {
+        try (Connection connection = DBConnection.getInstance().getConnection()) {
+            String query = "UPDATE cart SET quantity = ? WHERE buyer_id = ? AND product_id = ?";
+            try (PreparedStatement ps = connection.prepareStatement(query)) {
+                ps.setInt(1, newQty);
+                ps.setInt(2, buyerId);
+                ps.setInt(3, productId);
+                ps.executeUpdate();
+            }
+        } catch (Exception e) {
+            System.out.println("Database error while updating cart quantity.");
+            e.printStackTrace(); // Optional: remove in production
+        }
+    }
+
+
+
     public void insertCartItem(int productId, int companyId, int buyerId, int quantity) {
 
         try (Connection connection = DBConnection.getInstance().getConnection()) {

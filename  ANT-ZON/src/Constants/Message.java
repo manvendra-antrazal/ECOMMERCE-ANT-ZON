@@ -217,7 +217,12 @@ public class Message {
     public static final String EMPTY_SELLER_PRODUCT_LIST = "You don't have any products to update.";
     public static final String UPDATE_PRODUCT_ID = "Enter the Product ID you want to update: ";
     public static final String PRODUCT_OUT_OF_STOCK = "Product is currently out of stock.";
-    public static final String EMPTY_SELLER_PRODUCTS_LIST = "You don't have any products.";    
+    public static final String EMPTY_SELLER_PRODUCTS_LIST = "You don't have any products.";  
+    public static final String ENTER_PRODUCT_NO_UPDATE = "Enter product number to update quantity: ";
+    public static final String ENTER_NEW_QUANTITY = "Enter new quantity: ";
+    public static final String QUANTITY_UPDATED = "Quantity updated successfully!";
+    public static final String UPDATE_FAILED = "Error occurred while updating quantity. Please try again.";
+  
     public static final String PRODUCT_LIST = """
 
         ╔════════════════════════════════════════╗
@@ -312,18 +317,18 @@ public class Message {
     
     
     public static final String CART_UPPER_FRAME = """
-       ╔════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
-       ║                                                         Your Cart                                                                  ║
-       ╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣""";
+         ╔═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╗
+         ║                                                         Your Cart                                                             ║
+         ╠═════╦═════════════════════════╦════════════╦══════════════╦══════════╦════════════════════════════════════════════════════════╣
+         ║ No  ║ Product Name            ║ Price      ║ Discounted   ║ Qty      ║ Description                                            ║
+         ╠═════╬═════════════════════════╬════════════╬══════════════╬══════════╬════════════════════════════════════════════════════════╣""";
 
-public static final String CART_MIDDLE_FRAME = """
-       ╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣""";
+                
 
-public static final String CART_LOWER_FRAME = """
-       ╠════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╣
-       ║                                [A] BACK  |  [B] BUY NOW  |  [C] REMOVE PRODUCT  |  [D] LOGOUT                                      ║
-       ╚════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝
-       """;
+    public static final String CART_LOWER_FRAME = """
+         ╠═════╩═════════════════════════╩════════════╩══════════════╩══════════╩════════════════════════════════════════════════════════╣
+         ║                    [A] BACK  |  [B] BUY NOW  |  [C] REMOVE PRODUCT  |  [D] CHANGE QUANTITY  |  [E] LOGOUT                     ║
+         ╚═══════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════════╝""";
        
          
     public static final String EMPTY_CART = """
@@ -356,6 +361,7 @@ public static final String CART_LOWER_FRAME = """
 
 
     public static final String CHOICE_INPUT = "Enter your choice (A/B/C/D): ";
+    public static final String CART_CHOICE_INPUT = "Enter your choice (A/B/C/D/E): ";
     public static final String ENTER_PRODUCT_NO = "Enter the product number to buy: ";
     public static final String ENTER_PRODUCT_NO_REMOVE = "Enter the product number to remove: ";
     public static final String QUANTITY = "Enter quantity: ";
@@ -507,7 +513,6 @@ public static final String CART_LOWER_FRAME = """
     public static final String ENTER_STATE = "Enter State: ";
     public static final String ENTER_COUNTRY = "Enter Country: ";
     public static final String ENTER_ADDRESS = "Enter Local Address: ";
-    public static final String ENTER_NEW_BUYER_USERNAME = ""
 
 }
 

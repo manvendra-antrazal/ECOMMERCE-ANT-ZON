@@ -19,7 +19,7 @@ public class Cart_Controller {
                 }
 
                 Cart_Service.addToCart(product, company.getCompany_Id(), buyerId, defaultQuantity);
-                System.out.println(Message.PRODUCT_ADDED_TO_CART);
+                // System.out.println(Message.PRODUCT_ADDED_TO_CART);
                 break;
             } catch (NumberFormatException e) {
                 System.out.println(Message.VALID_NUMBER);

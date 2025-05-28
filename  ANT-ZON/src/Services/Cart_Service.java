@@ -13,6 +13,7 @@ import java.util.Scanner;
 
 public class Cart_Service {
 
+        // product add to cart 
         public static void addToCart(Product product, int companyId, int buyerId, int quantity) throws SQLException {
         Cart_Repo repo = new Cart_Repo();
         boolean exists = repo.isProductInCart(product.getProduct_Id(), companyId, buyerId);
@@ -25,7 +26,7 @@ public class Cart_Service {
         }
     }
 
-
+        // view cart 
         public static void viewCart(Scanner sc, int buyerId) {
             List<Product> cartItems = new Cart_Repo().getCartItemsByBuyerId(buyerId);
 
@@ -59,10 +60,7 @@ public class Cart_Service {
 
             // Display the cart with Discounted Price column
             System.out.println(Message.CART_UPPER_FRAME);
-            System.out.printf("║ %-3s | %-20s | %-10s | %-12s | %-8s | %-50s             ║\n",
-                    "No", "Product Name", "Price", "Discounted", "Qty", "Description");
-            System.out.println(Message.CART_MIDDLE_FRAME);
-
+            
             int index = 1;
             for (Product p : cartItems) {
                 double originalPrice = p.getProduct_Price();
@@ -78,7 +76,7 @@ public class Cart_Service {
 
                 discountedPrice = originalPrice - (originalPrice * discount / 100.0);
 
-                System.out.printf("║ %-3d | %-20s | %-10.2f | %-12.2f | %-8d | %-50s             ║\n",
+                System.out.printf( "║ %-3d ║ %-23s ║ %-10.2f ║ %-12.2f ║ %-8d ║ %-54s ║\n",
                         index++,
                         p.getProduct_Name(),
                         originalPrice,
@@ -91,7 +89,7 @@ public class Cart_Service {
 
             // Cart options
             while (true) {
-                System.out.print(Message.CHOICE_INPUT);
+                System.out.print(Message.CART_CHOICE_INPUT);
                 String input = sc.nextLine().trim().toUpperCase();
 
                 switch (input) {
@@ -155,7 +153,49 @@ public class Cart_Service {
                         break;
                     }
 
-                    case "D":
+                    case "D": {
+                        try {
+                            System.out.print(Message.ENTER_PRODUCT_NO_UPDATE); // Prompt for product number
+                            String prodInput = sc.nextLine().trim();
+
+                            // Validate if it's a number
+                            int updateIndex = Integer.parseInt(prodInput);
+                            if (updateIndex < 1 || updateIndex > cartItems.size()) {
+                                System.out.println(Message.INVALID_CHOICE);
+                                break;
+                            }
+
+                            Product toUpdate = cartItems.get(updateIndex - 1);
+                            Product actualProduct = new Product_Repo().getProductById(toUpdate.getProduct_Id());
+                            if (actualProduct == null) {
+                                System.out.println(Message.PRODUCT_NOT_FOUND);
+                                break;
+                            }
+
+                            System.out.print(Message.ENTER_NEW_QUANTITY); 
+                            String qtyInput = sc.nextLine().trim();
+
+                            int newQty = Integer.parseInt(qtyInput);
+                            if (newQty <= 0) {
+                                System.out.println(Message.QUANTITY_GREATER_ZERO);
+                            } else if (newQty > actualProduct.getProduct_Quantity()) {
+                                System.out.println(Message.QUANTITY_EXCEED);
+                            } else {
+                                new Cart_Repo().updateCartQuantity(buyerId, toUpdate.getProduct_Id(), newQty);
+                                System.out.println(Message.QUANTITY_UPDATED);
+                                return;
+                            }
+
+                        } catch (NumberFormatException e) {
+                            System.out.println(Message.VALID_NUMBER); // Handles invalid number inputs
+                        } catch (Exception e) {
+                            System.out.println(Message.UPDATE_FAILED); // Handles any DB or unknown exceptions
+                            e.printStackTrace(); // Optional: log for debugging
+                        }
+                        break;
+                    }
+
+                    case "E" :
                         CompanyController.startCompanySelection(sc);
                         return;
 

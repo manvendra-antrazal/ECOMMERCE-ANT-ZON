@@ -14,18 +14,6 @@ public class Queries {
 
     public static final String GET_BUYER_ID = "SELECT Buyer_ID FROM Buyer WHERE Buyer_UserName = ? AND Buyer_Psd = ?";
     
-    // Add product
-    // public static final String ADD_PRODUCT_QUERY = "INSERT INTO product (product_Name, product_Info, product_Price, product_Quantity) VALUES (?, ?, ?, ?)";
-
-    // Update Product
-    
-    // public static final String UPDATE_PRODUCT_QUERY = "UPDATE product SET product_Name = ?, product_Info = ? WHERE product_Id = ?";
-
-    // Update product quantity
-    // public static final String UPDATE_PRODUCT_QUANTITY_QUERY= "UPDATE product SET product_Quantity = ? WHERE product_Id = ?";
-
-    // Delete Product 
-    // public static final String DELETE_PRODUCT_QUERY = "DELETE FROM product WHERE product_Id = ?";
     
     
     // --------------------------------------------------------------------------------------------
