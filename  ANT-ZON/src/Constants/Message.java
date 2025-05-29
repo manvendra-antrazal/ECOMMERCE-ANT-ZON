@@ -582,6 +582,8 @@ public class Message {
     public static final String ERROR_VIEWING_WISHLIST = "An error occurred while viewing the wishlist.";
     public static final String LOGIN_FAILED_DB_ERROR = "Login failed due to database error ";
     public static final String SELLER_REGISTER_FAILED = "Seller registration failed";
+    public static final String ADMIN_LOGIN_SUCCESS = "Admin login successful.";
+    public static final String ADMIN_LOGIN_FAILED = "Invalid admin credentials or unauthorized access.";
 }
 
 

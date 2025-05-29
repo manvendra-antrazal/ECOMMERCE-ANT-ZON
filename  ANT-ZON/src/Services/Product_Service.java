@@ -309,7 +309,7 @@ public class Product_Service {
 
         System.out.println(Message.PRODUCT_LIST);
         for (Product p : sellerProducts) {
-            System.out.printf("║ ID: %-4d | Name: %-25s ║\n", p.getProduct_Id(), p.getProduct_Name());
+            System.out.printf("║ %-4d ║ %-25s ║\n", p.getProduct_Id(), p.getProduct_Name());
         }
 
         int productId;

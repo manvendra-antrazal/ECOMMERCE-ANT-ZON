@@ -7,7 +7,6 @@ import Modal.Company;
 import Modal.Product;
 import Repository.Admin_Repo;
 import static Util.Validations.isValidPassword;
-
 import java.util.List;
 import java.util.Scanner;
 
@@ -31,10 +30,10 @@ public class Admin_Service {
                     case "1":
                         int adminId = loginAdmin(inputScanner, company);
                         if (adminId != -1) {
-                            System.out.println("-> Admin login successful.");
+                            System.out.println(Message.ADMIN_LOGIN_SUCCESS);
                             Admin_Controller.showAdminMenu(inputScanner, company, adminId);
                         } else {
-                            System.out.println("-> Invalid admin credentials or unauthorized access.");
+                            System.out.println(Message.ADMIN_LOGIN_FAILED);
                         }
                         break;
                     case "2":
