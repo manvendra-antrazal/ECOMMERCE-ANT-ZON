@@ -3,6 +3,7 @@ package Repository;
 import Constants.Message;
 import Constants.Queries;
 import Util.DBConnection;
+import Util.PrintUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -10,7 +11,6 @@ import java.sql.SQLException;
 
 public class Buyer_Repo {
 
-    // Method it checks, if buyer with the given username and password exists
     public int getBuyerId(String username, String password) throws SQLException {
         String query = Queries.CHECK_BUYER_QUERY;
         boolean isBuyerFound = false;
@@ -32,8 +32,9 @@ public class Buyer_Repo {
             }
 
         } catch (SQLException e) {
-            System.out.println(Message.ERROR_FETCHING_BUYER + e.getMessage());
+            PrintUtil.printMessageWithException(Message.ERROR_FETCHING_BUYER, e);
         }
+
         return buyerID;
     }
 }

@@ -6,6 +6,7 @@ import Modal.Product;
 import Repository.Cart_Repo;
 import Repository.Category_Repo;
 import Repository.Product_Repo;
+import Util.PrintUtil;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
@@ -14,31 +15,28 @@ import java.util.Scanner;
 
 public class Cart_Service {
 
-    // product add to cart 
     public static void addToCart(Product product, int companyId, int buyerId, int quantity) throws SQLException {
         Cart_Repo repo = new Cart_Repo();
         boolean exists = repo.isProductInCart(product.getProduct_Id(), companyId, buyerId);
         if (exists) {
-            System.out.println(Message.PRODUCT_ALREADY_IN_CART);
+            PrintUtil.printMessage(Message.PRODUCT_ALREADY_IN_CART);
         } else {
             repo.insertCartItem(product.getProduct_Id(), companyId, buyerId, quantity);
-            System.out.println(Message.PRODUCT_ADDED_TO_CART);
+            PrintUtil.printMessage(Message.PRODUCT_ADDED_TO_CART);
         }
     }
 
-    // view cart 
     public static void viewCart(Scanner sc, int buyerId) throws SQLException {
         List<Product> cartItems;
         try {
             cartItems = new Cart_Repo().getCartItemsByBuyerId(buyerId);
         } catch (Exception e) {
-            System.out.println(Message.ERROR_FETCHING_CART);
-            e.printStackTrace();
+            PrintUtil.printMessageWithException(Message.ERROR_FETCHING_CART, e);
             return;
         }
 
         if (cartItems.isEmpty()) {
-            System.out.println(Message.EMPTY_CART);
+            PrintUtil.printMessage(Message.EMPTY_CART);
             return;
         }
 
@@ -49,13 +47,12 @@ public class Cart_Service {
             furnitureCatId = categoryRepo.getCategoryIdByName("furniture");
             eventSubCatId = categoryRepo.getSubCategoryIdByName("event");
         } catch (Exception e) {
-            System.out.println(Message.ERROR_FETCHING__CATEGORY_AND_SUBCAT);
-            e.printStackTrace();
+            PrintUtil.printMessageWithException(Message.ERROR_FETCHING__CATEGORY_AND_SUBCAT, e);
             return;
         }
 
         if (furnitureCatId == null || eventSubCatId == null) {
-            System.out.println(Message.ERROR_FETCHING__CATEGORY_AND_SUBCAT);
+            PrintUtil.printMessage(Message.ERROR_FETCHING__CATEGORY_AND_SUBCAT);
             return;
         }
 
@@ -72,7 +69,7 @@ public class Cart_Service {
             }
         }
 
-        System.out.println(Message.CART_UPPER_FRAME);
+        PrintUtil.printMessage(Message.CART_UPPER_FRAME);
         int index = 1;
         for (Product p : cartItems) {
             double originalPrice = p.getProduct_Price();
@@ -97,10 +94,10 @@ public class Cart_Service {
                     p.getProduct_Description());
         }
 
-        System.out.println(Message.CART_LOWER_FRAME);
+        PrintUtil.printMessage(Message.CART_LOWER_FRAME);
 
         while (true) {
-            System.out.print(Message.CART_CHOICE_INPUT);
+            PrintUtil.printMessage(Message.CART_CHOICE_INPUT);
             String input = sc.nextLine().trim().toUpperCase();
 
             switch (input) {
@@ -109,7 +106,7 @@ public class Cart_Service {
 
                 case "B": {
                     try {
-                        System.out.print("Enter product numbers to buy (comma-separated): ");
+                         PrintUtil.printMessage(Message.COMA_SEPRATED);
                         String[] selections = sc.nextLine().split(",");
 
                         List<Product> purchasedProducts = new ArrayList<>();
@@ -122,12 +119,12 @@ public class Cart_Service {
                             try {
                                 prodNo = Integer.parseInt(selection.trim());
                             } catch (NumberFormatException e) {
-                                System.out.println(Message.INVALID_INPUT + ": " + selection.trim());
+                                PrintUtil.printMessage(Message.INVALID_INPUT + ": " + selection.trim());
                                 continue;
                             }
 
                             if (prodNo < 1 || prodNo > cartItems.size()) {
-                                System.out.println(Message.INVALID_CHOICE + ": " + prodNo);
+                                PrintUtil.printMessage(Message.INVALID_CHOICE + ": " + prodNo);
                                 continue;
                             }
 
@@ -135,7 +132,7 @@ public class Cart_Service {
                             Product actualProduct = new Product_Repo().getProductById(selectedProduct.getProduct_Id());
 
                             if (actualProduct == null) {
-                                System.out.println(Message.PRODUCT_NOT_FOUND + ": " + selectedProduct.getProduct_Name());
+                                PrintUtil.printMessage(Message.PRODUCT_NOT_FOUND + ": " + selectedProduct.getProduct_Name());
                                 continue;
                             }
 
@@ -144,16 +141,16 @@ public class Cart_Service {
                             try {
                                 qty = Integer.parseInt(sc.nextLine().trim());
                                 if (qty < 1) {
-                                    System.out.println(Message.QUANTITY_GREATER_ZERO);
+                                    PrintUtil.printMessage(Message.QUANTITY_GREATER_ZERO);
                                     continue;
                                 }
                             } catch (NumberFormatException e) {
-                                System.out.println(Message.VALID_NUMBER);
+                                PrintUtil.printMessage(Message.VALID_NUMBER);
                                 continue;
                             }
 
                             if (actualProduct.getProduct_Quantity() < qty) {
-                                System.out.println(String.format(Message.STOCK_INSUFFICIENT, actualProduct.getProduct_Name(), actualProduct.getProduct_Quantity()));
+                                PrintUtil.printMessage(String.format(Message.STOCK_INSUFFICIENT, actualProduct.getProduct_Name(), actualProduct.getProduct_Quantity()));
                                 continue;
                             }
 
@@ -166,51 +163,49 @@ public class Cart_Service {
                             String txnId = Message.TRANSACTION_ID_PREFIX + new Random().nextInt(99999999);
                             txnIds.add(txnId);
 
-                            System.out.println("✔ Order placed for: " + actualProduct.getProduct_Name() + " (Qty: " + qty + ")");
+                            PrintUtil.printMessage("✔ Order placed for: " + actualProduct.getProduct_Name() + " (Qty: " + qty + ")");
                         }
 
                         if (!purchasedProducts.isEmpty()) {
                             Invoice_Service.generateInvoice(buyerId, purchasedProducts, quantities, totalPrice, txnIds);
-                            System.out.println(Message.ORDER_SUCCESSFUL);
+                            PrintUtil.printMessage(Message.ORDER_SUCCESSFUL);
                         } else {
-                            System.out.println(Message.NO_VALID_PRODUCTS_PURCHASED);
+                            PrintUtil.printMessage(Message.NO_VALID_PRODUCTS_PURCHASED);
                         }
 
                     } catch (Exception e) {
-                        System.out.println(Message.ORDER_FAILED);
-                        e.printStackTrace();
+                        PrintUtil.printMessageWithException(Message.ORDER_FAILED, e);
                     }
                     break;
                 }
 
                 case "C": {
                     try {
-                        System.out.print(Message.ENTER_PRODUCT_NO_REMOVE);
+                        PrintUtil.printMessage(Message.ENTER_PRODUCT_NO_REMOVE);
                         int removeIndex = Integer.parseInt(sc.nextLine());
                         if (removeIndex < 1 || removeIndex > cartItems.size()) {
-                            System.out.println(Message.INVALID_CHOICE);
+                            PrintUtil.printMessage(Message.INVALID_CHOICE);
                         } else {
                             Product toRemove = cartItems.get(removeIndex - 1);
                             new Cart_Repo().removeFromCart(buyerId, toRemove.getProduct_Id());
-                            System.out.println(Message.PRODUCT_REMOVED_CART);
+                            PrintUtil.printMessage(Message.PRODUCT_REMOVED_CART);
                             return;
                         }
                     } catch (NumberFormatException e) {
-                        System.out.println(Message.VALID_NUMBER);
+                        PrintUtil.printMessage(Message.VALID_NUMBER);
                     } catch (Exception e) {
-                        System.out.println(Message.REMOVE_FAILED);
-                        e.printStackTrace();
+                        PrintUtil.printMessageWithException(Message.REMOVE_FAILED, e);
                     }
                     break;
                 }
 
                 case "D": {
                     try {
-                        System.out.print(Message.ENTER_PRODUCT_NO_UPDATE);
+                        PrintUtil.printMessage(Message.ENTER_PRODUCT_NO_UPDATE);
                         int updateIndex = Integer.parseInt(sc.nextLine().trim());
 
                         if (updateIndex < 1 || updateIndex > cartItems.size()) {
-                            System.out.println(Message.INVALID_CHOICE);
+                            PrintUtil.printMessage(Message.INVALID_CHOICE);
                             break;
                         }
 
@@ -218,28 +213,27 @@ public class Cart_Service {
                         Product actualProduct = new Product_Repo().getProductById(toUpdate.getProduct_Id());
 
                         if (actualProduct == null) {
-                            System.out.println(Message.PRODUCT_NOT_FOUND);
+                            PrintUtil.printMessage(Message.PRODUCT_NOT_FOUND);
                             break;
                         }
 
-                        System.out.print(Message.ENTER_NEW_QUANTITY);
+                        PrintUtil.printMessage(Message.ENTER_NEW_QUANTITY);
                         int newQty = Integer.parseInt(sc.nextLine().trim());
 
                         if (newQty <= 0) {
-                            System.out.println(Message.QUANTITY_GREATER_ZERO);
+                            PrintUtil.printMessage(Message.QUANTITY_GREATER_ZERO);
                         } else if (newQty > actualProduct.getProduct_Quantity()) {
-                            System.out.println(Message.QUANTITY_EXCEED);
+                            PrintUtil.printMessage(Message.QUANTITY_EXCEED);
                         } else {
                             new Cart_Repo().updateCartQuantity(buyerId, toUpdate.getProduct_Id(), newQty);
-                            System.out.println(Message.QUANTITY_UPDATED);
+                            PrintUtil.printMessage(Message.QUANTITY_UPDATED);
                             return;
                         }
 
                     } catch (NumberFormatException e) {
-                        System.out.println(Message.VALID_NUMBER);
+                        PrintUtil.printMessage(Message.VALID_NUMBER);
                     } catch (Exception e) {
-                        System.out.println(Message.UPDATE_FAILED);
-                        e.printStackTrace();
+                        PrintUtil.printMessageWithException(Message.UPDATE_FAILED, e);
                     }
                     break;
                 }
@@ -249,7 +243,7 @@ public class Cart_Service {
                     return;
 
                 default:
-                    System.out.println(Message.INVALID_CHOICE);
+                    PrintUtil.printMessage(Message.INVALID_CHOICE);
             }
         }
     }

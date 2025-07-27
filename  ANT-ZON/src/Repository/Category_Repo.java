@@ -90,7 +90,7 @@ public class Category_Repo {
         } catch (SQLException e) {
             throw new SQLException(Message.FETCHING_FAILED + e.getMessage(), e);
         }
-        return null; // or throw custom exception
+        return null; 
     }
 
     public Integer getSubCategoryIdByName(String name) throws SQLException {

@@ -3,6 +3,7 @@ package Controller;
 import Constants.Message;
 import Modal.Company;
 import Services.Company_Services;
+import Util.PrintUtil;
 import java.sql.SQLException;
 import java.util.*;
 
@@ -12,19 +13,17 @@ public class CompanyController {
         List<Company> companies = Company_Services.getAllCompanies();
 
         if (companies.isEmpty()) {
-            System.out.println(Message.NO_EXISTING_COMPANY_FOUND);
+            PrintUtil.printMessage(Message.NO_EXISTING_COMPANY_FOUND);
             return;
         }
 
         Map<Integer, Company> map = new HashMap<>();
-        System.out.println(Message.EXISTING_COMAPNY);
+        PrintUtil.printMessage(Message.EXISTING_COMAPNY);
         for (int i = 0; i < companies.size(); i++) {
-        map.put(i + 1, companies.get(i));
-        System.out.printf("║  %d. %-32s ║\n", (i + 1), companies.get(i).getCompany_Name());
-    }
-        System.out.println(Message.EXISTING_COMPANY_SEPRATION);
-        // System.out.println(Message.BACK_AND_EXIT_FRAME);
-        // System.out.println(Message.EXISTING_COMPANY_SEPRATION);
+            map.put(i + 1, companies.get(i));
+            System.out.printf("║  %d. %-32s ║\n", (i + 1), companies.get(i).getCompany_Name());
+        }
+        PrintUtil.printMessage(Message.EXISTING_COMPANY_SEPRATION);
 
         while (true) {
             System.out.print(Message.SELECT_OPTION);
@@ -35,7 +34,7 @@ public class CompanyController {
                     new ApplicationController().run();
                     break;
                 case "B":
-                    System.out.println(Message.EXIT_MESSAGE);
+                    PrintUtil.printMessage(Message.EXIT_MESSAGE);
                     System.exit(0);
                     break;
                 default:
@@ -45,18 +44,18 @@ public class CompanyController {
                             Company selectedCompany = map.get(choice);
                             handleLoginRoles(selectedCompany, inputscanner);
                         } else {
-                            System.out.println(Message.INVALID_INPUT);
+                            PrintUtil.printMessage(Message.INVALID_INPUT);
                         }
                     } catch (NumberFormatException e) {
-                        System.out.println(Message.INVALID_INPUT);
+                        PrintUtil.printMessage(Message.INVALID_INPUT);
                     }
             }
         }
     }
 
     public static void handleLoginRoles(Company company, Scanner inputscanner) throws SQLException {
-        System.out.println("\n" + Message.ROLE_SELECT);
-        System.out.print(Message.SELECT_OPTION);
+        PrintUtil.printMessage(Message.ROLE_SELECT);
+        PrintUtil.printMessage(Message.SELECT_OPTION);
 
         String input = inputscanner.nextLine().trim();
 
@@ -65,7 +64,7 @@ public class CompanyController {
                 startCompanySelection(inputscanner);
                 break;
             case "B":
-                System.out.println(Message.EXIT_MESSAGE);
+                PrintUtil.printMessage(Message.EXIT_MESSAGE);
                 System.exit(0);
                 break;
             default:
@@ -82,10 +81,10 @@ public class CompanyController {
                             Admin_Controller.handleAdminFlow(inputscanner, company);
                             break;
                         default:
-                            System.out.println(Message.INVALID_ROLE_SELECTION);
+                            PrintUtil.printMessage(Message.INVALID_ROLE_SELECTION);
                     }
                 } catch (NumberFormatException e) {
-                    System.out.println(Message.INVALID_INPUT);
+                    PrintUtil.printMessage(Message.INVALID_INPUT);
                 }
         }
     }

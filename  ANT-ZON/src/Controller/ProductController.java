@@ -3,6 +3,7 @@ package Controller;
 import Constants.Message;
 import Modal.Company;
 import Services.Product_Service;
+import Util.PrintUtil;
 import java.util.InputMismatchException;
 import java.util.Scanner;
 
@@ -11,8 +12,8 @@ public class ProductController {
     public static void showSellerMenu(Scanner inputScanner, String role, Company company, int sellerId) {
         while (true) {
             try {
-                System.out.println(Message.SELLER_MENU);
-                System.out.print(Message.SELECT_OPTION);
+                PrintUtil.printMessage(Message.SELLER_MENU);
+                PrintUtil.printMessage(Message.SELECT_OPTION);
 
                 String input = inputScanner.nextLine().trim().toUpperCase();
 
@@ -26,7 +27,7 @@ public class ProductController {
                         return;
 
                     case "C":
-                        System.out.println(Message.EXIT_MESSAGE);
+                        PrintUtil.printMessage(Message.EXIT_MESSAGE);
                         System.exit(0);
                         break;
 
@@ -46,19 +47,16 @@ public class ProductController {
                         Product_Service.deleteProduct(inputScanner, sellerId);
                         break;
 
-                    // case "5":
-                    //     Product_Service.viewProductStats(sellerId);
-                    //     break;
-
                     default:
-                        System.out.println(Message.INVALID_INPUT);
+                        PrintUtil.printMessage(Message.INVALID_INPUT);
                         break;
                 }
+
             } catch (InputMismatchException e) {
-                System.out.println(Message.INVALID_INPUT);
-                inputScanner.nextLine(); // Clear the invalid input
+                PrintUtil.printMessage(Message.INVALID_INPUT);
+                inputScanner.nextLine(); // Clear invalid input
             } catch (Exception e) {
-                System.out.println(Message.UNEXPECTED_ERROR + e.getMessage());
+                PrintUtil.printMessageWithException(Message.UNEXPECTED_ERROR, e);
             }
         }
     }

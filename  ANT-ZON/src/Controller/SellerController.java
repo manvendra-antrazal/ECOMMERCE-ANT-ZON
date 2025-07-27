@@ -1,11 +1,10 @@
 package Controller;
 
 import Constants.Message;
-import java.util.Scanner;
-
 import Modal.Company;
 import Services.Seller_Service;
-
+import Util.PrintUtil;
+import java.util.Scanner;
 
 public class SellerController {
 
@@ -13,8 +12,7 @@ public class SellerController {
         try {
             Seller_Service.handleSellerLogin(inputscanner, "SELLER", company);
         } catch (Exception e) {
-            System.out.println("\n" + Message.SELLER_FLOW_ERROR);
-            e.printStackTrace();
+            PrintUtil.printMessageWithException(Message.SELLER_FLOW_ERROR, e);
         }
-    } 
+    }
 }

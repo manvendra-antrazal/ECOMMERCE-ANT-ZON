@@ -584,6 +584,8 @@ public class Message {
     public static final String SELLER_REGISTER_FAILED = "Seller registration failed";
     public static final String ADMIN_LOGIN_SUCCESS = "Admin login successful.";
     public static final String ADMIN_LOGIN_FAILED = "Invalid admin credentials or unauthorized access.";
+    public static final String COMA_SEPRATED = "Enter product numbers to buy (comma-separated): ";
+
 }
 
 

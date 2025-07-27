@@ -6,6 +6,7 @@ import Controller.ProductController;
 import Modal.Company;
 import Repository.Register_Seller_Repo;
 import Repository.Seller_Repo;
+import Util.PrintUtil;
 import java.util.Scanner;
 
 public class Seller_Service {
@@ -13,8 +14,9 @@ public class Seller_Service {
     public static void handleSellerLogin(Scanner inputScanner, String role, Company company) {
         while (true) {
             try {
-                System.out.println(Message.SELLER_LOGIN_MENU);
-                System.out.print(Message.SELECT_OPTION);
+                PrintUtil.printMessage(Message.SELLER_LOGIN_MENU);
+                PrintUtil.printMessage(Message.SELECT_OPTION);
+
                 String input = inputScanner.nextLine().trim();
 
                 switch (input.toUpperCase()) {
@@ -22,7 +24,7 @@ public class Seller_Service {
                         CompanyController.handleLoginRoles(company, inputScanner);
                         return;
                     case "B":
-                        System.out.println(Message.EXIT_MESSAGE);
+                        PrintUtil.printMessage(Message.EXIT_MESSAGE);
                         System.exit(0);
                         break;
                     default:
@@ -32,48 +34,47 @@ public class Seller_Service {
                                 case 1:
                                     int sellerId = loginSeller(inputScanner);
                                     if (sellerId != -1) {
-                                        System.out.println(Message.LOGIN_SUCCESS);
+                                        PrintUtil.printMessage(Message.LOGIN_SUCCESS);
                                         ProductController.showSellerMenu(inputScanner, role, company, sellerId);
                                     } else {
-                                        System.out.println(Message.LOGIN_FAILED);
+                                        PrintUtil.printMessage(Message.LOGIN_FAILED);
                                     }
                                     break;
                                 case 2:
                                     boolean isRegistered = registerSeller(inputScanner, role, company);
                                     if (isRegistered) {
-                                        System.out.println(Message.SELLER_ADDED);
+                                        PrintUtil.printMessage(Message.SELLER_ADDED);
                                     } else {
-                                        System.out.println(Message.REGISTER_FAILED);
+                                        PrintUtil.printMessage(Message.REGISTER_FAILED);
                                     }
                                     break;
                                 default:
-                                    System.out.println(Message.INVALID_OPTION);
+                                    PrintUtil.printMessage(Message.INVALID_OPTION);
                             }
                         } catch (NumberFormatException e) {
-                            System.out.println(Message.INVALID_INPUT);
+                            PrintUtil.printMessage(Message.INVALID_INPUT);
                         }
                 }
             } catch (Exception e) {
-                System.out.println(Message.INTERNAL_ERROR);
-                e.printStackTrace();
+                PrintUtil.printMessageWithException(Message.INTERNAL_ERROR, e);
             }
         }
     }
 
     private static int loginSeller(Scanner inputScanner) {
         try {
-            System.out.print(Message.LOGIN_CREDENTIAL);
+            PrintUtil.printMessage(Message.LOGIN_CREDENTIAL);
             String username = inputScanner.nextLine().trim();
 
-            System.out.print(Message.ENTER_PASSWORD);
+            PrintUtil.printMessage(Message.ENTER_PASSWORD);
             String password = inputScanner.nextLine().trim();
 
-            System.out.println(Message.LOGIN_CREDENTIAL_LOWER);
+            PrintUtil.printMessage(Message.LOGIN_CREDENTIAL_LOWER);
 
             Seller_Repo sellerRepo = new Seller_Repo();
             return sellerRepo.getSellerId(username, password);
         } catch (Exception e) {
-            System.out.println(Message.LOGIN_ERROR);
+            PrintUtil.printMessageWithException(Message.LOGIN_ERROR, e);
             throw new RuntimeException(Message.LOGIN_FAILED_DB_ERROR, e);
         }
     }
@@ -83,7 +84,7 @@ public class Seller_Service {
             Register_Seller_Repo registerRepo = new Register_Seller_Repo();
             return registerRepo.REGISTER_SELLER(inputScanner, role, company);
         } catch (Exception e) {
-            System.out.println(Message.REGISTRATION_FAILED);
+            PrintUtil.printMessageWithException(Message.REGISTRATION_FAILED, e);
             throw new RuntimeException(Message.SELLER_REGISTER_FAILED, e);
         }
     }

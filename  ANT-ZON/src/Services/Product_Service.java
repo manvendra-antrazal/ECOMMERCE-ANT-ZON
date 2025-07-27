@@ -9,6 +9,7 @@ import Modal.Sub_Category;
 import Repository.Category_Repo;
 import Repository.Product_Repo;
 import Repository.SubCategory_Repo;
+import Util.PrintUtil;
 import Util.Validations;
 import java.sql.SQLException;
 import java.util.List;
@@ -21,15 +22,19 @@ public class Product_Service {
         List<Product> sellerProducts = repo.getProductsBySellerId(sellerId);
 
         if (sellerProducts.isEmpty()) {
-            System.out.println(Message.EMPTY_SELLER_PRODUCTS_LIST);
+            PrintUtil.printMessage(Message.EMPTY_SELLER_PRODUCTS_LIST);
             return;
         }
 
-        System.out.println(Message.AVAILABLE_PRODUCTS);
-        System.out.println(Message.PRODUCT_UPPER);
+        PrintUtil.printMessages(
+            Message.AVAILABLE_PRODUCTS,
+            Message.PRODUCT_UPPER
+        );
+
         System.out.printf("║ %-3s ║ %-20s ║ %-8s ║ %-8s ║ %-50s ║\n",
                 "No", "Product Name", "Price", "Qty", "Description");
-        System.out.println(Message.PRODUCTS_MIDDLE);
+
+        PrintUtil.printMessage(Message.PRODUCTS_MIDDLE);
 
         for (int i = 0; i < sellerProducts.size(); i++) {
             Product p = sellerProducts.get(i);
@@ -46,61 +51,53 @@ public class Product_Service {
                     truncatedDescription);
         }
 
-        System.out.println(Message.PRODUCTS_LAST);
+        PrintUtil.printMessage(Message.PRODUCTS_LAST);
 
         while (true) {
-            // System.out.println(Message.BACK_AND_EXIT_FRAME); // A Back | B Exit
-            System.out.print(Message.SELECT_OPTION_A_B); // Select option
+            PrintUtil.printMessage(Message.SELECT_OPTION_A_B);
             String choice = inputScanner.nextLine().trim().toUpperCase();
 
-            if (choice.equals("A")) {
-                return;
-            }
+            if (choice.equals("A")) return;
             if (choice.equals("B")) {
-                System.out.println(Message.EXIT_MESSAGE);
+                PrintUtil.printMessage(Message.EXIT_MESSAGE);
                 System.exit(0);
             }
-            System.out.println(Message.INVALID_OPTION);
+            PrintUtil.printMessage(Message.INVALID_OPTION);
         }
     }
 
-    // add product
     public static void addProduct(Scanner inputscanner, int sellerID, int companyID) throws SQLException {
         Category_Repo catRepo = new Category_Repo();
-        // List<Category> categories = catRepo.getAllCategories();
         List<Category> categories = catRepo.getAllCategories();
 
         if (categories.isEmpty()) {
-            System.out.println(Message.CATEGORY_NOT_AVAILABLE);
+            PrintUtil.printMessage(Message.CATEGORY_NOT_AVAILABLE);
             return;
         }
 
-        // Display categories with numbers
-        System.out.println(Message.SELLER_CATEGORY_FRAME);
+        PrintUtil.printMessage(Message.SELLER_CATEGORY_FRAME);
         for (int i = 0; i < categories.size(); i++) {
             System.out.printf("║   %-2d. %-31s  ║\n", (i + 1), categories.get(i).getCategory_Name());
         }
-        System.out.println(Message.SELLER_CATEGORY_LOWER_FRAME); // A. Back | C. Exit
+        PrintUtil.printMessage(Message.SELLER_CATEGORY_LOWER_FRAME);
 
         int selectedCategoryIndex = -1;
         while (true) {
-            System.out.print(Message.SELECT_OPTION);
+            PrintUtil.printMessage(Message.SELECT_OPTION);
             String input = inputscanner.nextLine().trim().toUpperCase();
 
-            if (input.equals("A"))
-                return; // Back
+            if (input.equals("A")) return;
             if (input.equals("B")) {
-                System.out.println(Message.EXIT_MESSAGE);
+                PrintUtil.printMessage(Message.EXIT_MESSAGE);
                 System.exit(0);
             }
 
             try {
                 selectedCategoryIndex = Integer.parseInt(input) - 1;
-                if (selectedCategoryIndex >= 0 && selectedCategoryIndex < categories.size())
-                    break;
-                System.out.println(Message.INVALID_OPTION);
+                if (selectedCategoryIndex >= 0 && selectedCategoryIndex < categories.size()) break;
+                PrintUtil.printMessage(Message.INVALID_OPTION);
             } catch (NumberFormatException e) {
-                System.out.println(Message.INVALID_INPUT);
+                PrintUtil.printMessage(Message.INVALID_INPUT);
             }
         }
 
@@ -109,35 +106,33 @@ public class Product_Service {
         List<Sub_Category> subCategories = subCatRepo.getSubCategoriesByCategoryId(selectedCategoryId, companyID);
 
         if (subCategories.isEmpty()) {
-            System.out.println(Message.NO_SUB_CATEGORY_FOUND);
+            PrintUtil.printMessage(Message.NO_SUB_CATEGORY_FOUND);
             return;
         }
 
-        System.out.println(Message.SELLER_SUB_CATEGORY_UPPER_FRAME);
+        PrintUtil.printMessage(Message.SELLER_SUB_CATEGORY_UPPER_FRAME);
         for (int i = 0; i < subCategories.size(); i++) {
             System.out.printf("║   %-2d. %-31s  ║\n", i + 1, subCategories.get(i).getSub_cat_Name());
         }
-        System.out.println(Message.SELLER_SUB_CATEGORY_LOWER_FRAME);
+        PrintUtil.printMessage(Message.SELLER_SUB_CATEGORY_LOWER_FRAME);
 
         int selectedSubIndex = -1;
         while (true) {
-            System.out.print(Message.SELECT_OPTION);
+            PrintUtil.printMessage(Message.SELECT_OPTION);
             String input = inputscanner.nextLine().trim().toUpperCase();
 
-            if (input.equals("A"))
-                return; // Back
+            if (input.equals("A")) return;
             if (input.equals("C")) {
-                System.out.println(Message.EXIT_MESSAGE);
+                PrintUtil.printMessage(Message.EXIT_MESSAGE);
                 System.exit(0);
             }
 
             try {
                 selectedSubIndex = Integer.parseInt(input) - 1;
-                if (selectedSubIndex >= 0 && selectedSubIndex < subCategories.size())
-                    break;
-                System.out.println(Message.INVALID_OPTION);
+                if (selectedSubIndex >= 0 && selectedSubIndex < subCategories.size()) break;
+                PrintUtil.printMessage(Message.INVALID_OPTION);
             } catch (NumberFormatException e) {
-                System.out.println(Message.INVALID_INPUT);
+                PrintUtil.printMessage(Message.INVALID_INPUT);
             }
         }
 
@@ -145,238 +140,203 @@ public class Product_Service {
 
         String name;
         while (true) {
-            System.out.print(Message.PRODUCT_NAME);
+            PrintUtil.printMessage(Message.PRODUCT_NAME);
             name = inputscanner.nextLine().trim();
-            if (Validations.isValidName(name)) {
-                break;
-            }
-            System.out.println(Message.INVALID_PRODUCT_NAME);
+            if (Validations.isValidName(name)) break;
+            PrintUtil.printMessage(Message.INVALID_PRODUCT_NAME);
         }
 
         String info;
         while (true) {
-            System.out.print(Message.PRODUCT_DESCRIPTION);
+            PrintUtil.printMessage(Message.PRODUCT_DESCRIPTION);
             info = inputscanner.nextLine().trim();
-            if (Validations.isValidDescription(info)) {
-                break;
-            }
-            System.out.println(Message.INVALID_PRODUCT_DESCRIPTION);
+            if (Validations.isValidDescription(info)) break;
+            PrintUtil.printMessage(Message.INVALID_PRODUCT_DESCRIPTION);
         }
 
         double price;
         while (true) {
-            System.out.print(Message.PRODUCT_PRICE);
+            PrintUtil.printMessage(Message.PRODUCT_PRICE);
             String input = inputscanner.nextLine().trim();
             if (Validations.isValidPrice(input)) {
                 price = Double.parseDouble(input);
                 break;
             }
-            System.out.println(Message.INVALID_PRODUCT_PRICE);
+            PrintUtil.printMessage(Message.INVALID_PRODUCT_PRICE);
         }
 
         int quantity;
         while (true) {
-            System.out.print(Message.PRODUCT_QUANTITY);
+            PrintUtil.printMessage(Message.PRODUCT_QUANTITY);
             String input = inputscanner.nextLine().trim();
             if (Validations.isValidQuantity(input)) {
                 quantity = Integer.parseInt(input);
                 break;
             }
-            System.out.println(Message.INVALID_PRODUCT_QUANTITY);
+            PrintUtil.printMessage(Message.INVALID_PRODUCT_QUANTITY);
         }
 
-        Product product = new Product(0, name, info, price, quantity, sellerID, companyID, selectedCategoryId, subCatId,
-                0);
+        Product product = new Product(0, name, info, price, quantity, sellerID, companyID, selectedCategoryId, subCatId, 0);
         Product_Repo repo = new Product_Repo();
 
         if (repo.addProduct(product)) {
-            System.out.println(Message.PRODUCT_ADDED);
+            PrintUtil.printMessage(Message.PRODUCT_ADDED);
         } else {
-            System.out.println(Message.PRODUCT_NOT_ADDED);
+            PrintUtil.printMessage(Message.PRODUCT_NOT_ADDED);
         }
     }
 
     // update product discription
     public static void updateProductInfo(Scanner inputscanner, String role, Company company, int sellerId) throws SQLException {
-        Product_Repo repo = new Product_Repo();
-        List<Product> sellerProducts = repo.getProductsBySellerId(sellerId);
+    Product_Repo repo = new Product_Repo();
+    List<Product> sellerProducts = repo.getProductsBySellerId(sellerId);
 
-        if (sellerProducts.isEmpty()) {
-            System.out.println(Message.EMPTY_SELLER_PRODUCT_LIST);
-            return;
-        }
-
-        System.out.println(Message.PRODUCT_LIST);
-        for (Product p : sellerProducts) {
-            System.out.println("ID: " + p.getProduct_Id() + " | Name: " + p.getProduct_Name());
-        }
-
-        int productId;
-
-        while (true) {
-            System.out.print(Message.UPDATE_PRODUCT_ID);
-            try {
-                int inputProductId = Integer.parseInt(inputscanner.nextLine());
-                boolean exists = sellerProducts.stream().anyMatch(p -> p.getProduct_Id() == inputProductId);
-                if (exists) {
-                    productId = inputProductId;
-                    break;
-                } else {
-                    System.out.println(Message.NO_PRODUCT_FOUND);
-                }
-            } catch (NumberFormatException e) {
-                System.out.println(Message.INVALID_OPTION);
-            }
-        }
-
-        while (true) {
-            System.out.println(Message.SELECT_FIELD_TO_UPDATE);
-            System.out.print(Message.SELECT_OPTION);
-            String choice = inputscanner.nextLine().trim();
-
-            boolean success = false;
-            switch (choice) {
-
-                case "A":
-                    // Back to product menu
-                    ProductController.showSellerMenu(inputscanner, role, company, sellerId);
-                    return;
-
-                case "B":
-                    System.out.println(Message.EXIT_MESSAGE);
-                    System.exit(0);
-                    break;
-
-                case "1":
-                    System.out.print(Message.PRODUCT_NAME);
-                    String newName = inputscanner.nextLine().trim();
-                    if (Validations.isValidName(newName)) {
-                        success = repo.updateProductField(productId, sellerId, "product_Name", newName);
-                    } else {
-                        System.out.println(Message.INVALID_PRODUCT_NAME);
-                    }
-                    break;
-                case "2":
-                    System.out.print(Message.PRODUCT_DESCRIPTION);
-                    String newDesc = inputscanner.nextLine().trim();
-                    if (Validations.isValidDescription(newDesc)) {
-                        success = repo.updateProductField(productId, sellerId, "product_Info", newDesc);
-                    } else {
-                        System.out.println(Message.INVALID_PRODUCT_DESCRIPTION);
-                    }
-                    break;
-                case "3":
-                    System.out.print(Message.PRODUCT_PRICE);
-                    String newPrice = inputscanner.nextLine().trim();
-                    if (Validations.isValidPrice(newPrice)) {
-                        success = repo.updateProductField(productId, sellerId, "product_Price", newPrice);
-                    } else {
-                        System.out.println(Message.INVALID_PRODUCT_PRICE);
-                    }
-                    break;
-                case "4":
-                    System.out.print(Message.PRODUCT_QUANTITY);
-                    String newQty = inputscanner.nextLine().trim();
-                    if (Validations.isValidQuantity(newQty)) {
-                        success = repo.updateProductField(productId, sellerId, "product_Quantity", newQty);
-                    } else {
-                        System.out.println(Message.INVALID_PRODUCT_QUANTITY);
-                    }
-                    break;
-                case "5":
-                    return;
-                default:
-                    System.out.println(Message.INVALID_OPTION);
-            }
-
-            if (success) {
-                System.out.println(Message.PRODUCT_UPDATED);
-            } else if (!choice.equals("5")) {
-                System.out.println(Message.PRODUCT_NOT_ADDED);
-            }
-        }
+    if (sellerProducts.isEmpty()) {
+        PrintUtil.printMessage(Message.EMPTY_SELLER_PRODUCT_LIST);
+        return;
     }
 
-    // delete product
-    public static void deleteProduct(Scanner inputscanner, int sellerId) throws SQLException {
-        Product_Repo repo = new Product_Repo();
-        List<Product> sellerProducts = repo.getProductsBySellerId(sellerId);
+    PrintUtil.printMessage(Message.PRODUCT_LIST);
+    for (Product p : sellerProducts) {
+        PrintUtil.printMessage("ID: " + p.getProduct_Id() + " | Name: " + p.getProduct_Name());
+    }
 
-        if (sellerProducts.isEmpty()) {
-            System.out.println(Message.NO_PRODUCT_FOUND);
-            return;
-        }
+    int productId;
 
-        System.out.println(Message.PRODUCT_LIST);
-        for (Product p : sellerProducts) {
-            System.out.printf("║ %-4d ║ %-25s ║\n", p.getProduct_Id(), p.getProduct_Name());
-        }
-
-        int productId;
-
-        while (true) {
-            System.out.print(Message.DELETE_PRODUCT_ID);
-            try {
-                int inputProductId = Integer.parseInt(inputscanner.nextLine()); // new local variable
-                boolean exists = sellerProducts.stream().anyMatch(p -> p.getProduct_Id() == inputProductId);
-                if (exists) {
-                    productId = inputProductId;
-                    break;
-                } else {
-                    System.out.println(Message.INVALID_DELETE_PRODUCT_ID);
-                }
-            } catch (NumberFormatException e) {
-                System.out.println(Message.INVALID_INPUT);
-            }
-        }
-
-        System.out.print(Message.DELETING_CONFIRMATION);
-        String confirmation = inputscanner.nextLine().trim().toLowerCase();
-
-        if (confirmation.equals("yes") || confirmation.equals("y")) {
-            boolean deleted = repo.deleteProduct(productId, sellerId);
-            if (deleted) {
-                System.out.println(Message.PRODUCT_DELETED);
+    while (true) {
+        PrintUtil.printMessage(Message.UPDATE_PRODUCT_ID);
+        try {
+            int inputProductId = Integer.parseInt(inputscanner.nextLine());
+            boolean exists = sellerProducts.stream().anyMatch(p -> p.getProduct_Id() == inputProductId);
+            if (exists) {
+                productId = inputProductId;
+                break;
             } else {
-                System.out.println(Message.DELETING_FAILED);
+                PrintUtil.printMessage(Message.NO_PRODUCT_FOUND);
             }
-        } else {
-            System.out.println(Message.DELETED_CANCEL);
+        } catch (NumberFormatException e) {
+            PrintUtil.printMessage(Message.INVALID_OPTION);
         }
     }
 
-    // stats
-    // public static void viewProductStats(int sellerId) {
-    // Product_Repo repo = new Product_Repo();
+    while (true) {
+        PrintUtil.printMessage(Message.SELECT_FIELD_TO_UPDATE);
+        PrintUtil.printMessage(Message.SELECT_OPTION);
+        String choice = inputscanner.nextLine().trim();
 
-    // // 1. Total Revenue
-    // double totalRevenue = repo.getTotalRevenueBySeller(sellerId);
+        boolean success = false;
+        switch (choice) {
 
-    // // 2. Most Liked Product
-    // Product mostLikedProduct = repo.getMostLikedProductBySeller(sellerId);
+            case "A":
+                ProductController.showSellerMenu(inputscanner, role, company, sellerId);
+                return;
 
-    // // 3. Best Selling Product
-    // Product bestSellingProduct = repo.getBestSellingProductBySeller(sellerId);
+            case "B":
+                PrintUtil.printMessage(Message.EXIT_MESSAGE);
+                System.exit(0);
+                break;
 
-    // System.out.println("===== Product Statistics =====");
-    // System.out.printf("Total Revenue: $%.2f\n", totalRevenue);
+            case "1":
+                PrintUtil.printMessage(Message.PRODUCT_NAME);
+                String newName = inputscanner.nextLine().trim();
+                if (Validations.isValidName(newName)) {
+                    success = repo.updateProductField(productId, sellerId, "product_Name", newName);
+                } else {
+                    PrintUtil.printMessage(Message.INVALID_PRODUCT_NAME);
+                }
+                break;
 
-    // if (mostLikedProduct != null) {
-    // System.out.println("Most Liked Product:");
-    // System.out.println(" ID: " + mostLikedProduct.getProduct_Id());
-    // System.out.println(" Name: " + mostLikedProduct.getProduct_Name());
-    // // Assuming you have a rating or likes attribute
-    // } else {
-    // System.out.println("Most Liked Product: No data available");
-    // }
+            case "2":
+                PrintUtil.printMessage(Message.PRODUCT_DESCRIPTION);
+                String newDesc = inputscanner.nextLine().trim();
+                if (Validations.isValidDescription(newDesc)) {
+                    success = repo.updateProductField(productId, sellerId, "product_Info", newDesc);
+                } else {
+                    PrintUtil.printMessage(Message.INVALID_PRODUCT_DESCRIPTION);
+                }
+                break;
 
-    // if (bestSellingProduct != null) {
-    // System.out.println("Best Selling Product:");
-    // System.out.println(" ID: " + bestSellingProduct.getProduct_Id());
-    // System.out.println(" Name: " + bestSellingProduct.getProduct_Name());
-    // // Assuming quantity sold is available
-    // } else {
-    // System.out.println("Best Selling Product: No data available");
-    // }
-    // }
+            case "3":
+                PrintUtil.printMessage(Message.PRODUCT_PRICE);
+                String newPrice = inputscanner.nextLine().trim();
+                if (Validations.isValidPrice(newPrice)) {
+                    success = repo.updateProductField(productId, sellerId, "product_Price", newPrice);
+                } else {
+                    PrintUtil.printMessage(Message.INVALID_PRODUCT_PRICE);
+                }
+                break;
+
+            case "4":
+                PrintUtil.printMessage(Message.PRODUCT_QUANTITY);
+                String newQty = inputscanner.nextLine().trim();
+                if (Validations.isValidQuantity(newQty)) {
+                    success = repo.updateProductField(productId, sellerId, "product_Quantity", newQty);
+                } else {
+                    PrintUtil.printMessage(Message.INVALID_PRODUCT_QUANTITY);
+                }
+                break;
+
+            case "5":
+                return;
+
+            default:
+                PrintUtil.printMessage(Message.INVALID_OPTION);
+        }
+
+        if (success) {
+            PrintUtil.printMessage(Message.PRODUCT_UPDATED);
+        } else if (!choice.equals("5")) {
+            PrintUtil.printMessage(Message.PRODUCT_NOT_ADDED);
+        }
+    }
+}
+
+// delete product
+public static void deleteProduct(Scanner inputscanner, int sellerId) throws SQLException {
+    Product_Repo repo = new Product_Repo();
+    List<Product> sellerProducts = repo.getProductsBySellerId(sellerId);
+
+    if (sellerProducts.isEmpty()) {
+        PrintUtil.printMessage(Message.NO_PRODUCT_FOUND);
+        return;
+    }
+
+    PrintUtil.printMessage(Message.PRODUCT_LIST);
+    for (Product p : sellerProducts) {
+        // Keep printf formatting as-is (PrintUtil doesn’t yet support formatting)
+        System.out.printf("║ %-4d ║ %-25s ║\n", p.getProduct_Id(), p.getProduct_Name());
+    }
+
+    int productId;
+
+    while (true) {
+        PrintUtil.printMessage(Message.DELETE_PRODUCT_ID);
+        try {
+            int inputProductId = Integer.parseInt(inputscanner.nextLine());
+            boolean exists = sellerProducts.stream().anyMatch(p -> p.getProduct_Id() == inputProductId);
+            if (exists) {
+                productId = inputProductId;
+                break;
+            } else {
+                PrintUtil.printMessage(Message.INVALID_DELETE_PRODUCT_ID);
+            }
+        } catch (NumberFormatException e) {
+            PrintUtil.printMessage(Message.INVALID_INPUT);
+        }
+    }
+
+    PrintUtil.printMessage(Message.DELETING_CONFIRMATION);
+    String confirmation = inputscanner.nextLine().trim().toLowerCase();
+
+    if (confirmation.equals("yes") || confirmation.equals("y")) {
+        boolean deleted = repo.deleteProduct(productId, sellerId);
+        if (deleted) {
+            PrintUtil.printMessage(Message.PRODUCT_DELETED);
+        } else {
+            PrintUtil.printMessage(Message.DELETING_FAILED);
+        }
+    } else {
+        PrintUtil.printMessage(Message.DELETED_CANCEL);
+    }
+} 
 }

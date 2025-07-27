@@ -3,6 +3,7 @@ package Repository;
 import Constants.Message;
 import Constants.Queries;
 import Util.DBConnection;
+import Util.PrintUtil;
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -23,8 +24,8 @@ public class Seller_Repo {
                 return rs.getInt("Buyer_ID");
             }
         } catch (SQLException e) {
-            System.out.println(Message.ERROR_LOGIN);
-            throw e; // rethrowing the exception
+            PrintUtil.printMessageWithException(Message.ERROR_LOGIN, e);
+            throw e; 
         }
         return -1;
     }
@@ -36,14 +37,14 @@ public class Seller_Repo {
 
             ps.setString(1, username);
             ps.setString(2, password);
-            ResultSet rs = ps.executeQuery();
 
+            ResultSet rs = ps.executeQuery();
             if (rs.next()) {
                 return rs.getInt("seller_ID");
             }
         } catch (SQLException e) {
-            System.out.println(Message.ERROR_LOGIN);
-            throw e; // rethrowing the exception
+            PrintUtil.printMessageWithException(Message.ERROR_LOGIN, e);
+            throw e; 
         }
         return -1;
     }

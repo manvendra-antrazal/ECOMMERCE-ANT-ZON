@@ -8,7 +8,7 @@ import Repository.Product_Repo;
 import Repository.Wishlist_repo;
 import Services.Cart_Service;
 import Services.Wishlist_Service;
-
+import Util.PrintUtil;
 import java.util.List;
 import java.util.Scanner;
 
@@ -21,24 +21,23 @@ public class Wishlist_Controller {
             boolean success = wishlistService.addToWishlist(buyerId, selectedProduct.getProduct_Id(), company.getCompany_Id());
 
             if (success) {
-                System.out.println(Message.PRODUCT_ADDED_TO_WISHLIST);
+                PrintUtil.printMessage(Message.PRODUCT_ADDED_TO_WISHLIST);
             } else {
-                System.out.println(Message.PRODUCT_EXISTS_IN_WISHLIST);
+                PrintUtil.printMessage(Message.PRODUCT_EXISTS_IN_WISHLIST);
             }
         } catch (Exception e) {
-            System.out.println(Message.WISHLIST_ADD_ERROR + e.getMessage());
-            e.printStackTrace();
+            PrintUtil.printMessageWithException(Message.WISHLIST_ADD_ERROR, e);
         }
     }
 
     // Move product from wishlist to cart
     public static void handleAddToCartFromWishlist(Scanner sc, List<Product> wishlist, int buyerId) {
         try {
-            System.out.print(Message.SELECT_PRODUCT_INDEX);
+            PrintUtil.printMessage(Message.SELECT_PRODUCT_INDEX);
             int index = Integer.parseInt(sc.nextLine().trim());
 
             if (index < 1 || index > wishlist.size()) {
-                System.out.println(Message.INVALID_SELECTION);
+                PrintUtil.printMessage(Message.INVALID_SELECTION);
                 return;
             }
 
@@ -46,37 +45,36 @@ public class Wishlist_Controller {
             Product actualProduct = new Product_Repo().getProductById(product.getProduct_Id());
 
             if (actualProduct == null) {
-                System.out.println(Message.PRODUCT_OUT_OF_STOCK);
+                PrintUtil.printMessage(Message.PRODUCT_NOT_FOUND);
                 return;
             }
 
             Cart_Repo cartRepo = new Cart_Repo();
             if (cartRepo.isProductInCart(product.getProduct_Id(), product.getCompany_ID(), buyerId)) {
-                System.out.println(Message.PRODUCT_EXISTS_IN_CART);
+                PrintUtil.printMessage(Message.PRODUCT_EXISTS_IN_CART);
                 return;
             }
 
             Cart_Service.addToCart(product, product.getCompany_ID(), buyerId, 1);
             new Wishlist_repo().removeFromWishlist(buyerId, product.getProduct_Id());
 
-            System.out.println(Message.PRODUCT_ADDED_TO_CART);
+            PrintUtil.printMessage(Message.PRODUCT_ADDED_TO_CART);
 
         } catch (NumberFormatException e) {
-            System.out.println(Message.VALID_NUMBER);
+            PrintUtil.printMessageWithException(Message.VALID_NUMBER, e);
         } catch (Exception e) {
-            System.out.println(Message.CART_ERROR + e.getMessage());
-            e.printStackTrace();
+            PrintUtil.printMessageWithException(Message.CART_ERROR, e);
         }
     }
 
     // Remove product from wishlist
     public static void handleRemoveFromWishlist(Scanner sc, List<Product> wishlist, int buyerId) {
         try {
-            System.out.print(Message.SELECT_PRODUCT_INDEX);
+            PrintUtil.printMessage(Message.SELECT_PRODUCT_INDEX);
             int prodNo = Integer.parseInt(sc.nextLine().trim());
 
             if (prodNo < 1 || prodNo > wishlist.size()) {
-                System.out.println(Message.INVALID_INPUT);
+                PrintUtil.printMessage(Message.INVALID_INPUT);
                 return;
             }
 
@@ -84,15 +82,14 @@ public class Wishlist_Controller {
             boolean removed = new Wishlist_repo().removeFromWishlist(buyerId, product.getProduct_Id());
 
             if (removed) {
-                System.out.println(Message.WISHLIST_PRODUCT_REMOVED);
+                PrintUtil.printMessage(Message.WISHLIST_PRODUCT_REMOVED);
             } else {
-                System.out.println(Message.FAILED_REMOVED_PRODUCT_FROM_WISHLIST);
+                PrintUtil.printMessage(Message.FAILED_REMOVED_PRODUCT_FROM_WISHLIST);
             }
         } catch (NumberFormatException e) {
-            System.out.println(Message.VALID_NUMBER);
+            PrintUtil.printMessageWithException(Message.VALID_NUMBER, e);
         } catch (Exception e) {
-            System.out.println(Message.WISHLIST_REMOVE_ERROR + e.getMessage());
-            e.printStackTrace();
+            PrintUtil.printMessageWithException(Message.WISHLIST_REMOVE_ERROR, e);
         }
     }
 }

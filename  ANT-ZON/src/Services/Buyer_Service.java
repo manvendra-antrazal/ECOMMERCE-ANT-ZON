@@ -14,15 +14,17 @@ import Repository.Category_Repo;
 import Repository.Product_Repo;
 import Repository.Register_Buyer_Repo;
 import Repository.SubCategory_Repo;
+import Util.PrintUtil;
 import java.util.List;
 import java.util.Scanner;
 
 public class Buyer_Service {
+
     public static void handleBuyerLogin(Scanner inputScanner, String role, Company company) {
         while (true) {
             try {
-                System.out.println(Message.BUYER_LOGIN_MENU);
-                System.out.print(Message.SELECT_OPTION);
+                PrintUtil.printMessage(Message.BUYER_LOGIN_MENU);
+                PrintUtil.printMessage(Message.SELECT_OPTION);
                 String input = inputScanner.nextLine().trim();
 
                 switch (input.toUpperCase()) {
@@ -30,7 +32,7 @@ public class Buyer_Service {
                         CompanyController.handleLoginRoles(company, inputScanner);
                         return;
                     case "B":
-                        System.out.println(Message.EXIT_MESSAGE);
+                        PrintUtil.printMessage(Message.EXIT_MESSAGE);
                         System.exit(0);
                         break;
                     default:
@@ -40,43 +42,42 @@ public class Buyer_Service {
                                 case 1:
                                     int buyerId = loginBuyer(inputScanner, company);
                                     if (buyerId != -1) {
-                                        System.out.println(Message.LOGIN_SUCCESS);
+                                        PrintUtil.printMessage(Message.LOGIN_SUCCESS);
                                         BuyerController.showBuyerMenu(inputScanner, role, company, buyerId);
                                     } else {
-                                        System.out.println(Message.LOGIN_FAILED);
+                                        PrintUtil.printMessage(Message.LOGIN_FAILED);
                                     }
                                     break;
                                 case 2:
                                     REGISTER_BUYER(inputScanner, role, company);
                                     break;
                                 default:
-                                    System.out.println(Message.INVALID_OPTION);
+                                    PrintUtil.printMessage(Message.INVALID_OPTION);
                             }
                         } catch (NumberFormatException e) {
-                            System.out.println(Message.INVALID_INPUT);
+                            PrintUtil.printMessage(Message.INVALID_INPUT);
                         }
                 }
             } catch (Exception e) {
-                System.out.println(Message.INTERNAL_ERROR);
-                e.printStackTrace(); 
+                PrintUtil.printMessageWithException(Message.INTERNAL_ERROR, e);
             }
         }
     }
 
     private static int loginBuyer(Scanner inputScanner, Company company) {
         try {
-            System.out.print(Message.LOGIN_CREDENTIAL);
+            PrintUtil.printMessage(Message.LOGIN_CREDENTIAL);
             String username = inputScanner.nextLine().trim();
 
-            System.out.print(Message.PASSWORD);
+            PrintUtil.printMessage(Message.PASSWORD);
             String password = inputScanner.nextLine().trim();
 
-            System.out.println(Message.LOGIN_CREDENTIAL_LOWER);
+            PrintUtil.printMessage(Message.LOGIN_CREDENTIAL_LOWER);
 
             Buyer_Repo buyerRepo = new Buyer_Repo();
             return buyerRepo.getBuyerId(username, password);
         } catch (Exception e) {
-            System.out.println(Message.LOGIN_ERROR);
+            PrintUtil.printMessageWithException(Message.LOGIN_ERROR, e);
             throw new RuntimeException("Login failed due to database error", e);
         }
     }
@@ -86,7 +87,7 @@ public class Buyer_Service {
             Register_Buyer_Repo registerRepo = new Register_Buyer_Repo();
             return registerRepo.REGISTER(inputscanner, role, company);
         } catch (Exception e) {
-            System.out.println(Message.REGISTRATION_FAILED);
+            PrintUtil.printMessageWithException(Message.REGISTRATION_FAILED, e);
             throw new RuntimeException("Buyer registration failed", e);
         }
     }
@@ -97,35 +98,35 @@ public class Buyer_Service {
             List<Category> categories = categoryRepo.getAllCategories();
 
             if (categories.isEmpty()) {
-                System.out.println(Message.CATEGORY_NOT_AVAILABLE);
+                PrintUtil.printMessage(Message.CATEGORY_NOT_AVAILABLE);
                 return;
             }
 
-            System.out.println(Message.SELLER_CATEGORY_FRAME);
+            PrintUtil.printMessage(Message.SELLER_CATEGORY_FRAME);
             for (int i = 0; i < categories.size(); i++) {
                 System.out.printf("║   %-2d. %-31s  ║\n", (i + 1), categories.get(i).getCategory_Name());
             }
-            System.out.println(Message.SELLER_CATEGORY_LOWER_FRAME);
+            PrintUtil.printMessage(Message.SELLER_CATEGORY_LOWER_FRAME);
 
             int selectedCategoryIndex = -1;
             while (true) {
-                System.out.print(Message.SELECT_OPTION);
+                PrintUtil.printMessage(Message.SELECT_OPTION);
                 String input = inputScanner.nextLine().trim().toUpperCase();
 
                 if (input.equals("A")) {
                     BuyerController.showBuyerMenu(inputScanner, role, company, buyer);
                     return;
                 } else if (input.equals("B")) {
-                    System.out.println(Message.EXIT_MESSAGE);
+                    PrintUtil.printMessage(Message.EXIT_MESSAGE);
                     System.exit(0);
                 }
 
                 try {
                     selectedCategoryIndex = Integer.parseInt(input) - 1;
                     if (selectedCategoryIndex >= 0 && selectedCategoryIndex < categories.size()) break;
-                    System.out.println(Message.INVALID_OPTION);
+                    PrintUtil.printMessage(Message.INVALID_OPTION);
                 } catch (NumberFormatException e) {
-                    System.out.println(Message.INVALID_INPUT);
+                    PrintUtil.printMessage(Message.INVALID_INPUT);
                 }
             }
 
@@ -135,35 +136,35 @@ public class Buyer_Service {
             List<Sub_Category> subCategories = subCategoryRepo.getSubCategoriesByCategoryId(categoryId, company.getCompany_Id());
 
             if (subCategories.isEmpty()) {
-                System.out.println(Message.NO_SUB_CATEGORY_FOUND);
+                PrintUtil.printMessage(Message.NO_SUB_CATEGORY_FOUND);
                 return;
             }
 
-            System.out.println(Message.SELLER_SUB_CATEGORY_UPPER_FRAME);
+            PrintUtil.printMessage(Message.SELLER_SUB_CATEGORY_UPPER_FRAME);
             for (int i = 0; i < subCategories.size(); i++) {
                 System.out.printf("║   %-2d. %-31s  ║\n", i + 1, subCategories.get(i).getSub_cat_Name());
             }
-            System.out.println(Message.SELLER_SUB_CATEGORY_LOWER_FRAME);
+            PrintUtil.printMessage(Message.SELLER_SUB_CATEGORY_LOWER_FRAME);
 
             int selectedSubIndex = -1;
             while (true) {
-                System.out.print(Message.SELECT_OPTION);
+                PrintUtil.printMessage(Message.SELECT_OPTION);
                 String input = inputScanner.nextLine().trim().toUpperCase();
 
                 if (input.equals("A")) {
                     BuyerController.showBuyerMenu(inputScanner, role, company, buyer);
                     return;
                 } else if (input.equals("B")) {
-                    System.out.println(Message.EXIT_MESSAGE);
+                    PrintUtil.printMessage(Message.EXIT_MESSAGE);
                     System.exit(0);
                 }
 
                 try {
                     selectedSubIndex = Integer.parseInt(input) - 1;
                     if (selectedSubIndex >= 0 && selectedSubIndex < subCategories.size()) break;
-                    System.out.println(Message.INVALID_OPTION);
+                    PrintUtil.printMessage(Message.INVALID_OPTION);
                 } catch (NumberFormatException e) {
-                    System.out.println(Message.INVALID_INPUT);
+                    PrintUtil.printMessage(Message.INVALID_INPUT);
                 }
             }
 
@@ -173,15 +174,17 @@ public class Buyer_Service {
             List<Product> products = productRepo.getProductsByCategoryAndSubCategory(company.getCompany_Id(), subCategoryId);
 
             if (products.isEmpty()) {
-                System.out.println(Message.NO_PRODUCT_FOUND);
+                PrintUtil.printMessage(Message.NO_PRODUCT_FOUND);
                 return;
             }
 
-            System.out.println(Message.AVAILABLE_PRODUCTS);
-            System.out.println(Message.PRODUCT_UPPER);
+            PrintUtil.printMessages(
+                Message.AVAILABLE_PRODUCTS,
+                Message.PRODUCT_UPPER
+            );
             System.out.printf("║ %-3s ║ %-20s ║ %-8s ║ %-8s ║ %-50s ║\n", 
                             "No", "Product Name", "Price", "Qty", "Description");
-            System.out.println(Message.PRODUCTS_MIDDLE);
+            PrintUtil.printMessage(Message.PRODUCTS_MIDDLE);
 
             for (int i = 0; i < products.size(); i++) {
                 Product p = products.get(i);
@@ -191,8 +194,8 @@ public class Buyer_Service {
                                   i + 1, p.getProduct_Name(), p.getProduct_Price(), p.getProduct_Quantity(), desc);
             }
 
-            System.out.println(Message.PRODUCTS_LOWER);
-            System.out.print(Message.SELECT_OPTION);
+            PrintUtil.printMessage(Message.PRODUCTS_LOWER);
+            PrintUtil.printMessage(Message.SELECT_OPTION);
 
             int selectedIndex = -1;
             while (true) {
@@ -203,18 +206,19 @@ public class Buyer_Service {
                         selectedIndex = choice - 1;
                         break;
                     } else {
-                        System.out.println(Message.INVALID_OPTION);
+                        PrintUtil.printMessage(Message.INVALID_OPTION);
                     }
                 } catch (NumberFormatException e) {
-                    System.out.println(Message.INVALID_OPTION);
+                    PrintUtil.printMessage(Message.INVALID_OPTION);
                 }
             }
 
             Product selectedProduct = products.get(selectedIndex);
-            System.out.println(Message.BACK_ADDCART_ADDWISHLIST_LOGOUT);
+            PrintUtil.printMessage(Message.BACK_ADDCART_ADDWISHLIST_LOGOUT);
 
             while (true) {
-                System.out.print(Message.SELECT_OPTION);
+                
+                PrintUtil.printMessage(Message.SELECT_OPTION);
                 String input = inputScanner.nextLine().trim();
 
                 if (input.equalsIgnoreCase("A")) {
@@ -230,13 +234,12 @@ public class Buyer_Service {
                     CompanyController.startCompanySelection(inputScanner);
                     break;
                 } else {
-                    System.out.println(Message.INVALID_OPTION);
+                    PrintUtil.printMessage(Message.INVALID_OPTION);
                 }
             }
 
         } catch (Exception e) {
-            System.out.println(Message.INTERNAL_ERROR);
-            e.printStackTrace(); 
+            PrintUtil.printMessageWithException(Message.INTERNAL_ERROR, e);
         }
     }
 }
